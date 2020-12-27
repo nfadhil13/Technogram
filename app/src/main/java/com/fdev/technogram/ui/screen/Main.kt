@@ -6,24 +6,21 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.fdev.technogram.ui.components.TechnogramTopAppBar
+import com.fdev.technogram.ui.screen.home.Home
 
 @Composable
 fun TechnogramMain(){
     Scaffold(
-        topBar = {
-            TopAppBar(
-                backgroundColor = Color.White,
-                elevation = 5.dp
-            ){
-
+            topBar = {
+                TechnogramTopAppBar()
+            },
+            bodyContent = {
+                Home(onNewsClicked = { })
+            },
+            drawerContent = {
+                Text("This is drawer")
             }
-        },
-        bodyContent = {
-            Text("This is body")
-        },
-        drawerContent = {
-            Text("This is drawer")
-        }
 
     )
 }

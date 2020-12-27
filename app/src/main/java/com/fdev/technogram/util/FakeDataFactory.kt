@@ -7,9 +7,9 @@ import kotlin.collections.ArrayList
 fun produceFakeNewsData(id : Int = 5) : News{
     return News(
         id = id,
-        title = "Pengguna Brainly Meningkat Selama Pandemi",
+        title = "Pengguna Brainly Meningkat Selama Pandemi Pengguna Brainly Meningkat Selama Pandemi Pengguna Brainly",
 //        headerImg = "https://upload.wikimedia.org/wikipedia/commons/thumb/d/dd/Square_-_black_simple.svg/500px-Square_-_black_simple.svg.png",
-        headerImg = "https://technogram-api.technogram.tech/app/public/images/8ad8b975-ac15-4217-a3c8-ff1455572a32.png",
+        headerImg = "https://technogram-api.technogram.tech/app/public/images/8d49115b-ea83-449b-a4e3-a6e65656422a.jpeg",
         article =  "This is the article",
         //2020-12-26T17:55:55.955
         publishTime = Date().time,

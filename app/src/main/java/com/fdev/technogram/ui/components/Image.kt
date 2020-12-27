@@ -37,6 +37,8 @@ fun ImageWithErrorImage(
             // shows an error imageAsset when the request failed.
             error = imageResource(errorImage),
 
+            placeHolder = imageResource(errorImage),
+            
             alignment = alignment
 
 

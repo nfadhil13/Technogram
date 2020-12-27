@@ -1,10 +1,16 @@
 package com.fdev.technogram.ui.screen.home
 
 
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.ScrollableColumn
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.fdev.technogram.ui.components.HeaderNews
 import com.fdev.technogram.ui.components.LeftImageNews
@@ -13,25 +19,40 @@ import com.fdev.technogram.util.produceBunchFakeNews
 import com.fdev.technogram.util.produceFakeNewsData
 
 @Composable
-fun Home(){
+fun Home(
+        onNewsClicked : () -> Unit,
+){
 
-    Column(
-            modifier = Modifier.padding(3.dp)
+    ScrollableColumn(
+            modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxHeight()
+                    .fillMaxWidth()
     ){
         Text(
                 text= "Popular News",
-                style = typography.h3
+                style = typography.h2
         )
+        Spacer(modifier = Modifier.height(height = 12.dp))
         HeaderNews(
-                news = produceFakeNewsData() ,
+                news = produceFakeNewsData(),
                 modifier = Modifier
                         .fillMaxWidth()
-                        .fillMaxHeight(0.3f)
+                        .height(300.dp)
+                        .clickable(onClick = onNewsClicked)
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         for(news in produceBunchFakeNews(6)){
-            LeftImageNews(news = news)
-        }
+                LeftImageNews(
+                        news = news ,
+                        modifier = Modifier
+                                .padding(10.dp)
+                                .fillMaxWidth()
+                                .heightIn(min = 96.dp , max = 128.dp)
+                )
+
+            Spacer(modifier = Modifier.height(height = 12.dp))
+        }1  
     }
 
 }

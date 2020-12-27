@@ -10,17 +10,17 @@ import androidx.compose.ui.unit.sp
 val typography = Typography(
         h2 = TextStyle(
                 fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.W700,
+                fontWeight = FontWeight.W800,
                 fontSize = 28.sp
         ),
         h3 = TextStyle(
                 fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.W600,
+                fontWeight = FontWeight.W700,
                 fontSize = 24.sp
         ),
         h4 = TextStyle(
                 fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.W500,
+                fontWeight = FontWeight.W600,
                 fontSize = 18.sp
         ),
         h5 = TextStyle(
@@ -31,7 +31,7 @@ val typography = Typography(
         h6 = TextStyle(
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.Light,
-                fontSize = 10.sp
+                fontSize = 12.sp
         ),
         /* Other default text styles to override
     button = TextStyle(

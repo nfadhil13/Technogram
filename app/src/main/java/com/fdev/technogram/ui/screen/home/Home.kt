@@ -8,6 +8,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.ViewModel
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.HeaderNews
 import com.fdev.technogram.ui.components.LeftImageNews

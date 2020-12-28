@@ -1,6 +1,7 @@
 package com.fdev.technogram.ui.screen.home
 
 
+import android.view.View
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewModelStoreOwner
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.HeaderNews
 import com.fdev.technogram.ui.components.LeftImageNews

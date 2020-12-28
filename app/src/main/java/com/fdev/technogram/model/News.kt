@@ -18,4 +18,6 @@ data class News(
     val reads : Int,
 
     val writer : String,
+
+    val category : String
 )

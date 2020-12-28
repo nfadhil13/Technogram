@@ -10,3 +10,10 @@ fun getFullDateFromLong(date : Long) : String{
     val format = SimpleDateFormat("EEE dd/MM/yyyy h:mm")
     return format.format(date).toString()
 }
+
+//This will return date with this form : Dec 20
+fun getMonthAndDate(date : Long) : String{
+    val date = Date(date)
+    val format = SimpleDateFormat("MMM dd")
+    return format.format(date).toString()
+}

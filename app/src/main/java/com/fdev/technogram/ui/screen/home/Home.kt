@@ -37,16 +37,20 @@ fun Home(
                 ) { item ->
                     when (item) {
                         is HomeViewType.RecentNews -> {
-                            Text("Ini item yang lain")
+                            LeftImageNews(news = item.news)
                         }
                         is HomeViewType.TopOfHome -> {
-                            TopOfHome(onNewsClicked = onNewsClicked , popularNewsList = produceBunchFakeNews(6) , headerNews = produceFakeNewsData())
+                            TopOfHome(onNewsClicked = onNewsClicked, popularNewsList = produceBunchFakeNews(6), headerNews = produceFakeNewsData())
                         }
                     }
                 }
             })
 
 }
+
+
+
+
 
 //Views where we put Header News and static 6 popular news
 @Composable

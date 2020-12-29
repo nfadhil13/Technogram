@@ -12,12 +12,12 @@ interface NewsRepository {
             perpage : Int = 10 ,
             searchKey : String = "",
             page : Int = 1
-    ) : Flow<Event<News>>
+    ) : Flow<Event<List<News>>>
 
-    suspend fun getMostLikedNews(
-            perpage : Int = 10,
-           searchKey : String = "",
-             page : Int = 1
-    ): Flow<Event<News>>
+//    suspend fun getMostLikedNews(
+//            perpage : Int = 10,
+//           searchKey : String = "",
+//             page : Int = 1
+//    ): Flow<Event<List<News>>>
 
 }

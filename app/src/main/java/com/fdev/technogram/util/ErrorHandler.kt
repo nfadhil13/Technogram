@@ -10,6 +10,7 @@ import retrofit2.HttpException
 
 fun errorHandler(exception: Exception) : String{
     var message = exception.message ?: NetworkErrorConst.UNKNOWN_ERROR
+    println(message)
     when(exception){
         is HttpException -> {
             message = exception.message()

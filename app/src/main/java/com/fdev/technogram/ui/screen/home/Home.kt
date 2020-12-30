@@ -1,31 +1,25 @@
 package com.fdev.technogram.ui.screen.home
 
 
-import android.view.View
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.onActive
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.ViewModelStoreOwner
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.HeaderNews
 import com.fdev.technogram.ui.components.LeftImageNews
+import com.fdev.technogram.ui.components.CircularLoading
 import com.fdev.technogram.ui.components.RightImagePreviewNews
 import com.fdev.technogram.ui.typography
-import com.fdev.technogram.util.produceBunchFakeNews
-import com.fdev.technogram.util.produceFakeNewsData
-
-
 
 
 @Composable
@@ -42,9 +36,14 @@ fun Home(
             .fillMaxHeight()
             .fillMaxWidth(),
         content = {
-            items(
+            itemsIndexed(
                 items = viewModel.homeViewTypes
-            ) { item ->
+            ) { index, item ->
+                if (viewModel.shouldFetchMore(index)) {
+                    onActive(callback = {
+                        viewModel.fetchCurrentNewsNextPage()
+                    })
+                }
                 when (item) {
                     is HomeViewType.RecentNews -> {
                         RecentNews(news = item.news)
@@ -56,11 +55,28 @@ fun Home(
                             headerNews = item.headerNews
                         )
                     }
+                    is HomeViewType.NoMoreItem -> {
+                        Text(
+                            modifier = Modifier.fillMaxWidth()
+                                .height(16.dp),
+                            text = "No More Item",
+                            textAlign = TextAlign.Center,
+                            style = typography.h5
+                        )
+                    }
+                    is HomeViewType.LoadingItem -> {
+                        CircularLoading(
+                            modifier = Modifier.fillMaxWidth().height(16.dp),
+                            alignment = Alignment.Center
+                        )
+                    }
                 }
             }
         })
 
 }
+
+
 
 
 //Views where we put Header News and static 6 popular news
@@ -99,10 +115,10 @@ fun TopOfHome(
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "Recent News",
-            style = typography.h2,
-            textAlign = TextAlign.Center
+            style = typography.h3,
+            textAlign = TextAlign.Start
         )
-        Spacer(modifier =  Modifier.height(height = 2.dp).fillMaxWidth().background(Color.Gray))
+        Spacer(modifier =  Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
     }
 
 }
@@ -112,12 +128,14 @@ fun RecentNews(
     news : News,
     modifier: Modifier = Modifier
 ){
-    Surface(
+    Column(
         modifier = modifier
     ){
         Spacer(modifier = Modifier.height(10.dp))
         RightImagePreviewNews(news = news)
-        Spacer(modifier =  Modifier.height(height = 2.dp).fillMaxWidth().background(Color.Gray))
+        Spacer(modifier =  Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
     }
 
 }
+
+

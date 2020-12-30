@@ -6,14 +6,12 @@ import androidx.compose.runtime.setValue
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fdev.technogram.model.News
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class HomeViewModel @ViewModelInject constructor(
     private val newsInteractors: NewsInteractors
@@ -21,7 +19,11 @@ class HomeViewModel @ViewModelInject constructor(
 
     var homeViewTypes : List<HomeViewType> by mutableStateOf(listOf())
 
+    private val loading  =  HomeViewType.LoadingItem
+
     private var currentPage = 1
+
+    private var isFetching = false
 
     init{
 
@@ -41,7 +43,7 @@ class HomeViewModel @ViewModelInject constructor(
                     }
 
                     is DataState.OnFailure -> {
-                            println("Error")
+                        handleError(result.message)
                     }
                 }
             }
@@ -51,25 +53,59 @@ class HomeViewModel @ViewModelInject constructor(
 
     private fun fetchCurrentNews(page : Int = 1){
         viewModelScope.launch(Main){
+            isFetching = true
+            toogleLoading()
             newsInteractors.fetchRecentNews.fetch(perpage = 10 , dispatcher = IO , page = page).collect { result ->
+                toogleLoading()
                 when(result){
                     is DataState.OnSuccess -> {
-                        result.data.forEach { recentNews ->
-                            addHomeViewType(
+                        if(result.data.isEmpty()){
+                            currentPage = -1
+                            addHomeViewType(homeViewType = HomeViewType.NoMoreItem)
+                        }else{
+                            result.data.forEach { recentNews ->
+                                addHomeViewType(
                                     homeViewType = HomeViewType.RecentNews(news = recentNews)
-                            )
+                                )
+                            }
+                            currentPage ++
                         }
-                        currentPage ++
+
+
                     }
 
                     is DataState.OnFailure -> {
-                        println("Error")
+                        handleError(result.message)
                     }
                 }
+                isFetching = false
             }
         }
     }
 
+    private fun toogleLoading() {
+        if(homeViewTypes.contains(loading)){
+            deleteHomeViewType(loading)
+        }else{
+            addHomeViewType(
+                index = homeViewTypes.lastIndex,
+                homeViewType = loading
+            )
+        }
+    }
+
+//
+//    private fun popHomeViewType(){
+//        homeViewTypes = homeViewTypes.toMutableList().also {
+//            it.removeAt(homeViewTypes.lastIndex)
+//        }
+//    }
+
+    private fun deleteHomeViewType(homeViewType: HomeViewType){
+        homeViewTypes = homeViewTypes.toMutableList().also {
+            it.remove(homeViewType)
+        }
+    }
 
     private fun addHomeViewType(index : Int = -1 , homeViewType: HomeViewType){
         homeViewTypes = homeViewTypes.toMutableList().also {
@@ -83,11 +119,22 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
 
+
+
     fun fetchCurrentNewsNextPage(){
-        fetchCurrentNews(currentPage)
+        println("Fetchin for page : $currentPage")
+        if(currentPage != -1 && !isFetching){
+            fetchCurrentNews(currentPage)
+        }
     }
 
 
+
+    private fun handleError(message: String) {
+        println(message)
+    }
+
+    fun shouldFetchMore(index : Int): Boolean = (!isFetching && index > 0 && index == homeViewTypes.size-1 && currentPage != -1)
 
 
 }

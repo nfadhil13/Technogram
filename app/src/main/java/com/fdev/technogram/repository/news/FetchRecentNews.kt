@@ -32,9 +32,11 @@ constructor(
             val result = withTimeout(NetworkConst.NETWORK_TIMEOUT ){
                 newsNetworkDataSource.getRecentNews(perpage = perpage , searchKey = searchKey , page = page)
             }
+            println(result)
             emit(DataState.OnSuccess(result , FETCH_RECENT_NEWS_SUCCESS))
         }catch(exception : Exception){
             val errorMessage = errorHandler(exception = exception)
+            println(errorMessage)
             emit(DataState.OnFailure<List<News>>(errorMessage))
         }
     }.flowOn(dispatcher)

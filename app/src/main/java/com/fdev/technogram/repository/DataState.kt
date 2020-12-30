@@ -6,5 +6,4 @@ sealed class DataState<Data>{
 
     data class OnFailure<Data>(val message : String) : DataState<Data>()
 
-
 }

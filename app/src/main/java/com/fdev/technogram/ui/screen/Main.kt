@@ -19,7 +19,7 @@ fun TechnogramMain(
             },
             drawerContent = {
                 Text("This is drawer")
-            }
+            },
 
     )
 }

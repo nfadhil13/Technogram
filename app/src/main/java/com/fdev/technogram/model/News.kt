@@ -19,5 +19,7 @@ data class News(
 
     val writer : String,
 
-    val category : String
+    val category : String,
+
+    val preview : String
 )

@@ -12,129 +12,135 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class HomeViewModel @ViewModelInject constructor(
     private val newsInteractors: NewsInteractors
-) : ViewModel (){
+) : ViewModel() {
 
-    var homeViewTypes : List<HomeViewType> by mutableStateOf(listOf())
+    var homeViewTypes: List<HomeViewType> by mutableStateOf(listOf())
 
-    private val loading  =  HomeViewType.LoadingItem
+    private val loading = HomeViewType.LoadingItem
 
     private var currentPage = 1
 
     private var isFetching = false
 
-    init{
-
+    init {
         fetchMostLikedNews()
-        fetchCurrentNews(1)
+        fetchCurrentNews()
     }
 
-    private fun fetchMostLikedNews(){
-        viewModelScope.launch(Main){
-            newsInteractors.fetchMostLikedNews.fetch(perpage = 6 , dispatcher = IO).collect { result ->
-                when(result){
-                    is DataState.OnSuccess -> {
-                        addHomeViewType(0 , HomeViewType.TopOfHome(
-                                headerNews = result.data[0],
-                                mostLikedNews = result.data
-                        ))
-                    }
+    private fun fetchMostLikedNews() {
+        viewModelScope.launch(Main) {
+            newsInteractors.fetchMostLikedNews.fetch(perpage = 6, dispatcher = IO)
+                .collect { result ->
+                    when (result) {
+                        is DataState.OnSuccess -> {
+                            addHomeViewType(
+                                0, HomeViewType.TopOfHome(
+                                    headerNews = result.data[0],
+                                    mostLikedNews = result.data
+                                )
+                            )
+                        }
 
-                    is DataState.OnFailure -> {
-                        handleError(result.message)
+                        is DataState.OnFailure -> {
+                            handleError(result.message)
+                        }
                     }
                 }
-            }
         }
     }
 
 
-    private fun fetchCurrentNews(page : Int = 1){
-        viewModelScope.launch(Main){
+    private fun fetchCurrentNews(page: Int = currentPage) {
+        viewModelScope.launch(Main) {
             isFetching = true
             toogleLoading()
-            newsInteractors.fetchRecentNews.fetch(perpage = 10 , dispatcher = IO , page = page).collect { result ->
-                toogleLoading()
-                when(result){
-                    is DataState.OnSuccess -> {
-                        if(result.data.isEmpty()){
-                            currentPage = -1
-                            addHomeViewType(homeViewType = HomeViewType.NoMoreItem)
-                        }else{
-                            result.data.forEach { recentNews ->
-                                addHomeViewType(
-                                    homeViewType = HomeViewType.RecentNews(news = recentNews)
+            newsInteractors.fetchRecentNews.fetch(perpage = 10, dispatcher = IO, page = page)
+                .collect { result ->
+                    toogleLoading()
+                    when (result) {
+                        is DataState.OnSuccess -> {
+                            if (result.data.isEmpty()) {
+                                currentPage = -1
+                                addHomeViewType(homeViewType = HomeViewType.NoMoreItem)
+                            } else {
+                                addHomeViewTypes(
+                                    homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
                                 )
+                                currentPage++
                             }
-                            currentPage ++
+
+
                         }
 
-
+                        is DataState.OnFailure -> {
+                            handleError(result.message)
+                        }
                     }
-
-                    is DataState.OnFailure -> {
-                        handleError(result.message)
-                    }
+                    isFetching = false
                 }
-                isFetching = false
-            }
         }
     }
 
     private fun toogleLoading() {
-        if(homeViewTypes.contains(loading)){
+        if (homeViewTypes.contains(loading)) {
             deleteHomeViewType(loading)
-        }else{
+        } else {
             addHomeViewType(
-                index = homeViewTypes.lastIndex,
+                index = homeViewTypes.size,
                 homeViewType = loading
             )
         }
     }
 
-//
-//    private fun popHomeViewType(){
-//        homeViewTypes = homeViewTypes.toMutableList().also {
-//            it.removeAt(homeViewTypes.lastIndex)
-//        }
-//    }
 
-    private fun deleteHomeViewType(homeViewType: HomeViewType){
+    private fun deleteHomeViewType(homeViewType: HomeViewType) {
         homeViewTypes = homeViewTypes.toMutableList().also {
             it.remove(homeViewType)
         }
     }
 
-    private fun addHomeViewType(index : Int = -1 , homeViewType: HomeViewType){
+    private fun addHomeViewType(index: Int = -1, homeViewType: HomeViewType) {
         homeViewTypes = homeViewTypes.toMutableList().also {
-            if(index == -1){
+            if (index == -1) {
                 it.add(homeViewType)
-            }else{
-                it.add(index , homeViewType)
+            } else {
+                it.add(index, homeViewType)
+            }
+
+        }
+    }
+
+    private fun addHomeViewTypes(index: Int = -1, homeViewType: List<HomeViewType>) {
+        homeViewTypes = homeViewTypes.toMutableList().also {
+            if (index == -1) {
+                it.addAll(homeViewType)
+            } else {
+                it.addAll(index, homeViewType)
+
             }
 
         }
     }
 
 
-
-
-    fun fetchCurrentNewsNextPage(){
+    fun fetchCurrentNewsNextPage() {
         println("Fetchin for page : $currentPage")
-        if(currentPage != -1 && !isFetching){
+        if (currentPage != -1 && !isFetching) {
             fetchCurrentNews(currentPage)
         }
     }
-
 
 
     private fun handleError(message: String) {
         println(message)
     }
 
-    fun shouldFetchMore(index : Int): Boolean = (!isFetching && index > 0 && index == homeViewTypes.size-1 && currentPage != -1)
+    fun shouldFetchMore(index: Int): Boolean =
+        (!isFetching && index > 0 && index == homeViewTypes.size - 1 && currentPage != -1)
 
 
 }

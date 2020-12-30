@@ -123,7 +123,7 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                 modifier = Modifier.weight(1.5f).fillMaxWidth()
             ) {
                 Text(
-                    text = news.article,
+                    text = news.preview,
                     maxLines = 2,
                     overflow = TextOverflow.Ellipsis,
 

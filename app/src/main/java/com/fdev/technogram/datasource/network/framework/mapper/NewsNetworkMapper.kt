@@ -4,6 +4,7 @@ import com.fdev.technogram.datasource.DomainMapper
 import com.fdev.technogram.datasource.network.NetworkConst
 import com.fdev.technogram.datasource.network.framework.model.news.NewsDto
 import com.fdev.technogram.model.News
+import com.fdev.technogram.util.htmlToText
 import java.util.*
 import javax.inject.Inject
 
@@ -30,7 +31,8 @@ constructor(
                 reads = t.jumlah_reader,
                 writer = t.jurnalis,
                 category = t.kategori_berita,
-                publishTime = Date().time
+                publishTime = Date().time,
+                preview = htmlToText(t.artikel , 100)
         )
     }
 

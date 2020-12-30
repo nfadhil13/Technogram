@@ -11,6 +11,8 @@ import androidx.compose.runtime.onActive
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
@@ -61,7 +63,11 @@ fun Home(
                                 .height(16.dp),
                             text = "No More Item",
                             textAlign = TextAlign.Center,
-                            style = typography.h5
+                            style = typography.h5.merge(
+                                TextStyle(
+                                    fontWeight = FontWeight.Normal
+                                )
+                            )
                         )
                     }
                     is HomeViewType.LoadingItem -> {

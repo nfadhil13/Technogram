@@ -16,7 +16,8 @@ fun produceFakeNewsData(id : Int = 5) : News{
         likes = 75,
         reads = 100,
         writer = "Wahyunanda Kusuma Pertiwi",
-            category = "Software"
+            category = "Software",
+        preview = "dasdasdas"
     )
 }
 

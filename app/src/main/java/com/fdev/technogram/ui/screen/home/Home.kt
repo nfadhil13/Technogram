@@ -2,12 +2,16 @@ package com.fdev.technogram.ui.screen.home
 
 
 import android.view.View
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.lifecycle.ViewModel
@@ -33,30 +37,30 @@ fun Home(
    val viewModel : HomeViewModel = viewModel()
 
     LazyColumn(
-            modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(),
-            content = {
-                items(
-                        items = viewModel.homeViewTypes
-                ) { item ->
-                    when (item) {
-                        is HomeViewType.RecentNews -> {
-                            Spacer(modifier = Modifier.height(10.dp))
-                            RightImagePreviewNews(news = item.news)
-                        }
-                        is HomeViewType.TopOfHome -> {
-                            TopOfHome(onNewsClicked = onNewsClicked, popularNewsList = item.mostLikedNews, headerNews = item.headerNews)
-                        }
+        modifier = Modifier
+            .padding(10.dp)
+            .fillMaxHeight()
+            .fillMaxWidth(),
+        content = {
+            items(
+                items = viewModel.homeViewTypes
+            ) { item ->
+                when (item) {
+                    is HomeViewType.RecentNews -> {
+                        RecentNews(news = item.news)
+                    }
+                    is HomeViewType.TopOfHome -> {
+                        TopOfHome(
+                            onNewsClicked = onNewsClicked,
+                            popularNewsList = item.mostLikedNews,
+                            headerNews = item.headerNews
+                        )
                     }
                 }
-            })
+            }
+        })
 
 }
-
-
-
 
 
 //Views where we put Header News and static 6 popular news
@@ -91,6 +95,29 @@ fun TopOfHome(
 
             Spacer(modifier = Modifier.height(height = 12.dp))
         }
+        Spacer(modifier = Modifier.height(height = 12.dp))
+        Text(
+            modifier = Modifier.fillMaxWidth(),
+            text = "Recent News",
+            style = typography.h2,
+            textAlign = TextAlign.Center
+        )
+        Spacer(modifier =  Modifier.height(height = 2.dp).fillMaxWidth().background(Color.Gray))
+    }
+
+}
+
+@Composable
+fun RecentNews(
+    news : News,
+    modifier: Modifier = Modifier
+){
+    Surface(
+        modifier = modifier
+    ){
+        Spacer(modifier = Modifier.height(10.dp))
+        RightImagePreviewNews(news = news)
+        Spacer(modifier =  Modifier.height(height = 2.dp).fillMaxWidth().background(Color.Gray))
     }
 
 }

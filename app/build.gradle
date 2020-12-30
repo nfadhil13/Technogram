@@ -90,9 +90,9 @@ dependencies {
     //Coroutine
     implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:$coroutine_version"
 
-    //Landscapist
-    def landscapist_version = "1.1.2"
-    implementation "com.github.skydoves:landscapist-coil:$landscapist_version"
+    //accompanist
+    def accompanist_version = "0.4.1"
+    implementation "dev.chrisbanes.accompanist:accompanist-glide:$accompanist_version"
 
     //Retrofit
     def retrofit_version = "2.9.0"
@@ -107,4 +107,6 @@ dependencies {
     //Viewmodel ktx delegate
     def fragment_version = "1.2.5"
     implementation "androidx.fragment:fragment-ktx:$fragment_version"
+
+
 }

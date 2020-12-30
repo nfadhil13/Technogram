@@ -1,8 +1,7 @@
 package com.fdev.technogram.di
 
-import com.fdev.technogram.datasource.network.service.NewsApiService
-import com.fdev.technogram.repository.news.NewsRepository
-import com.fdev.technogram.repository.news.NewsRepositoryImpl
+import com.fdev.technogram.datasource.network.business.abstraction.NewsNetworkDataSource
+import com.fdev.technogram.datasource.network.business.implementation.NewsNetworkDataSourceImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,8 +11,11 @@ import dagger.hilt.android.components.ActivityComponent
 @InstallIn(ActivityComponent::class)
 abstract class ActivityBind {
 
+
+
     @Binds
-    abstract fun bindNewsRepository(newsRepositoryImpl: NewsRepositoryImpl) : NewsRepository
+    abstract fun bindNewsNetworkDataSource (newsNetworkDataSourceImpl: NewsNetworkDataSourceImpl) : NewsNetworkDataSource
+
 
 
 }

@@ -1,6 +1,6 @@
 package com.fdev.technogram.di
 
-import com.fdev.technogram.datasource.network.service.NewsApiService
+import com.fdev.technogram.datasource.network.framework.service.NewsApiService
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

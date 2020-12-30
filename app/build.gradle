@@ -103,4 +103,8 @@ dependencies {
     //Leak canary
     def leak_canary = "2.5"
     implementation "com.squareup.leakcanary:leakcanary-android:$leak_canary"
+
+    //Viewmodel ktx delegate
+    def fragment_version = "1.2.5"
+    implementation "androidx.fragment:fragment-ktx:$fragment_version"
 }

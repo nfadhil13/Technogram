@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.HeaderNews
 import com.fdev.technogram.ui.components.LeftImageNews
+import com.fdev.technogram.ui.components.RightImagePreviewNews
 import com.fdev.technogram.ui.typography
 import com.fdev.technogram.util.produceBunchFakeNews
 import com.fdev.technogram.util.produceFakeNewsData
@@ -25,12 +26,12 @@ import com.fdev.technogram.util.produceFakeNewsData
 
 @Composable
 fun Home(
-        onNewsClicked: () -> Unit
+        onNewsClicked: () -> Unit,
 ) {
-    val views = ArrayList<HomeViewType>()
 
 
-    views.add(HomeViewType.TopOfHome)
+   val viewModel : HomeViewModel = viewModel()
+
     LazyColumn(
             modifier = Modifier
                     .padding(10.dp)
@@ -38,14 +39,15 @@ fun Home(
                     .fillMaxWidth(),
             content = {
                 items(
-                        items = views
+                        items = viewModel.homeViewTypes
                 ) { item ->
                     when (item) {
                         is HomeViewType.RecentNews -> {
-                            LeftImageNews(news = item.news)
+                            Spacer(modifier = Modifier.height(10.dp))
+                            RightImagePreviewNews(news = item.news)
                         }
                         is HomeViewType.TopOfHome -> {
-                            TopOfHome(onNewsClicked = onNewsClicked, popularNewsList = produceBunchFakeNews(6), headerNews = produceFakeNewsData())
+                            TopOfHome(onNewsClicked = onNewsClicked, popularNewsList = item.mostLikedNews, headerNews = item.headerNews)
                         }
                     }
                 }

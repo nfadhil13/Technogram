@@ -1,4 +1,4 @@
-package com.fdev.technogram.datasource.network.model
+package com.fdev.technogram.datasource.network.framework.model
 
 import com.google.gson.annotations.SerializedName
 

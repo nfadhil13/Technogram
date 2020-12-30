@@ -1,18 +1,10 @@
-//package com.fdev.technogram.repository
-//
-//data class DataState<T>(
-//        val message : String,
-//        val data : T? = null ,
-//        val event : Event
-//){
-//    companion object {
-//        fun <T> onError(
-//            message: String
-//        ) : DataState<T>{
-//            return DataState<T>(
-//                    message =  message,
-//                    event = Event.ERROR
-//            )
-//        }
-//    }
-//}
+package com.fdev.technogram.repository
+
+sealed class DataState<Data>{
+
+    data class OnSuccess<Data>(val data : Data , val message : String) : DataState<Data>()
+
+    data class OnFailure<Data>(val message : String) : DataState<Data>()
+
+
+}

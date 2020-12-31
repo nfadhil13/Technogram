@@ -25,7 +25,7 @@ import com.fdev.technogram.util.DateUtil
 @Composable
 fun NewsDetail(news: News, modifier: Modifier = Modifier) {
     ScrollableColumn(
-        modifier = modifier.fillMaxWidth().fillMaxHeight()
+        modifier = modifier.fillMaxWidth()
     ) {
         if (news.headerImg != "") {
             NetworkImage(
@@ -109,9 +109,11 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier) {
         ArticleWebView(
             htmlString = news.article,
             modifier = Modifier
-                .fillMaxHeight()
+                .fillMaxWidth()
                 .padding(horizontal = 6.dp)
+                .background(Color.Red)
         )
+        Spacer(modifier = Modifier.height(15.dp).fillMaxWidth().background(Color.Red))
     }
 
 }

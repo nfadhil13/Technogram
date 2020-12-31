@@ -111,10 +111,13 @@ fun TopOfHome(
         Spacer(modifier = Modifier.height(height = 12.dp))
         for (news in popularNewsList) {
             LeftImageNews(
-                    news = news,
-                    modifier = Modifier
-                            .fillMaxWidth()
-                            .heightIn(min = 96.dp, max = 128.dp)
+                news = news,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .heightIn(min = 96.dp, max = 128.dp)
+                    .clickable(onClick = {
+                        onNewsClicked(news)
+                    })
             )
 
             Spacer(modifier = Modifier.height(height = 12.dp))

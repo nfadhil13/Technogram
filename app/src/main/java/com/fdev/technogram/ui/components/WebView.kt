@@ -20,7 +20,7 @@ fun ArticleWebView(
         WebView(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
-                    ViewGroup.LayoutParams.MATCH_PARENT
+                    ViewGroup.LayoutParams.WRAP_CONTENT
             )
             settings.javaScriptEnabled = true
             webViewClient = object : WebViewClient() {

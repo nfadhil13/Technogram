@@ -1,4 +1,4 @@
-package com.fdev.technogram.ui.screen.home
+package com.fdev.technogram.ui.screen.main.home
 
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -12,7 +12,6 @@ import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class HomeViewModel @ViewModelInject constructor(
     private val newsInteractors: NewsInteractors

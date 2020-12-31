@@ -1,7 +1,6 @@
-package com.fdev.technogram.ui.screen.home
+package com.fdev.technogram.ui.screen.main.home
 
 import com.fdev.technogram.model.News
-import com.fdev.technogram.repository.news.FethMostLikedNews
 
 //Define all posible type in lazycolumn
 sealed class HomeViewType{

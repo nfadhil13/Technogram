@@ -1,4 +1,4 @@
-package com.fdev.technogram.ui.screen.home
+package com.fdev.technogram.ui.screen.main.home
 
 
 import androidx.compose.foundation.background
@@ -26,7 +26,7 @@ import com.fdev.technogram.ui.typography
 
 @Composable
 fun Home(
-        onNewsClicked: () -> Unit,
+        onNewsClicked: (newsId : Int) -> Unit,
 ) {
 
 
@@ -88,7 +88,7 @@ fun Home(
 //Views where we put Header News and static 6 popular news
 @Composable
 fun TopOfHome(
-        onNewsClicked: () -> Unit,
+        onNewsClicked: (newsId : Int) -> Unit,
         popularNewsList : List<News> ,
         headerNews : News
 ) {
@@ -104,7 +104,9 @@ fun TopOfHome(
                 modifier = Modifier
                         .fillMaxWidth()
                         .height(300.dp)
-                        .clickable(onClick = onNewsClicked)
+                        .clickable(onClick = ({
+                            onNewsClicked(headerNews.id)
+                        }))
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         for (news in popularNewsList) {
@@ -132,13 +134,14 @@ fun TopOfHome(
 @Composable
 fun RecentNews(
     news : News,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onNewsClicked: (newsId: Int) -> Unit
 ){
     Column(
         modifier = modifier
     ){
         Spacer(modifier = Modifier.height(10.dp))
-        RightImagePreviewNews(news = news)
+        RightImagePreviewNews(news = news, modifier = Modifier.clickable(onClick = { onNewsClicked(news.id)}))
         Spacer(modifier =  Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
     }
 

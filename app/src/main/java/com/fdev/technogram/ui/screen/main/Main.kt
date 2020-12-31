@@ -24,40 +24,40 @@ fun TechnogramMain(
         topBar = {
             TechnogramTopAppBar()
         },
-        bodyContent = {
-            Home(
-                onNewsClicked = {}
-            )
-        },
 //        bodyContent = {
-//            NavHost(
-//                navController = navController,
-//                startDestination = MainScreen.HomeScreen.route,
-//                builder = {
-//
-//                    //Home
-//                    composable(
-//                        route = MainScreen.HomeScreen.route
-//                    ) {
-//                        Home(onNewsClicked = { news ->
-//                            mainViewModel.currentNews = news
-//                            navController.navigate("${MainScreen.NewsDetailScreen.route}/${news.id}")
-//                        })
-//                    }
-//                    //News Detail
-//                    composable(
-//                        route = MainScreen.NewsDetailScreen.route,
-//                        arguments = listOf(
-//                            navArgument(name = MainScreen.NewsDetailScreen.argument0) {
-//                                type = NavType.IntType
-//                            }
-//                        )
-//                    ) {
-//
-//                        NewsDetail(news = mainViewModel.currentNews)
-//                    }
-//                })
+//            Home(
+//                onNewsClicked = {}
+//            )
 //        },
+        bodyContent = {
+            NavHost(
+                navController = navController,
+                startDestination = MainScreen.HomeScreen.route,
+                builder = {
+
+                    //Home
+                    composable(
+                        route = MainScreen.HomeScreen.route
+                    ) {
+                        Home(onNewsClicked = { news ->
+                            mainViewModel.currentNews = news
+                            navController.navigate("${MainScreen.NewsDetailScreen.route}/${news.id}")
+                        })
+                    }
+                    //News Detail
+                    composable(
+                        route = MainScreen.NewsDetailScreen.route,
+                        arguments = listOf(
+                            navArgument(name = MainScreen.NewsDetailScreen.argument0) {
+                                type = NavType.IntType
+                            }
+                        )
+                    ) {
+
+                        NewsDetail(news = mainViewModel.currentNews)
+                    }
+                })
+        },
         drawerContent = {
             Text("This is drawer")
         },

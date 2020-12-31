@@ -118,4 +118,9 @@ dependencies {
     implementation "org.jsoup:jsoup:$jsoup_version"
 
 
+    //Compose Router
+    def compose_router = "0.23.0"
+    implementation "com.github.zsoltk:compose-router:$compose_router"
+
+
 }

@@ -26,7 +26,7 @@ import com.fdev.technogram.ui.typography
 
 @Composable
 fun Home(
-        onNewsClicked: (newsId : Int) -> Unit,
+        onNewsClicked: (news : News) -> Unit,
 ) {
 
 
@@ -48,7 +48,7 @@ fun Home(
                 }
                 when (item) {
                     is HomeViewType.RecentNews -> {
-                        RecentNews(news = item.news)
+                        RecentNews(news = item.news , onNewsClicked = onNewsClicked)
                     }
                     is HomeViewType.TopOfHome -> {
                         TopOfHome(
@@ -88,7 +88,7 @@ fun Home(
 //Views where we put Header News and static 6 popular news
 @Composable
 fun TopOfHome(
-        onNewsClicked: (newsId : Int) -> Unit,
+        onNewsClicked: (news : News) -> Unit,
         popularNewsList : List<News> ,
         headerNews : News
 ) {
@@ -105,7 +105,7 @@ fun TopOfHome(
                         .fillMaxWidth()
                         .height(300.dp)
                         .clickable(onClick = ({
-                            onNewsClicked(headerNews.id)
+                            onNewsClicked(headerNews)
                         }))
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
@@ -135,13 +135,13 @@ fun TopOfHome(
 fun RecentNews(
     news : News,
     modifier: Modifier = Modifier,
-    onNewsClicked: (newsId: Int) -> Unit
+    onNewsClicked: (news: News) -> Unit
 ){
     Column(
         modifier = modifier
     ){
         Spacer(modifier = Modifier.height(10.dp))
-        RightImagePreviewNews(news = news, modifier = Modifier.clickable(onClick = { onNewsClicked(news.id)}))
+        RightImagePreviewNews(news = news, modifier = Modifier.clickable(onClick = { onNewsClicked(news)}))
         Spacer(modifier =  Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
     }
 

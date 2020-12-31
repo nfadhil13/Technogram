@@ -18,8 +18,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.typography
-import com.fdev.technogram.util.getFullDateFromLong
-import com.fdev.technogram.util.getMonthAndDate
+import com.fdev.technogram.util.DateUtil
 
 
 @Composable
@@ -52,7 +51,7 @@ fun HeaderNews(news: News, modifier: Modifier = Modifier) {
                 style = typography.h6,
             )
             Text(
-                text = getFullDateFromLong(news.publishTime),
+                text = DateUtil.getFullDateFromLong(news.publishTime),
                 style = typography.h6,
                 textAlign = TextAlign.End,
                 modifier = Modifier
@@ -176,7 +175,7 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                         .fillMaxHeight()
                 )
                 Text(
-                    text = getMonthAndDate(news.publishTime),
+                    text = DateUtil.getMonthAndDate(news.publishTime),
                     modifier = Modifier.weight(1f),
                     textAlign = TextAlign.End,
                     style = typography.h6

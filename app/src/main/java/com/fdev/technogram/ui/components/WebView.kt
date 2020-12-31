@@ -5,14 +5,18 @@ import android.view.ViewGroup
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun ArticleWebView(
-        htmlString: String
+        htmlString: String,
+        modifier : Modifier = Modifier
 ) {
-    AndroidView(viewBlock = { context ->
+    AndroidView(
+        modifier = modifier
+        ,viewBlock = { context ->
         WebView(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,

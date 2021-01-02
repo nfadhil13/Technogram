@@ -25,40 +25,42 @@ import com.fdev.technogram.util.DateUtil
 @Composable
 fun HeaderNews(news: News, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier.background(Color.Red)
+            modifier = modifier
     ) {
         NetworkImage(
-            imageUrl = news.headerImg,
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(7f)
-                .clip(RoundedCornerShape(5.dp))
+                imageUrl = news.headerImg,
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                        .clip(RoundedCornerShape(5.dp))
         )
         Spacer(modifier = Modifier.height(10.dp))
         Text(
 
-            text = news.title,
-            overflow = TextOverflow.Ellipsis,
-            modifier = Modifier
-                .weight(3f , fill = false),
-            style = typography.h4
+                text = news.title,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 2,
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight(),
+                style = typography.h4
         )
         Spacer(modifier = Modifier.height(10.dp))
         Row(
-            modifier = Modifier
-                .weight(1f, fill = false)
-                .fillMaxWidth()
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .wrapContentHeight()
         ) {
             Text(
-                text = "by ${news.writer}",
-                style = typography.h6,
+                    text = "by ${news.writer}",
+                    style = typography.h6,
             )
             Text(
-                text = DateUtil.getFullDateFromLong(news.publishTime),
-                style = typography.h6,
-                textAlign = TextAlign.End,
-                modifier = Modifier
-                    .fillMaxWidth()
+                    text = DateUtil.getFullDateFromLong(news.publishTime),
+                    style = typography.h6,
+                    textAlign = TextAlign.End,
+                    modifier = Modifier
+                            .fillMaxWidth()
             )
         }
     }
@@ -66,8 +68,7 @@ fun HeaderNews(news: News, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun HeaderNewsSkeleton( modifier: Modifier = Modifier , skeletonColor : Color = Color.Gray.copy(alpha = 0.6f)) {
-
+fun HeaderNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = Color.Gray.copy(alpha = 0.6f)) {
 
 
     val basicModifier = Modifier.background(skeletonColor)
@@ -90,7 +91,7 @@ fun HeaderNewsSkeleton( modifier: Modifier = Modifier , skeletonColor : Color = 
         Spacer(modifier = Modifier.height(5.dp))
         Box(
                 modifier = basicModifier
-                        .weight(0.75f )
+                        .weight(0.75f)
                         .fillMaxWidth(0.6f)
         )
         Spacer(modifier = Modifier.height(10.dp))
@@ -100,11 +101,11 @@ fun HeaderNewsSkeleton( modifier: Modifier = Modifier , skeletonColor : Color = 
                         .fillMaxWidth()
         ) {
             Box(
-                    modifier  = basicModifier.weight(0.75f).fillMaxHeight()
+                    modifier = basicModifier.weight(0.75f).fillMaxHeight()
             )
             Spacer(modifier = Modifier.weight(0.75f))
             Box(
-                    modifier  = basicModifier.weight(0.5f).fillMaxHeight()
+                    modifier = basicModifier.weight(0.5f).fillMaxHeight()
             )
         }
     }
@@ -114,36 +115,36 @@ fun HeaderNewsSkeleton( modifier: Modifier = Modifier , skeletonColor : Color = 
 fun LeftImageNews(news: News, modifier: Modifier = Modifier) {
 
     Row(
-        modifier = modifier
+            modifier = modifier
     ) {
         Card(
-            modifier = Modifier
-                .weight(1f)
-                .align(Alignment.CenterVertically)
-                .aspectRatio(1f)
+                modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically)
+                        .aspectRatio(1f)
 
         ) {
             NetworkImage(
-                imageUrl = news.headerImg
+                    imageUrl = news.headerImg
             )
         }
         Spacer(modifier = Modifier.width(12.dp))
         Column(
-            modifier = Modifier
-                .align(Alignment.CenterVertically)
-                .weight(3f)
+                modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .weight(3f)
         ) {
             Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = news.title,
-                overflow = TextOverflow.Ellipsis,
-                style = typography.h5.merge(TextStyle(fontWeight = FontWeight.W600))
+                    modifier = Modifier.fillMaxWidth(),
+                    text = news.title,
+                    overflow = TextOverflow.Ellipsis,
+                    style = typography.h5.merge(TextStyle(fontWeight = FontWeight.W600))
             )
             Spacer(modifier = Modifier.height(5.dp))
             Text(
-                modifier = Modifier.fillMaxWidth(),
-                text = "by ${news.writer}",
-                style = typography.h6,
+                    modifier = Modifier.fillMaxWidth(),
+                    text = "by ${news.writer}",
+                    style = typography.h6,
             )
         }
 
@@ -153,7 +154,7 @@ fun LeftImageNews(news: News, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun LeftImageNewsSkeleton(modifier: Modifier = Modifier , skeletonColor : Color = Color.Gray.copy(alpha = 0.6f)){
+fun LeftImageNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = Color.Gray.copy(alpha = 0.6f)) {
     Row(
             modifier = modifier
     ) {
@@ -166,7 +167,7 @@ fun LeftImageNewsSkeleton(modifier: Modifier = Modifier , skeletonColor : Color 
                         .weight(1f)
                         .align(Alignment.CenterVertically)
                         .aspectRatio(1f),
-                backgroundColor =skeletonColor
+                backgroundColor = skeletonColor
 
         ) {
         }
@@ -191,80 +192,80 @@ fun LeftImageNewsSkeleton(modifier: Modifier = Modifier , skeletonColor : Color 
 @Composable
 fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
     Row(
-        modifier = modifier.fillMaxWidth().height(180.dp).padding(10.dp)
+            modifier = modifier.fillMaxWidth().height(180.dp).padding(10.dp)
     ) {
         Column(
-            modifier = Modifier.weight(3f)
-                .fillMaxHeight()
+                modifier = Modifier.weight(3f)
+                        .fillMaxHeight()
         ) {
             Text(
-                text = news.title,
-                style = typography.h4.merge(TextStyle(fontSize = 16.sp)),
-                overflow = TextOverflow.Clip,
-                maxLines = 3,
-                modifier = Modifier.weight(1.5f).fillMaxWidth()
+                    text = news.title,
+                    style = typography.h4.merge(TextStyle(fontSize = 16.sp)),
+                    overflow = TextOverflow.Clip,
+                    maxLines = 3,
+                    modifier = Modifier.weight(1.5f).fillMaxWidth()
             )
             Row(
-                modifier = Modifier.weight(1.5f).fillMaxWidth()
+                    modifier = Modifier.weight(1.5f).fillMaxWidth()
             ) {
                 Text(
-                    text = news.preview,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
+                        text = news.preview,
+                        maxLines = 2,
+                        overflow = TextOverflow.Ellipsis,
 
-                    style = typography.h5.merge(TextStyle(color = Color.Gray)),
-                    modifier = Modifier.weight(1.5f).fillMaxWidth()
-                        .align(Alignment.CenterVertically)
+                        style = typography.h5.merge(TextStyle(color = Color.Gray)),
+                        modifier = Modifier.weight(1.5f).fillMaxWidth()
+                                .align(Alignment.CenterVertically)
                 )
             }
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f)
             ) {
                 Text(
-                    text = "by ${news.writer}",
-                    modifier = Modifier.weight(1f),
-                    style = typography.h6
+                        text = "by ${news.writer}",
+                        modifier = Modifier.weight(1f),
+                        style = typography.h6
 
                 )
                 Text(
-                    text = "| ${news.category}",
-                    modifier = Modifier.weight(1f),
-                    style = typography.h6.merge(TextStyle(color = Color.Red))
+                        text = "| ${news.category}",
+                        modifier = Modifier.weight(1f),
+                        style = typography.h6.merge(TextStyle(color = Color.Red))
                 )
             }
         }
         Spacer(modifier = Modifier.width(10.dp))
         Column(
-            modifier = Modifier.weight(1.25f)
-                .fillMaxHeight()
-                .align(Alignment.CenterVertically)
+                modifier = Modifier.weight(1.25f)
+                        .fillMaxHeight()
+                        .align(Alignment.CenterVertically)
         ) {
             NetworkImage(
-                imageUrl = news.headerImg,
-                modifier = Modifier
-                    .weight(3f)
-                    .align(Alignment.CenterHorizontally)
-                    .aspectRatio(1f)
+                    imageUrl = news.headerImg,
+                    modifier = Modifier
+                            .weight(3f)
+                            .align(Alignment.CenterHorizontally)
+                            .aspectRatio(1f)
             )
             Row(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
+                    modifier = Modifier
+                            .weight(1f)
+                            .fillMaxWidth()
             ) {
                 Text(
-                    text = "❤ ${news.likes}",
-                    textAlign = TextAlign.Start,
-                    style = typography.h6.merge(TextStyle(color = Color.Red)),
-                    modifier = Modifier.weight(1f)
-                        .fillMaxHeight()
+                        text = "❤ ${news.likes}",
+                        textAlign = TextAlign.Start,
+                        style = typography.h6.merge(TextStyle(color = Color.Red)),
+                        modifier = Modifier.weight(1f)
+                                .fillMaxHeight()
                 )
                 Text(
-                    text = DateUtil.getMonthAndDate(news.publishTime),
-                    modifier = Modifier.weight(1f),
-                    textAlign = TextAlign.End,
-                    style = typography.h6
+                        text = DateUtil.getMonthAndDate(news.publishTime),
+                        modifier = Modifier.weight(1f),
+                        textAlign = TextAlign.End,
+                        style = typography.h6
                 )
             }
         }

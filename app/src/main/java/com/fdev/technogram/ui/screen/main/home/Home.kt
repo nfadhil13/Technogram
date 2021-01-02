@@ -31,6 +31,8 @@ fun Home(
 
    val viewModel : HomeViewModel = viewModel()
 
+
+
     LazyColumn(
             modifier = Modifier
                     .padding(10.dp)
@@ -107,7 +109,7 @@ fun TopOfHome(
                 news = headerNews,
                 modifier = Modifier
                         .fillMaxWidth()
-                        .preferredHeight(300.dp)
+                        .heightIn(min = 200.dp , max = 300.dp)
                         .clickable(onClick = ({
                             onNewsClicked(headerNews)
                         }))

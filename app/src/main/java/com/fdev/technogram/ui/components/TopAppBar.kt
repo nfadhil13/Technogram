@@ -2,6 +2,7 @@ package com.fdev.technogram.ui.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
 import androidx.compose.material.Surface
@@ -18,7 +19,9 @@ import com.fdev.technogram.R
 
 
 @Composable
-fun TechnogramTopAppBar() {
+fun TechnogramTopAppBar(
+        onBurgerClicked : (() -> Unit)
+) {
     TopAppBar(
             backgroundColor = Color.White,
             elevation = 5.dp
@@ -38,6 +41,7 @@ fun TechnogramTopAppBar() {
                                     .width(22.dp)
                                     .align(Alignment.CenterStart)
                                     .fillMaxHeight(0.3f)
+                                    .clickable(onClick = onBurgerClicked)
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))

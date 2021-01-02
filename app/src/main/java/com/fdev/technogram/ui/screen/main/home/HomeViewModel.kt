@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 class HomeViewModel @ViewModelInject constructor(
-    private val newsInteractors: NewsInteractors
+        private val newsInteractors: NewsInteractors
 ) : ViewModel() {
 
     var homeViewTypes: List<HomeViewType> by mutableStateOf(listOf())
@@ -28,35 +28,33 @@ class HomeViewModel @ViewModelInject constructor(
     private var isFetching = false
 
     init {
-        addHomeViewType(0 , HomeViewType.Skeleton)
-        viewModelScope.launch(IO) {
-            delay(5000)
-            fetchMostLikedNews()
-            fetchCurrentNews()
-        }
+        addHomeViewType(0, HomeViewType.Skeleton)
+        fetchMostLikedNews()
+        fetchCurrentNews()
+
 
     }
 
     private fun fetchMostLikedNews() {
         viewModelScope.launch(Main) {
             newsInteractors.fetchMostLikedNews.fetch(perpage = 6, dispatcher = IO)
-                .collect { result ->
-                    when (result) {
-                        is DataState.OnSuccess -> {
-                            deleteHomeViewType(0)
-                            addHomeViewType(
-                                0, HomeViewType.TopOfHome(
-                                    headerNews = result.data[0],
-                                    mostLikedNews = result.data
+                    .collect { result ->
+                        when (result) {
+                            is DataState.OnSuccess -> {
+                                deleteHomeViewType(0)
+                                addHomeViewType(
+                                        0, HomeViewType.TopOfHome(
+                                        headerNews = result.data[0],
+                                        mostLikedNews = result.data
                                 )
-                            )
-                        }
+                                )
+                            }
 
-                        is DataState.OnFailure -> {
-                            handleError(result.message)
+                            is DataState.OnFailure -> {
+                                handleError(result.message)
+                            }
                         }
                     }
-                }
         }
     }
 
@@ -64,31 +62,31 @@ class HomeViewModel @ViewModelInject constructor(
     private fun fetchCurrentNews(page: Int = currentPage) {
         viewModelScope.launch(Main) {
             isFetching = true
-            if(page != 1) toogleLoading()
+            if (page != 1) toogleLoading()
             newsInteractors.fetchRecentNews.fetch(perpage = 10, dispatcher = IO, page = page)
-                .collect { result ->
-                    if(page != 1) toogleLoading()
-                    when (result) {
-                        is DataState.OnSuccess -> {
-                            if (result.data.isEmpty()) {
-                                currentPage = -1
-                                addHomeViewType(homeViewType = HomeViewType.NoMoreItem)
-                            } else {
-                                addHomeViewTypes(
-                                    homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
-                                )
-                                currentPage++
+                    .collect { result ->
+                        if (page != 1) toogleLoading()
+                        when (result) {
+                            is DataState.OnSuccess -> {
+                                if (result.data.isEmpty()) {
+                                    currentPage = -1
+                                    addHomeViewType(homeViewType = HomeViewType.NoMoreItem)
+                                } else {
+                                    addHomeViewTypes(
+                                            homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
+                                    )
+                                    currentPage++
+                                }
+
+
                             }
 
-
+                            is DataState.OnFailure -> {
+                                handleError(result.message)
+                            }
                         }
-
-                        is DataState.OnFailure -> {
-                            handleError(result.message)
-                        }
+                        isFetching = false
                     }
-                    isFetching = false
-                }
         }
     }
 
@@ -97,8 +95,8 @@ class HomeViewModel @ViewModelInject constructor(
             deleteHomeViewType(loading)
         } else {
             addHomeViewType(
-                index = homeViewTypes.size,
-                homeViewType = loading
+                    index = homeViewTypes.size,
+                    homeViewType = loading
             )
         }
     }
@@ -154,7 +152,7 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     fun shouldFetchMore(index: Int): Boolean =
-        (!isFetching && index > 0 && index == homeViewTypes.size - 1 && currentPage != -1)
+            (!isFetching && index > 0 && index == homeViewTypes.size - 1 && currentPage != -1)
 
 
 }

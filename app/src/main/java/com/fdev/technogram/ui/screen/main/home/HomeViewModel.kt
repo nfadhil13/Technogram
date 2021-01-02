@@ -3,6 +3,7 @@ package com.fdev.technogram.ui.screen.main.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -10,6 +11,7 @@ import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -26,8 +28,13 @@ class HomeViewModel @ViewModelInject constructor(
     private var isFetching = false
 
     init {
-        fetchMostLikedNews()
-        fetchCurrentNews()
+        addHomeViewType(0 , HomeViewType.Skeleton)
+        viewModelScope.launch(IO) {
+            delay(5000)
+            fetchMostLikedNews()
+            fetchCurrentNews()
+        }
+
     }
 
     private fun fetchMostLikedNews() {
@@ -36,6 +43,7 @@ class HomeViewModel @ViewModelInject constructor(
                 .collect { result ->
                     when (result) {
                         is DataState.OnSuccess -> {
+                            deleteHomeViewType(0)
                             addHomeViewType(
                                 0, HomeViewType.TopOfHome(
                                     headerNews = result.data[0],
@@ -56,10 +64,10 @@ class HomeViewModel @ViewModelInject constructor(
     private fun fetchCurrentNews(page: Int = currentPage) {
         viewModelScope.launch(Main) {
             isFetching = true
-            toogleLoading()
+            if(page != 1) toogleLoading()
             newsInteractors.fetchRecentNews.fetch(perpage = 10, dispatcher = IO, page = page)
                 .collect { result ->
-                    toogleLoading()
+                    if(page != 1) toogleLoading()
                     when (result) {
                         is DataState.OnSuccess -> {
                             if (result.data.isEmpty()) {
@@ -101,6 +109,13 @@ class HomeViewModel @ViewModelInject constructor(
             it.remove(homeViewType)
         }
     }
+
+    private fun deleteHomeViewType(index: Int) {
+        homeViewTypes = homeViewTypes.toMutableList().also {
+            it.removeAt(index)
+        }
+    }
+
 
     private fun addHomeViewType(index: Int = -1, homeViewType: HomeViewType) {
         homeViewTypes = homeViewTypes.toMutableList().also {

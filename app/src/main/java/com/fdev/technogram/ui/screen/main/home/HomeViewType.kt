@@ -10,6 +10,8 @@ sealed class HomeViewType{
 
     data class TopOfHome(val headerNews: News , val mostLikedNews : List<News>) : HomeViewType()
 
+    object Skeleton : HomeViewType()
+
     object NoMoreItem : HomeViewType()
 
     object LoadingItem : HomeViewType()

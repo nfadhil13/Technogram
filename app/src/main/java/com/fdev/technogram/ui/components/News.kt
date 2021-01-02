@@ -1,6 +1,7 @@
 package com.fdev.technogram.ui.components
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
@@ -24,7 +25,7 @@ import com.fdev.technogram.util.DateUtil
 @Composable
 fun HeaderNews(news: News, modifier: Modifier = Modifier) {
     Column(
-        modifier = modifier
+        modifier = modifier.background(Color.Red)
     ) {
         NetworkImage(
             imageUrl = news.headerImg,
@@ -33,17 +34,19 @@ fun HeaderNews(news: News, modifier: Modifier = Modifier) {
                 .weight(7f)
                 .clip(RoundedCornerShape(5.dp))
         )
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
 
             text = news.title,
             overflow = TextOverflow.Ellipsis,
             modifier = Modifier
-                .weight(3f),
+                .weight(3f , fill = false),
             style = typography.h4
         )
+        Spacer(modifier = Modifier.height(10.dp))
         Row(
             modifier = Modifier
-                .weight(1f)
+                .weight(1f, fill = false)
                 .fillMaxWidth()
         ) {
             Text(
@@ -56,6 +59,52 @@ fun HeaderNews(news: News, modifier: Modifier = Modifier) {
                 textAlign = TextAlign.End,
                 modifier = Modifier
                     .fillMaxWidth()
+            )
+        }
+    }
+}
+
+
+@Composable
+fun HeaderNewsSkeleton( modifier: Modifier = Modifier , skeletonColor : Color = Color.Gray.copy(alpha = 0.6f)) {
+
+
+
+    val basicModifier = Modifier.background(skeletonColor)
+
+    Column(
+            modifier = modifier
+    ) {
+        Box(
+                modifier = basicModifier
+                        .fillMaxWidth()
+                        .weight(7f)
+                        .clip(RoundedCornerShape(5.dp))
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Box(
+                modifier = basicModifier
+                        .weight(0.75f)
+                        .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(5.dp))
+        Box(
+                modifier = basicModifier
+                        .weight(0.75f )
+                        .fillMaxWidth(0.6f)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Row(
+                modifier = Modifier
+                        .weight(0.25f)
+                        .fillMaxWidth()
+        ) {
+            Box(
+                    modifier  = basicModifier.weight(0.75f).fillMaxHeight()
+            )
+            Spacer(modifier = Modifier.weight(0.75f))
+            Box(
+                    modifier  = basicModifier.weight(0.5f).fillMaxHeight()
             )
         }
     }
@@ -100,6 +149,43 @@ fun LeftImageNews(news: News, modifier: Modifier = Modifier) {
 
     }
 
+}
+
+
+@Composable
+fun LeftImageNewsSkeleton(modifier: Modifier = Modifier , skeletonColor : Color = Color.Gray.copy(alpha = 0.6f)){
+    Row(
+            modifier = modifier
+    ) {
+
+
+        val basicModifier = Modifier.background(color = skeletonColor).clip(RoundedCornerShape(5.dp))
+
+        Card(
+                modifier = Modifier
+                        .weight(1f)
+                        .align(Alignment.CenterVertically)
+                        .aspectRatio(1f),
+                backgroundColor =skeletonColor
+
+        ) {
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        Column(
+                modifier = Modifier
+                        .align(Alignment.CenterVertically)
+                        .weight(3f)
+        ) {
+            Spacer(
+                    modifier = basicModifier.fillMaxWidth().fillMaxHeight(0.4f),
+            )
+            Spacer(modifier = Modifier.height(5.dp))
+            Spacer(
+                    modifier = basicModifier.fillMaxWidth(0.6f).fillMaxHeight(0.2f),
+            )
+        }
+
+    }
 }
 
 @Composable

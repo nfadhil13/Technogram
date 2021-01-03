@@ -41,14 +41,16 @@ fun Home(
 
     CoroutineScope(Main).launch{
         scrollState.snapToItemIndex(
-                index = viewModel.scrollState,
-                scrollOffset = viewModel.scrollOffset
+                index = viewModel.scrollState.index,
+                scrollOffset = viewModel.scrollState.offset
         )
     }
 
     onDispose(callback = {
-        viewModel.scrollState = scrollState.firstVisibleItemIndex
-        viewModel.scrollOffset = scrollState.firstVisibleItemScrollOffset
+        viewModel.onScrollStateChange(
+                scrollState =  scrollState.firstVisibleItemIndex,
+                scrollOffset = scrollState.firstVisibleItemScrollOffset
+        )
     })
     
     LazyColumn(

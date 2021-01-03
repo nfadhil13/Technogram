@@ -10,15 +10,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
+import com.fdev.technogram.util.LazyListState
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-const val HOME_SCROLL_STATE = "com.fdev.technogram.homescrollstate"
-
-const val HOME_SCROLL_OFFSET = "com.fdev.technogram.homeoffsetstate"
+const val HOME_SCROLL_STATE = "com.fdev.technogram.homescrollindex"
 
 const val HOME_LAST_PAGE = "com.fdev.technogram.homelastpage"
 
@@ -40,38 +39,34 @@ class HomeViewModel @ViewModelInject constructor(
 
     private var isFetching = false
 
+    var scrollState : LazyListState by mutableStateOf(LazyListState(0 , 0))
 
-
-
-
-    var scrollState = 0
-        set(value){
-            field = value
-            savedStateHandle.set(HOME_SCROLL_STATE, value)
-        }
-
-    var scrollOffset = 0
-        set(value){
-            field = value
-            savedStateHandle.set(HOME_SCROLL_OFFSET , value)
-        }
 
     init {
-        addHomeViewType(0, HomeViewType.Skeleton)
-        fetchMostLikedNews()
-        val lastPage = savedStateHandle.get<Int>(HOME_LAST_PAGE)
-        if(lastPage == null){
-            fetchCurrentNews()
-        }else{
-            fetchCurrentNews(page = 1 , perpage = lastPage * DEFAULT_PERPAGE)
-            currentPage = lastPage
+        viewModelScope.launch(Main) {
+            addHomeViewType(0, HomeViewType.Skeleton)
+            fetchMostLikedNews()
+            val lastPage = savedStateHandle.get<Int>(HOME_LAST_PAGE)
+            if(lastPage == null){
+                fetchCurrentNews()
+            }else{
+                fetchCurrentNews(page = 1 , perpage = lastPage * DEFAULT_PERPAGE)
+                restoreScrollPostion()
+                currentPage = lastPage
+            }
         }
 
 
     }
 
-    private fun fetchMostLikedNews() {
-        viewModelScope.launch(Main) {
+    private fun restoreScrollPostion() {
+        savedStateHandle.get<LazyListState>(HOME_SCROLL_STATE)?.let { savedScrollState ->
+            scrollState = savedScrollState
+        }
+
+    }
+
+    private suspend fun fetchMostLikedNews() {
             newsInteractors.fetchMostLikedNews.fetch(perpage = 6, dispatcher = IO)
                     .collect { result ->
                         when (result) {
@@ -90,13 +85,11 @@ class HomeViewModel @ViewModelInject constructor(
                             }
                         }
                     }
-        }
     }
 
 
 
-    private fun fetchCurrentNews(page: Int = currentPage , perpage : Int = DEFAULT_PERPAGE) {
-        viewModelScope.launch(Main) {
+    private suspend fun fetchCurrentNews(page: Int = currentPage , perpage : Int = DEFAULT_PERPAGE) {
             isFetching = true
             if (page != 1) toogleLoading()
             newsInteractors.fetchRecentNews.fetch(perpage = perpage, dispatcher = IO, page = page)
@@ -112,7 +105,7 @@ class HomeViewModel @ViewModelInject constructor(
                                             homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
                                     )
                                     currentPage++
-                                    savedStateHandle.set(HOME_LAST_PAGE , currentPage)
+                                    savedStateHandle.set(HOME_LAST_PAGE, currentPage)
                                 }
                             }
 
@@ -122,7 +115,6 @@ class HomeViewModel @ViewModelInject constructor(
                         }
                         isFetching = false
                     }
-        }
     }
 
     private fun toogleLoading() {
@@ -177,10 +169,16 @@ class HomeViewModel @ViewModelInject constructor(
     fun fetchCurrentNewsNextPage() {
         println("Fetchin for page : $currentPage")
         if (currentPage != -1 && !isFetching) {
-            fetchCurrentNews(currentPage)
+            viewModelScope.launch {
+                fetchCurrentNews(currentPage)
+            }
         }
     }
 
+
+    fun onScrollStateChange(scrollState : Int = 0 , scrollOffset : Int = 0){
+        savedStateHandle.set(HOME_SCROLL_STATE , LazyListState(scrollState , scrollOffset))
+    }
 
     private fun handleError(message: String) {
         println(message)

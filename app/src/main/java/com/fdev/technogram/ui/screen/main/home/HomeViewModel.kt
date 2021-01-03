@@ -48,14 +48,10 @@ class HomeViewModel @ViewModelInject constructor(
         addHomeViewType(index = 0 , HomeViewType.Skeleton)
         viewModelScope.launch(Main){
             async{
-                println("ini 1")
                 fetchMostLikedNews()
-                println("ini 1 akhir")
             }
             async {
-                println("ini 2")
                 fetchCurrentNews()
-                println("ini 2 akhir")
             }
         }
     }

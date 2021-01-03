@@ -24,9 +24,7 @@ object DateUtil {
 
     // Parse from date string
     fun getDateFromString(dateInString: String): Long {
-        println(dateInString)
         val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
-        println(format.format(Date()).toString())
         return try {
             val date = format.parse(dateInString)
             date?.let{

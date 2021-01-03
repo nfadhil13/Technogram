@@ -3,34 +3,69 @@ package com.fdev.technogram.ui.screen.main.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
+
+const val HOME_SCROLL_STATE = "com.fdev.technogram.homescrollstate"
+
+const val HOME_SCROLL_OFFSET = "com.fdev.technogram.homeoffsetstate"
+
+const val HOME_LAST_PAGE = "com.fdev.technogram.homelastpage"
+
 class HomeViewModel @ViewModelInject constructor(
-        private val newsInteractors: NewsInteractors
+        private val newsInteractors: NewsInteractors,
+        @Assisted private val  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
+
+
+    companion object{
+        private const val DEFAULT_PERPAGE = 6
+    }
 
     var homeViewTypes: List<HomeViewType> by mutableStateOf(listOf())
 
     private val loading = HomeViewType.LoadingItem
 
-    private var currentPage = 1
+    private var currentPage : Int = 1
 
     private var isFetching = false
+
+
+
+
+
+    var scrollState = 0
+        set(value){
+            field = value
+            savedStateHandle.set(HOME_SCROLL_STATE, value)
+        }
+
+    var scrollOffset = 0
+        set(value){
+            field = value
+            savedStateHandle.set(HOME_SCROLL_OFFSET , value)
+        }
 
     init {
         addHomeViewType(0, HomeViewType.Skeleton)
         fetchMostLikedNews()
-        fetchCurrentNews()
+        val lastPage = savedStateHandle.get<Int>(HOME_LAST_PAGE)
+        if(lastPage == null){
+            fetchCurrentNews()
+        }else{
+            fetchCurrentNews(page = 1 , perpage = lastPage * DEFAULT_PERPAGE)
+            currentPage = lastPage
+        }
 
 
     }
@@ -59,11 +94,12 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
 
-    private fun fetchCurrentNews(page: Int = currentPage) {
+
+    private fun fetchCurrentNews(page: Int = currentPage , perpage : Int = DEFAULT_PERPAGE) {
         viewModelScope.launch(Main) {
             isFetching = true
             if (page != 1) toogleLoading()
-            newsInteractors.fetchRecentNews.fetch(perpage = 10, dispatcher = IO, page = page)
+            newsInteractors.fetchRecentNews.fetch(perpage = perpage, dispatcher = IO, page = page)
                     .collect { result ->
                         if (page != 1) toogleLoading()
                         when (result) {
@@ -76,9 +112,8 @@ class HomeViewModel @ViewModelInject constructor(
                                             homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
                                     )
                                     currentPage++
+                                    savedStateHandle.set(HOME_LAST_PAGE , currentPage)
                                 }
-
-
                             }
 
                             is DataState.OnFailure -> {

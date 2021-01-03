@@ -113,7 +113,6 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier) {
                 .padding(horizontal = 6.dp)
                 .background(Color.Red)
         )
-        Spacer(modifier = Modifier.height(15.dp).fillMaxWidth().background(Color.Red))
     }
 
 }
@@ -125,4 +124,9 @@ fun TimeComponent(time : Long , modifier: Modifier = Modifier){
         text = DateUtil.getMonthAndDate(time),
         style = MaterialTheme.typography.caption.merge(TextStyle(color = Color.Gray))
     )
+}
+
+@Composable
+fun NewsDetailSkeleton(){
+
 }

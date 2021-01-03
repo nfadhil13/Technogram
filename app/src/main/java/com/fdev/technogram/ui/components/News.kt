@@ -1,6 +1,7 @@
 package com.fdev.technogram.ui.components
 
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.AmbientConfiguration
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -113,12 +115,15 @@ fun HeaderNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = Col
 
 @Composable
 fun LeftImageNews(news: News, modifier: Modifier = Modifier) {
-
+    val configuration = AmbientConfiguration.current
     Row(
             modifier = modifier
     ) {
+
+        val cardBaseModifier = if(configuration.orientation == Configuration.ORIENTATION_LANDSCAPE)  Modifier.padding(24.dp) else Modifier
+
         Card(
-                modifier = Modifier
+                modifier = cardBaseModifier
                         .weight(1f)
                         .align(Alignment.CenterVertically)
                         .aspectRatio(1f)
@@ -238,7 +243,7 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
         }
         Spacer(modifier = Modifier.width(10.dp))
         Column(
-                modifier = Modifier.weight(1.25f)
+                modifier = Modifier.weight(1.25f , fill = false)
                         .fillMaxHeight()
                         .align(Alignment.CenterVertically)
         ) {

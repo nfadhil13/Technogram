@@ -1,12 +1,14 @@
 package com.fdev.technogram.ui.components
 
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.CircularProgressIndicator
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import dev.chrisbanes.accompanist.glide.GlideImage
@@ -16,7 +18,8 @@ import dev.chrisbanes.accompanist.glide.GlideImage
 @Composable
 fun NetworkImage(
         imageUrl : String,
-        modifier: Modifier =  Modifier
+        modifier: Modifier =  Modifier,
+        backgroundColor : Color = Color.Gray
 
 ){
         GlideImage(
@@ -30,7 +33,7 @@ fun NetworkImage(
                 },
                 loading = {
                         ConstraintLayout(
-                                modifier = Modifier.fillMaxSize()
+                                modifier = Modifier.fillMaxSize().background(backgroundColor)
                         ) {
                                 val indicator = createRef()
                                 CircularProgressIndicator(
@@ -44,7 +47,21 @@ fun NetworkImage(
                         }
                 },
                 error = {
-                        Text("Error Loading Image")
+                    ConstraintLayout(
+                            modifier = Modifier.fillMaxSize().background(backgroundColor)
+                    ) {
+                        val text = createRef()
+                        Text(
+                                text = "Error Loading Image",
+                                modifier = Modifier.constrainAs(text) {
+                                    top.linkTo(parent.top)
+                                    bottom.linkTo(parent.bottom)
+                                    start.linkTo(parent.start)
+                                    end.linkTo(parent.end)
+                                }
+                        )
+                    }
+
                 }
         )
 }

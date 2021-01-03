@@ -6,9 +6,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onActive
+import androidx.compose.runtime.onDispose
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +23,10 @@ import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.animations.ColorPulse
 import com.fdev.technogram.ui.components.*
 import com.fdev.technogram.ui.typography
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.launch
 
 
 @Composable
@@ -31,16 +37,29 @@ fun Home(
 
    val viewModel : HomeViewModel = viewModel()
 
+    val scrollState = rememberLazyListState()
 
+    CoroutineScope(Main).launch{
+        scrollState.snapToItemIndex(
+                index = viewModel.scrollState,
+                scrollOffset = viewModel.scrollOffset
+        )
+    }
 
+    onDispose(callback = {
+        viewModel.scrollState = scrollState.firstVisibleItemIndex
+        viewModel.scrollOffset = scrollState.firstVisibleItemScrollOffset
+    })
+    
     LazyColumn(
+            state = scrollState,
             modifier = Modifier
                     .padding(10.dp)
                     .fillMaxHeight()
                     .fillMaxWidth(),
             content = {
                 itemsIndexed(
-                        items = viewModel.homeViewTypes
+                        items = viewModel.homeViewTypes,
                 ) { index, item ->
                     if (viewModel.shouldFetchMore(index)) {
                         onActive(callback = {
@@ -100,6 +119,7 @@ fun TopOfHome(
 ) {
 
     Column {
+
         Text(
                 text = "Popular News",
                 style = typography.h2
@@ -120,7 +140,7 @@ fun TopOfHome(
                 news = news,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .heightIn(min = 96.dp, max = 128.dp)
+                    .heightIn(min = 96.dp, max = 220.dp)
                     .clickable(onClick = {
                         onNewsClicked(news)
                     })

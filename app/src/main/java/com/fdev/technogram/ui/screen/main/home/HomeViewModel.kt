@@ -3,6 +3,7 @@ package com.fdev.technogram.ui.screen.main.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.SavedStateHandle
@@ -13,20 +14,21 @@ import com.fdev.technogram.repository.news.NewsInteractors
 import com.fdev.technogram.util.LazyListState
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 
-const val HOME_SCROLL_STATE = "com.fdev.technogram.homescrollindex"
 
-const val HOME_LAST_PAGE = "com.fdev.technogram.homelastpage"
-
+/*
+    This is viewmodel for home screen
+ */
 class HomeViewModel @ViewModelInject constructor(
         private val newsInteractors: NewsInteractors,
         @Assisted private val  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
-
+    //Define default fetch perpage for recent news
     companion object{
         private const val DEFAULT_PERPAGE = 6
     }
@@ -39,32 +41,25 @@ class HomeViewModel @ViewModelInject constructor(
 
     private var isFetching = false
 
-    var scrollState : LazyListState by mutableStateOf(LazyListState(0 , 0))
-
+     var scrollState = LazyListState(index = 0, offset = 0)
+    private  set
 
     init {
-        viewModelScope.launch(Main) {
-            addHomeViewType(0, HomeViewType.Skeleton)
-            fetchMostLikedNews()
-            val lastPage = savedStateHandle.get<Int>(HOME_LAST_PAGE)
-            if(lastPage == null){
+        addHomeViewType(index = 0 , HomeViewType.Skeleton)
+        viewModelScope.launch(Main){
+            async{
+                println("ini 1")
+                fetchMostLikedNews()
+                println("ini 1 akhir")
+            }
+            async {
+                println("ini 2")
                 fetchCurrentNews()
-            }else{
-                fetchCurrentNews(page = 1 , perpage = lastPage * DEFAULT_PERPAGE)
-                restoreScrollPostion()
-                currentPage = lastPage
+                println("ini 2 akhir")
             }
         }
-
-
     }
 
-    private fun restoreScrollPostion() {
-        savedStateHandle.get<LazyListState>(HOME_SCROLL_STATE)?.let { savedScrollState ->
-            scrollState = savedScrollState
-        }
-
-    }
 
     private suspend fun fetchMostLikedNews() {
             newsInteractors.fetchMostLikedNews.fetch(perpage = 6, dispatcher = IO)
@@ -105,7 +100,6 @@ class HomeViewModel @ViewModelInject constructor(
                                             homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
                                     )
                                     currentPage++
-                                    savedStateHandle.set(HOME_LAST_PAGE, currentPage)
                                 }
                             }
 
@@ -165,6 +159,9 @@ class HomeViewModel @ViewModelInject constructor(
         }
     }
 
+    fun setScollState(index: Int = 0 , offset : Int = 0){
+        scrollState = LazyListState(index = index , offset = offset)
+    }
 
     fun fetchCurrentNewsNextPage() {
         println("Fetchin for page : $currentPage")
@@ -173,11 +170,6 @@ class HomeViewModel @ViewModelInject constructor(
                 fetchCurrentNews(currentPage)
             }
         }
-    }
-
-
-    fun onScrollStateChange(scrollState : Int = 0 , scrollOffset : Int = 0){
-        savedStateHandle.set(HOME_SCROLL_STATE , LazyListState(scrollState , scrollOffset))
     }
 
     private fun handleError(message: String) {

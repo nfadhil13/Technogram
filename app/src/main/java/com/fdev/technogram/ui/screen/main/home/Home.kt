@@ -8,6 +8,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onActive
@@ -114,9 +115,9 @@ fun TopOfHome(
 
         Text(
             text = "Popular News",
-            style = typography.h2
+            style = MaterialTheme.typography.h4.merge(TextStyle(fontWeight = FontWeight.SemiBold))
         )
-        Spacer(modifier = Modifier.height(height = 12.dp))
+        Spacer(modifier = Modifier.height(height = 18.dp))
         HeaderNews(
             news = headerNews,
             modifier = Modifier
@@ -144,7 +145,7 @@ fun TopOfHome(
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "Recent News",
-            style = typography.h3,
+            style = MaterialTheme.typography.h5.merge(TextStyle(fontWeight = FontWeight.SemiBold)),
             textAlign = TextAlign.Start
         )
         Spacer(modifier = Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))

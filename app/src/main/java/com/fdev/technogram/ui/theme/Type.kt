@@ -1,54 +1,19 @@
 package com.fdev.technogram.ui
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.*
 import androidx.compose.ui.unit.sp
+import com.fdev.technogram.R
+
+val poppins = fontFamily(
+        font(R.font.poppins , FontWeight.Normal),
+        font(R.font.poppins_bold , FontWeight.Bold),
+        font(R.font.poppins_semibold , FontWeight.SemiBold),
+        font(R.font.poppins_medium , FontWeight.Medium),
+        font(R.font.poppins_light , FontWeight.Light)
+)
 
 // Set of Material typography styles to start with
-val typography = Typography(
-        h2 = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.W800,
-                fontSize = 28.sp
-        ),
-        h3 = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.W700,
-                fontSize = 24.sp
-        ),
-        h4 = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.W600,
-                fontSize = 18.sp
-        ),
-        h5 = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Light,
-                fontSize = 14.sp
-        ),
-        h6 = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Light,
-                fontSize = 12.sp
-        ),
-        overline = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Light,
-                fontSize = 10.sp
-        ),
-
-        /* Other default text styles to override
-    button = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.W500,
-        fontSize = 14.sp
-    ),
-    caption = TextStyle(
-        fontFamily = FontFamily.Default,
-        fontWeight = FontWeight.Normal,
-        fontSize = 12.sp
-    )
-    */
-)
+val typography = Typography(defaultFontFamily = poppins)

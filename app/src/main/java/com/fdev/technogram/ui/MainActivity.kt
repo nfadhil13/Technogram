@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             Providers(
                 AmbientBackPressHandler provides backPressHandler
             ) {
-                MaterialTheme() {
+                TechnogramTheme {
                     TechnogramMain()
                 }
             }

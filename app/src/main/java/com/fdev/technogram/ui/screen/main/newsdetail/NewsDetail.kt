@@ -28,7 +28,6 @@ import androidx.compose.ui.zIndex
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.ArticleWebView
 import com.fdev.technogram.ui.components.NetworkImage
-import com.fdev.technogram.ui.mainRed
 import com.fdev.technogram.util.DateUtil
 
 @Composable

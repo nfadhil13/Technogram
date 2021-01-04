@@ -12,11 +12,21 @@ import androidx.compose.ui.viewinterop.AndroidView
 @Composable
 fun ArticleWebView(
         htmlString: String,
-        modifier : Modifier = Modifier
+        modifier: Modifier = Modifier
 ) {
+    val fullHtmlString = """
+     <head>
+        <style>
+            @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        </style>
+    </head>
+    <body>
+        ${htmlString}
+    </body>
+    """.trimIndent()
+
     AndroidView(
-        modifier = modifier
-        ,viewBlock = { context ->
+            modifier = modifier, viewBlock = { context ->
         WebView(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -28,9 +38,13 @@ fun ArticleWebView(
                     val code = """javascript:(function() { 
    
                         var node = document.createElement('style');
-                
+               
+                            
                         node.type = 'text/css';
                         node.innerHTML = '
+                        body{
+                            font-family: 'Poppins', sans-serif;
+                        }
                         img{
                             width : 100%;
                         }
@@ -49,7 +63,7 @@ fun ArticleWebView(
                     loadUrl(code)
                 }
             }
-            loadDataWithBaseURL("", htmlString, "text/html", "UTF-8", "")
+            loadDataWithBaseURL("", fullHtmlString, "text/html", "UTF-8", "")
         }
     })
 }

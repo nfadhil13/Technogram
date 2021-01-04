@@ -17,7 +17,13 @@ fun ArticleWebView(
     val fullHtmlString = """
      <head>
         <style>
-            @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+        @font-face {
+            font-family: Poppins;
+            src: url('https://fonts.googleapis.com/css2?family=Poppins&display=swap')
+        }
+        body {
+            font-family: Poppins, sans-serif;
+        }
         </style>
     </head>
     <body>
@@ -42,9 +48,6 @@ fun ArticleWebView(
                             
                         node.type = 'text/css';
                         node.innerHTML = '
-                        body{
-                            font-family: 'Poppins', sans-serif;
-                        }
                         img{
                             width : 100%;
                         }

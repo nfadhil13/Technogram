@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.material.TopAppBar
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentOnAttachListener
@@ -18,7 +19,7 @@ import com.fdev.technogram.ui.screen.main.home.HomeFragment
 import com.fdev.technogram.ui.screen.main.newsdetail.NewsDetailFragment
 
 
-class MainFragment : Fragment(){
+class MainFragment : Fragment() , SwipeRefreshInterface{
 
 
     private var _binding : FragmentMainBinding? = null
@@ -27,6 +28,7 @@ class MainFragment : Fragment(){
 
 
     private var currentOnRefresh : () -> Unit = {}
+
 
 
     override fun onCreateView(
@@ -54,7 +56,6 @@ class MainFragment : Fragment(){
             }
         }
         binding.mainSwipeRefresh.setOnRefreshListener {
-            binding.
             currentOnRefresh()
         }
     }
@@ -66,7 +67,7 @@ class MainFragment : Fragment(){
         currentOnRefresh = when(fragment){
             is HomeFragment -> {
                 println("currently in home fragment")
-                ({fragment.refresh()})
+                ({fragment.refresh(this)})
             }
             is NewsDetailFragment -> {
                 println("currently in news fragment")
@@ -87,7 +88,9 @@ class MainFragment : Fragment(){
         _binding = null
     }
 
-
+    override fun onRefreshDone() {
+        binding.mainSwipeRefresh.isRefreshing = false
+    }
 
 
 }

@@ -14,6 +14,7 @@ import com.fdev.technogram.datasource.network.business.abstraction.NewsNetworkDa
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.TechnogramTheme
 import com.fdev.technogram.ui.screen.main.MainBundleConst
+import com.fdev.technogram.ui.screen.main.SwipeRefreshInterface
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -26,7 +27,7 @@ class HomeFragment : Fragment(){
 
     private val homeViewModel : HomeViewModel by viewModels()
 
-
+    private var swipeRefresh : SwipeRefreshInterface? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,9 +46,7 @@ class HomeFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         homeViewModel.isOnRefresh.observe(viewLifecycleOwner , {
-            parentFragment?.let{
-                println(it::class.java.name)
-            }
+            swipeRefresh?.onRefreshDone()
         })
     }
 
@@ -60,8 +59,9 @@ class HomeFragment : Fragment(){
         )
     }
 
-    fun refresh(){
+    fun refresh(swipeRefresh : SwipeRefreshInterface){
         println("REFRESHH")
+        this.swipeRefresh = swipeRefresh
         homeViewModel.refresh()
     }
 

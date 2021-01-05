@@ -1,5 +1,10 @@
 package com.fdev.technogram.model
 
+import android.os.Parcelable
+import kotlinx.parcelize.Parcelize
+
+
+@Parcelize
 data class News(
 
     val id : Int,
@@ -22,4 +27,4 @@ data class News(
     val category : String,
 
     val preview : String
-)
+) : Parcelable

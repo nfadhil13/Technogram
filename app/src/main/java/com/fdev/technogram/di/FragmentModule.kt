@@ -9,7 +9,7 @@ import dagger.hilt.android.components.FragmentComponent
 import retrofit2.Retrofit
 
 @Module
-@InstallIn(FragmentComponent::class)
+@InstallIn(ActivityComponent::class)
 object FragmentModule {
 
 

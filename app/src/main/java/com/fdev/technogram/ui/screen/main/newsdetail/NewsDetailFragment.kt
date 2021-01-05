@@ -46,7 +46,7 @@ class NewsDetailFragment : Fragment(){
     }
 
     fun refresh() {
-        println("refresh")
+        println("refresh ${currentNews.title}")
     }
 
 }

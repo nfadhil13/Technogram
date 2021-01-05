@@ -47,11 +47,21 @@ class MainFragment : Fragment(){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val childFragment = childFragmentManager.findFragmentById(R.id.top_nav_host_fragment)
-        childFragmentManager.addFragmentOnAttachListener { fragmentManager, fragment ->
-            println("oyyyy di attach")
-        }
-        childFragment?.childFragmentManager?.addFragmentOnAttachListener { fragmentManager, fragment ->
-            println("oyyyy di attach 2")
+        childFragment?.let{
+            it.childFragmentManager.addOnBackStackChangedListener {
+                when(val currentFragment = it.childFragmentManager.fragments.last()){
+                    is HomeFragment -> {
+                        println("currently in home fragment")
+                    }
+                    is NewsDetailFragment -> {
+                        println("currently in news fragment")
+                        currentFragment.refresh()
+                    }
+                    else -> {
+                        println("currently in ${currentFragment::class.java.canonicalName} fragment")
+                    }
+                }
+            }
         }
     }
 

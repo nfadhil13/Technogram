@@ -6,9 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.viewinterop.viewModel
 import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
 import com.fdev.technogram.util.LazyListState
@@ -40,6 +38,9 @@ class HomeViewModel @ViewModelInject constructor(
     private var currentPage : Int = 1
 
     private var isFetching = false
+
+    private val _isOnRefresh = MutableLiveData<Boolean>(false)
+    val isO
 
      var scrollState = LazyListState(index = 0, offset = 0)
     private  set

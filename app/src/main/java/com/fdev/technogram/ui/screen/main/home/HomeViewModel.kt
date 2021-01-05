@@ -66,6 +66,7 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     fun refresh(){
+        println("ON REFRESHH")
         homeViewTypes = listOf()
         _isOnRefresh.value = true
         viewModelScope.launch(Main){

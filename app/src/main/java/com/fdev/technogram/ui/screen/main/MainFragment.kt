@@ -26,7 +26,7 @@ class MainFragment : Fragment(){
     private val binding get() = _binding!!
 
 
-    private val currentOnRefresh 
+    private var currentOnRefresh : () -> Unit = {}
 
 
     override fun onCreateView(
@@ -48,23 +48,37 @@ class MainFragment : Fragment(){
         super.onViewCreated(view, savedInstanceState)
         val childFragment = childFragmentManager.findFragmentById(R.id.top_nav_host_fragment)
         childFragment?.let{
+            setCurrentOnRefresh(it.childFragmentManager.fragments.last())
             it.childFragmentManager.addOnBackStackChangedListener {
-                when(val currentFragment = it.childFragmentManager.fragments.last()){
-                    is HomeFragment -> {
-                        println("currently in home fragment")
-                        currentFragment.refresh()
-                    }
-                    is NewsDetailFragment -> {
-                        println("currently in news fragment")
-                        currentFragment.refresh()
-                    }
-                    else -> {
-                        println("currently in ${currentFragment::class.java.canonicalName} fragment")
-                    }
-                }
+                setCurrentOnRefresh(it.childFragmentManager.fragments.last())
+            }
+        }
+        binding.mainSwipeRefresh.setOnRefreshListener {
+            binding.
+            currentOnRefresh()
+        }
+    }
+
+
+
+    private fun setCurrentOnRefresh(fragment : Fragment){
+
+        currentOnRefresh = when(fragment){
+            is HomeFragment -> {
+                println("currently in home fragment")
+                ({fragment.refresh()})
+            }
+            is NewsDetailFragment -> {
+                println("currently in news fragment")
+                ({fragment.refresh()})
+            }
+            else -> {
+                println("currently in ${fragment::class.java.canonicalName} fragment")
+                ({})
             }
         }
     }
+
 
 
 

@@ -13,12 +13,4 @@ import retrofit2.Retrofit
 object ActivityModule {
 
 
-    @Provides
-    fun provideNewsApi(
-            retrofitBuilder : Retrofit.Builder
-    ) : NewsApiService{
-        return  retrofitBuilder
-                .build()
-                .create(NewsApiService::class.java)
-    }
 }

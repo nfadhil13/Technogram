@@ -2,24 +2,22 @@ package com.fdev.technogram.ui
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Providers
-import androidx.compose.ui.platform.setContent
-import com.fdev.technogram.ui.screen.main.TechnogramMain
+import com.fdev.technogram.databinding.MainActivtyBinding
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
 
+    private lateinit var binding : MainActivtyBinding
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContent {
-
-        }
-
-
+        binding = MainActivtyBinding.inflate(layoutInflater)
+        val view = binding.root
+        setContentView(view)
     }
+
 
 
 }

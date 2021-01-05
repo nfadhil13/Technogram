@@ -35,7 +35,6 @@ fun TechnogramTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Compos
 
     MaterialTheme(
             colors = colors,
-            typography = typography,
             shapes = shapes,
             content = content
     )

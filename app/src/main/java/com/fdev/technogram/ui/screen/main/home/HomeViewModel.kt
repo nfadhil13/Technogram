@@ -45,6 +45,10 @@ class HomeViewModel @ViewModelInject constructor(
     private  set
 
     init {
+        init()
+    }
+
+    private fun init(){
         addHomeViewType(index = 0 , HomeViewType.Skeleton)
         viewModelScope.launch(Main){
             async{
@@ -54,6 +58,11 @@ class HomeViewModel @ViewModelInject constructor(
                 fetchCurrentNews()
             }
         }
+    }
+
+    fun refresh(){
+        homeViewTypes = listOf()
+        init()
     }
 
 

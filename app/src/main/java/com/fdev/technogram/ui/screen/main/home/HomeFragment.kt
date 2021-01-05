@@ -51,4 +51,8 @@ class HomeFragment : Fragment(){
         )
     }
 
+    fun refresh(){
+        homeViewModel.refresh()
+    }
+
 }

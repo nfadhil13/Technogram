@@ -45,4 +45,8 @@ class NewsDetailFragment : Fragment(){
         }
     }
 
+    fun refresh() {
+        println("refresh")
+    }
+
 }

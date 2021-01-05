@@ -45,8 +45,11 @@ class HomeFragment : Fragment(){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        homeViewModel.isOnRefresh.observe(viewLifecycleOwner , {
-            swipeRefresh?.onRefreshDone()
+        homeViewModel.isOnRefresh.observe(viewLifecycleOwner , {isOnRefresh ->
+            if(!isOnRefresh){
+                swipeRefresh?.onRefreshDone()
+            }
+
         })
     }
 

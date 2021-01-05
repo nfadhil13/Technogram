@@ -69,6 +69,7 @@ class HomeViewModel @ViewModelInject constructor(
         println("ON REFRESHH")
         homeViewTypes = listOf()
         _isOnRefresh.value = true
+        addHomeViewType(index = 0 , HomeViewType.Skeleton)
         viewModelScope.launch(Main){
             val mostLikedNews =  async{ fetchMostLikedNews() }
             val recentNews = async{fetchCurrentNews()}

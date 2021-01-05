@@ -40,7 +40,11 @@ class HomeViewModel @ViewModelInject constructor(
     private var isFetching = false
 
     private val _isOnRefresh = MutableLiveData<Boolean>(false)
-    val isO
+
+    val isOnRefresh: LiveData<Boolean>
+        get() = _isOnRefresh
+
+
 
      var scrollState = LazyListState(index = 0, offset = 0)
     private  set
@@ -63,7 +67,14 @@ class HomeViewModel @ViewModelInject constructor(
 
     fun refresh(){
         homeViewTypes = listOf()
-        init()
+        _isOnRefresh.value = true
+        viewModelScope.launch(Main){
+            val mostLikedNews =  async{ fetchMostLikedNews() }
+            val recentNews = async{fetchCurrentNews()}
+            mostLikedNews.await()
+            recentNews.await()
+            _isOnRefresh.value = false
+        }
     }
 
 

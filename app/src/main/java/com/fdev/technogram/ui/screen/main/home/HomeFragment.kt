@@ -42,6 +42,15 @@ class HomeFragment : Fragment(){
         }
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        homeViewModel.isOnRefresh.observe(viewLifecycleOwner , {
+            parentFragment?.let{
+                println(it::class.java.name)
+            }
+        })
+    }
+
     private fun navigateToNewsDetail(news: News) {
         findNavController().navigate(
                 R.id.action_homeFragment_to_newsDetailFragment,

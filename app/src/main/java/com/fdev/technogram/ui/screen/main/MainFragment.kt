@@ -26,7 +26,7 @@ class MainFragment : Fragment(){
     private val binding get() = _binding!!
 
 
-    private lateinit var localController: NavController
+    private val currentOnRefresh 
 
 
     override fun onCreateView(
@@ -52,6 +52,7 @@ class MainFragment : Fragment(){
                 when(val currentFragment = it.childFragmentManager.fragments.last()){
                     is HomeFragment -> {
                         println("currently in home fragment")
+                        currentFragment.refresh()
                     }
                     is NewsDetailFragment -> {
                         println("currently in news fragment")

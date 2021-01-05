@@ -2,7 +2,6 @@ package com.fdev.technogram.ui.screen.main.home
 
 
 import androidx.compose.animation.transition
-import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,27 +24,23 @@ import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.animations.ColorPulse
 import com.fdev.technogram.ui.components.*
 import com.fdev.technogram.ui.typography
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
 
 
 @Composable
 fun Home(
     onNewsClicked: (news: News) -> Unit,
+    homeViewModel: HomeViewModel
 ) {
 
 
-    val viewModel: HomeViewModel = viewModel()
-
     val scrollState = rememberLazyListState(
-        initialFirstVisibleItemIndex = viewModel.scrollState.index ,
-        initialFirstVisibleItemScrollOffset = viewModel.scrollState.offset
+        initialFirstVisibleItemIndex = homeViewModel.scrollState.index ,
+        initialFirstVisibleItemScrollOffset = homeViewModel.scrollState.offset
     )
 
 
     onDispose(callback = {
-        viewModel.setScollState(index = scrollState.firstVisibleItemIndex , offset = scrollState.firstVisibleItemScrollOffset)
+        homeViewModel.setScollState(index = scrollState.firstVisibleItemIndex , offset = scrollState.firstVisibleItemScrollOffset)
     })
 
     LazyColumn(
@@ -56,11 +51,11 @@ fun Home(
             .fillMaxWidth(),
         content = {
             itemsIndexed(
-                items = viewModel.homeViewTypes,
+                items = homeViewModel.homeViewTypes,
             ) { index, item ->
-                if (viewModel.shouldFetchMore(index)) {
+                if (homeViewModel.shouldFetchMore(index)) {
                     onActive(callback = {
-                        viewModel.fetchCurrentNewsNextPage()
+                        homeViewModel.fetchCurrentNewsNextPage()
                     })
                 }
                 when (item) {

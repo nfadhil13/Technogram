@@ -18,11 +18,11 @@ fun ArticleWebView(
      <head>
         <style>
         @font-face {
-            font-family: Poppins;
+            font-family: 'Poppins';
             src: url('https://fonts.googleapis.com/css2?family=Poppins&display=swap')
         }
         body {
-            font-family: Poppins, sans-serif;
+            font-family: 'Poppins', sans-serif;
         }
         </style>
     </head>

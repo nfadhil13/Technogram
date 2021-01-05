@@ -6,6 +6,7 @@ import androidx.compose.ui.viewinterop.viewModel
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.TechnogramTopAppBar
 import com.fdev.technogram.ui.screen.main.home.Home
+import com.fdev.technogram.ui.screen.main.home.HomeViewModel
 import com.fdev.technogram.ui.screen.main.newsdetail.NewsDetail
 import com.fdev.technogram.util.produceFakeNewsData
 import com.github.zsoltk.compose.router.BackStack
@@ -66,10 +67,14 @@ fun TechnogramMain(
 fun MainContent(mainViewModel: MainViewModel, backStack: BackStack<MainScreen>) {
     when (val lastStack = backStack.last()) {
         is MainScreen.HomeScreen -> {
-            Home(onNewsClicked = { clickedNews ->
-                mainViewModel.currentNews = clickedNews
-                backStack.push(MainScreen.NewsDetailScreen(clickedNews))
-            })
+            val homeViewModel: HomeViewModel = viewModel()
+            Home(
+                    onNewsClicked = { clickedNews ->
+                        mainViewModel.currentNews = clickedNews
+                        backStack.push(MainScreen.NewsDetailScreen(clickedNews))
+                    },
+                    homeViewModel = homeViewModel
+            )
         }
         is MainScreen.NewsDetailScreen -> {
             NewsDetail(news = lastStack.news)
@@ -80,5 +85,5 @@ fun MainContent(mainViewModel: MainViewModel, backStack: BackStack<MainScreen>) 
 
 sealed class MainScreen() {
     object HomeScreen : MainScreen()
-    data class NewsDetailScreen(val news : News) : MainScreen()
+    data class NewsDetailScreen(val news: News) : MainScreen()
 }

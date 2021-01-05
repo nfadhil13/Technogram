@@ -14,6 +14,7 @@ import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.outlined.Create
 import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.onActive
 import androidx.compose.runtime.onDispose
 import androidx.compose.ui.Modifier
@@ -105,14 +106,14 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier) {
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
                     },
-                    backgroundColor = Color.Red,
+                    backgroundColor = MaterialTheme.colors.primary,
                     elevation = 0.dp,
                     shape = RoundedCornerShape(2.dp)
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
                         text = news.category,
-                        style = MaterialTheme.typography.caption.merge(TextStyle(color = Color.White))
+                        style = MaterialTheme.typography.caption
                     )
 
                 }
@@ -153,10 +154,13 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier) {
                         modifier = Modifier.fillMaxHeight(0.85f).aspectRatio(1f)
                     )
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(
-                        text = news.writer,
-                        style = MaterialTheme.typography.caption.merge(TextStyle(color = Color.Gray))
-                    )
+                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                        Text(
+                                text = news.writer,
+                                style = MaterialTheme.typography.caption
+                        )
+                    }
+
                 }
             }
             Spacer(modifier = Modifier.height(15.dp).fillMaxWidth())

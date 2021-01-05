@@ -119,12 +119,14 @@ dependencies {
     implementation "org.jsoup:jsoup:$jsoup_version"
 
 
-    //Compose Router
-    def compose_router = "0.23.0"
-    implementation "com.github.zsoltk:compose-router:$compose_router"
-
-
+    //swipe referesh layout
     def swipe_refresh_version = "1.1.0"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:$swipe_refresh_version"
+
+    //Navigation component
+    def nav_version = "2.3.2"
+    implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
+    implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
+
 
 }

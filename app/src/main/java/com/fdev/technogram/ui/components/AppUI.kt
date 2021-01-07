@@ -33,15 +33,15 @@ fun TechnogramTopAppBar(
             Row{
                 Box(
                         modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
+                            .weight(1f)
+                            .fillMaxHeight()
                 ){
                     Burger(
                             modifier = Modifier
-                                    .width(22.dp)
-                                    .align(Alignment.CenterStart)
-                                    .fillMaxHeight(0.3f)
-                                    .clickable(onClick = onBurgerClicked)
+                                .width(22.dp)
+                                .align(Alignment.CenterStart)
+                                .fillMaxHeight(0.3f)
+                                .clickable(onClick = onBurgerClicked)
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
@@ -79,9 +79,3 @@ fun Burger(modifier: Modifier = Modifier , burgerHeight : Dp = 1.dp) {
     }
 }
 
-@Composable
-fun TechnogramDrawer(
-    modifier: Modifier = Modifier
-){
-    
-}

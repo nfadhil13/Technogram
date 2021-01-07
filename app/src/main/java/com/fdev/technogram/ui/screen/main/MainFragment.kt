@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import com.fdev.technogram.R
 import com.fdev.technogram.databinding.FragmentMainBinding
+import com.fdev.technogram.ui.components.TechnogramDrawer
 import com.fdev.technogram.ui.components.TechnogramTopAppBar
 import com.fdev.technogram.util.produceFakeNewsData
 
@@ -30,28 +31,27 @@ class MainFragment : Fragment(){
         savedInstanceState:     Bundle?
     ): View {
         _binding = FragmentMainBinding.inflate(inflater, container, false)
+
+        val view = binding.root
+        return view
+    }
+
+
+    private fun settinUpComposeView(){
         binding.apply {
             this.mainToolbarContent.setContent {
                 TechnogramTopAppBar(onBurgerClicked = { /*TODO*/ })
             }
             this.navigationDrawerContent.setContent {
-                Button(
-                    onClick = {
-                        val childFragment = childFragmentManager.findFragmentById(R.id.top_nav_host_fragment)
-                        childFragment?.let{
-                         it.findNavController().navigate(R.id.newsDetailFragment , bundleOf(MainBundleConst.HOME_TO_NEWSDETAIL_NEWS_BUNDLE to produceFakeNewsData()))
-                         binding.root.closeDrawers()
-                        }
-                    }
-                ){
-                    Text("Go to fake news")
-                }
+                TechnogramDrawer(
+                    isLoggedIn = false,
+                    onSignInClicked = { /*TODO*/ },
+                    onSearch = { /*TODO*/ },
+                    searchKey = "" ,
+                    onValueChange = { /*TODO*/ })
             }
         }
-        val view = binding.root
-        return view
     }
-
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

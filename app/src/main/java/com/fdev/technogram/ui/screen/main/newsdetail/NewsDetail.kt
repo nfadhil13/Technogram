@@ -2,7 +2,6 @@ package com.fdev.technogram.ui.screen.main.newsdetail
 
 import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -12,29 +11,23 @@ import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowUpward
 import androidx.compose.material.icons.outlined.Create
-import androidx.compose.material.icons.outlined.Delete
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.onActive
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.onDispose
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.viewModel
 import androidx.compose.ui.zIndex
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.ArticleWebView
 import com.fdev.technogram.ui.components.NetworkImage
-import com.fdev.technogram.ui.mainRed
 import com.fdev.technogram.util.DateUtil
 
 @Composable
-fun NewsDetail(news: News, modifier: Modifier = Modifier) {
-
-    val viewModel: NewsDetailViewModel = viewModel()
+fun NewsDetail(news: News, modifier: Modifier = Modifier, newsDetailViewModel: NewsDetailViewModel) {
 
     val scrollState = rememberScrollState()
 
@@ -68,18 +61,18 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier) {
                 top.linkTo(parent.top)
             }
         ) {
-            viewModel.news?.let { oldNews ->
+            newsDetailViewModel.news?.let { oldNews ->
                 if (oldNews != news) {
-                    viewModel.setCurrentNews(news)
-                    viewModel.onScrollStateChange(0f)
+                    newsDetailViewModel.setCurrentNews(news)
+                    newsDetailViewModel.onScrollStateChange(0f)
                 } else {
-                    println("scroll to ${viewModel.scrollState}")
-                    scrollState.scrollTo(viewModel.scrollState)
-                    println("current scroll state ${viewModel.scrollState}")
+                    println("scroll to ${newsDetailViewModel.scrollState}")
+                    scrollState.scrollTo(newsDetailViewModel.scrollState)
+                    println("current scroll state ${newsDetailViewModel.scrollState}")
                 }
-            } ?: viewModel.setCurrentNews(news)
+            } ?: newsDetailViewModel.setCurrentNews(news)
             onDispose(callback = {
-                viewModel.onScrollStateChange(scrollState.value)
+                newsDetailViewModel.onScrollStateChange(scrollState.value)
             })
 
             if (news.headerImg != "") {
@@ -106,14 +99,14 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier) {
                         start.linkTo(parent.start)
                         bottom.linkTo(parent.bottom)
                     },
-                    backgroundColor = Color.Red,
+                    backgroundColor = MaterialTheme.colors.primary,
                     elevation = 0.dp,
                     shape = RoundedCornerShape(2.dp)
                 ) {
                     Text(
                         modifier = Modifier.padding(5.dp),
                         text = news.category,
-                        style = MaterialTheme.typography.caption.merge(TextStyle(color = Color.White))
+                        style = MaterialTheme.typography.caption
                     )
 
                 }
@@ -154,10 +147,13 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier) {
                         modifier = Modifier.fillMaxHeight(0.85f).aspectRatio(1f)
                     )
                     Spacer(modifier = Modifier.width(3.dp))
-                    Text(
-                        text = news.writer,
-                        style = MaterialTheme.typography.caption.merge(TextStyle(color = Color.Gray))
-                    )
+                    Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                        Text(
+                                text = news.writer,
+                                style = MaterialTheme.typography.caption
+                        )
+                    }
+
                 }
             }
             Spacer(modifier = Modifier.height(15.dp).fillMaxWidth())

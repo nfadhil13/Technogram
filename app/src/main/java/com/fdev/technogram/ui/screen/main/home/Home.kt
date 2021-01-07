@@ -2,13 +2,14 @@ package com.fdev.technogram.ui.screen.main.home
 
 
 import androidx.compose.animation.transition
-import androidx.compose.foundation.InteractionState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onActive
 import androidx.compose.runtime.onDispose
@@ -24,42 +25,41 @@ import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.animations.ColorPulse
 import com.fdev.technogram.ui.components.*
 import com.fdev.technogram.ui.typography
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.launch
 
 
 @Composable
 fun Home(
     onNewsClicked: (news: News) -> Unit,
+    homeViewModel: HomeViewModel
 ) {
 
 
-    val viewModel: HomeViewModel = viewModel()
-
     val scrollState = rememberLazyListState(
-        initialFirstVisibleItemIndex = viewModel.scrollState.index ,
-        initialFirstVisibleItemScrollOffset = viewModel.scrollState.offset
+        initialFirstVisibleItemIndex = homeViewModel.scrollState.index,
+        initialFirstVisibleItemScrollOffset = homeViewModel.scrollState.offset
     )
 
 
     onDispose(callback = {
-        viewModel.setScollState(index = scrollState.firstVisibleItemIndex , offset = scrollState.firstVisibleItemScrollOffset)
+        homeViewModel.setScollState(
+            index = scrollState.firstVisibleItemIndex,
+            offset = scrollState.firstVisibleItemScrollOffset
+        )
     })
-
     LazyColumn(
         state = scrollState,
         modifier = Modifier
             .padding(10.dp)
             .fillMaxHeight()
-            .fillMaxWidth(),
+            .fillMaxWidth()
+        ,
         content = {
             itemsIndexed(
-                items = viewModel.homeViewTypes,
+                items = homeViewModel.homeViewTypes,
             ) { index, item ->
-                if (viewModel.shouldFetchMore(index)) {
+                if (homeViewModel.shouldFetchMore(index)) {
                     onActive(callback = {
-                        viewModel.fetchCurrentNewsNextPage()
+                        homeViewModel.fetchCurrentNewsNextPage()
                     })
                 }
                 when (item) {
@@ -78,7 +78,8 @@ fun Home(
                     }
                     is HomeViewType.NoMoreItem -> {
                         Text(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .wrapContentHeight(),
                             text = "No More Item",
                             textAlign = TextAlign.Center,
@@ -91,13 +92,17 @@ fun Home(
                     }
                     is HomeViewType.LoadingItem -> {
                         CircularLoading(
-                            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(10.dp),
                             alignment = Alignment.Center
                         )
                     }
                 }
             }
         })
+
 
 }
 
@@ -114,9 +119,9 @@ fun TopOfHome(
 
         Text(
             text = "Popular News",
-            style = typography.h2
+            style = MaterialTheme.typography.h4.merge(TextStyle(fontWeight = FontWeight.SemiBold))
         )
-        Spacer(modifier = Modifier.height(height = 12.dp))
+        Spacer(modifier = Modifier.height(height = 18.dp))
         HeaderNews(
             news = headerNews,
             modifier = Modifier
@@ -144,10 +149,15 @@ fun TopOfHome(
         Text(
             modifier = Modifier.fillMaxWidth(),
             text = "Recent News",
-            style = typography.h3,
+            style = MaterialTheme.typography.h5.merge(TextStyle(fontWeight = FontWeight.SemiBold)),
             textAlign = TextAlign.Start
         )
-        Spacer(modifier = Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
+        Spacer(
+            modifier = Modifier
+                .height(height = 1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
+        )
     }
 
 }
@@ -166,7 +176,12 @@ fun RecentNews(
             news = news,
             modifier = Modifier.clickable(onClick = { onNewsClicked(news) })
         )
-        Spacer(modifier = Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
+        Spacer(
+            modifier = Modifier
+                .height(height = 1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
+        )
     }
 
 }
@@ -188,7 +203,10 @@ fun HomeSkeleton(
 
     Column {
         Box(
-            modifier = Modifier.fillMaxWidth(0.45f).height(24.dp).background(pulseColor)
+            modifier = Modifier
+                .fillMaxWidth(0.45f)
+                .height(24.dp)
+                .background(pulseColor)
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         HeaderNewsSkeleton(

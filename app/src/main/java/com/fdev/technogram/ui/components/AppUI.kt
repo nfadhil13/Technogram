@@ -14,9 +14,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import com.fdev.technogram.ui.gray
 import com.fdev.technogram.R
 
+//Define all apps ui things like top app bar , drawer , bottom navigation etc
 
 @Composable
 fun TechnogramTopAppBar(
@@ -67,7 +67,7 @@ fun Burger(modifier: Modifier = Modifier , burgerHeight : Dp = 1.dp) {
     val burgerModifier = Modifier
             .fillMaxWidth()
             .height(burgerHeight)
-            .background(gray)
+            .background(Color.Gray)
     Column(
             modifier = modifier
     ) {
@@ -77,4 +77,11 @@ fun Burger(modifier: Modifier = Modifier , burgerHeight : Dp = 1.dp) {
         Spacer(modifier = Modifier.weight(1f))
         Box(modifier = burgerModifier.weight(1f))
     }
+}
+
+@Composable
+fun TechnogramDrawer(
+    modifier: Modifier = Modifier
+){
+    
 }

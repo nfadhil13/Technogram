@@ -7,16 +7,33 @@ import android.webkit.WebViewClient
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.viewinterop.AndroidView
+import androidx.fragment.app.FragmentContainerView
 
 @SuppressLint("SetJavaScriptEnabled")
 @Composable
 fun ArticleWebView(
         htmlString: String,
-        modifier : Modifier = Modifier
+        modifier: Modifier = Modifier
 ) {
+    val fullHtmlString = """
+     <head>
+        <style>
+        @font-face {
+            font-family: 'Poppins';
+            src: url('https://fonts.googleapis.com/css2?family=Poppins&display=swap')
+        }
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        </style>
+    </head>
+    <body>
+        ${htmlString}
+    </body>
+    """.trimIndent()
+
     AndroidView(
-        modifier = modifier
-        ,viewBlock = { context ->
+            modifier = modifier, viewBlock = { context ->
         WebView(context).apply {
             layoutParams = ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT,
@@ -28,7 +45,8 @@ fun ArticleWebView(
                     val code = """javascript:(function() { 
    
                         var node = document.createElement('style');
-                
+               
+                            
                         node.type = 'text/css';
                         node.innerHTML = '
                         img{
@@ -49,7 +67,7 @@ fun ArticleWebView(
                     loadUrl(code)
                 }
             }
-            loadDataWithBaseURL("", htmlString, "text/html", "UTF-8", "")
+            loadDataWithBaseURL("", fullHtmlString, "text/html", "UTF-8", "")
         }
     })
 }

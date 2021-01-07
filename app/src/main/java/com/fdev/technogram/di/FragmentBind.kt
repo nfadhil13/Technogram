@@ -6,15 +6,16 @@ import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.components.FragmentComponent
 
 @Module
 @InstallIn(ActivityComponent::class)
-abstract class ActivityBind {
+abstract class FragmentBind {
 
 
 
     @Binds
-    abstract fun bindNewsNetworkDataSource (newsNetworkDataSourceImpl: NewsNetworkDataSourceImpl) : NewsNetworkDataSource
+    abstract fun bindNewsNetworkDataSource(newsNetworkDataSourceImpl: NewsNetworkDataSourceImpl) : NewsNetworkDataSource
 
 
 

@@ -5,15 +5,16 @@ import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Card
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AmbientConfiguration
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
@@ -45,7 +46,7 @@ fun HeaderNews(news: News, modifier: Modifier = Modifier) {
                 modifier = Modifier
                         .fillMaxWidth()
                         .wrapContentHeight(),
-                style = typography.h4
+                style = MaterialTheme.typography.h6
         )
         Spacer(modifier = Modifier.height(10.dp))
         Row(
@@ -53,24 +54,27 @@ fun HeaderNews(news: News, modifier: Modifier = Modifier) {
                         .fillMaxWidth()
                         .wrapContentHeight()
         ) {
-            Text(
-                    text = "by ${news.writer}",
-                    style = typography.h6,
-            )
-            Text(
-                    text = DateUtil.getFullDateFromLong(news.publishTime),
-                    style = typography.h6,
-                    textAlign = TextAlign.End,
-                    modifier = Modifier
-                            .fillMaxWidth()
-            )
+            Providers(AmbientContentAlpha provides ContentAlpha.disabled) {
+                Text(
+                        text = "by ${news.writer}",
+                        style = MaterialTheme.typography.caption,
+                )
+                Text(
+                        text = DateUtil.getFullDateFromLong(news.publishTime),
+                        style = MaterialTheme.typography.caption,
+                        textAlign = TextAlign.End,
+                        modifier = Modifier
+                                .fillMaxWidth()
+                )
+            }
+
         }
     }
 }
 
 
 @Composable
-fun HeaderNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = Color.Gray.copy(alpha = 0.6f)) {
+fun HeaderNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f)) {
 
 
     val basicModifier = Modifier.background(skeletonColor)
@@ -143,14 +147,16 @@ fun LeftImageNews(news: News, modifier: Modifier = Modifier) {
                     modifier = Modifier.fillMaxWidth(),
                     text = news.title,
                     overflow = TextOverflow.Ellipsis,
-                    style = typography.h5.merge(TextStyle(fontWeight = FontWeight.W600))
+                    style = MaterialTheme.typography.subtitle2
             )
             Spacer(modifier = Modifier.height(5.dp))
-            Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = "by ${news.writer}",
-                    style = typography.h6,
-            )
+            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                Text(
+                        modifier = Modifier.fillMaxWidth(),
+                        text = "by ${news.writer}",
+                        style = MaterialTheme.typography.caption,
+                )
+            }
         }
 
     }
@@ -159,7 +165,7 @@ fun LeftImageNews(news: News, modifier: Modifier = Modifier) {
 
 
 @Composable
-fun LeftImageNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = Color.Gray.copy(alpha = 0.6f)) {
+fun LeftImageNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f)) {
     Row(
             modifier = modifier
     ) {
@@ -200,12 +206,12 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
             modifier = modifier.fillMaxWidth().height(180.dp).padding(10.dp)
     ) {
         Column(
-                modifier = Modifier.weight(3f)
+                modifier = Modifier.weight(3.5f)
                         .fillMaxHeight()
         ) {
             Text(
                     text = news.title,
-                    style = typography.h4.merge(TextStyle(fontSize = 16.sp)),
+                    style = MaterialTheme.typography.subtitle2.merge(TextStyle(fontWeight = FontWeight.SemiBold)),
                     overflow = TextOverflow.Clip,
                     maxLines = 3,
                     modifier = Modifier.weight(1.5f).fillMaxWidth()
@@ -213,32 +219,35 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
             Row(
                     modifier = Modifier.weight(1.5f).fillMaxWidth()
             ) {
-                Text(
-                        text = news.preview,
-                        maxLines = 2,
-                        overflow = TextOverflow.Ellipsis,
-
-                        style = typography.h5.merge(TextStyle(color = Color.Gray)),
-                        modifier = Modifier.weight(1.5f).fillMaxWidth()
-                                .align(Alignment.CenterVertically)
-                )
+                Providers(AmbientContentAlpha provides ContentAlpha.disabled) {
+                    Text(
+                            text = news.preview,
+                            maxLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            style = MaterialTheme.typography.caption,
+                            modifier = Modifier.weight(1.5f).fillMaxWidth()
+                                    .align(Alignment.CenterVertically)
+                    )
+                }
             }
             Row(
                     modifier = Modifier
                             .fillMaxWidth()
                             .weight(1f)
             ) {
-                Text(
-                        text = "by ${news.writer}",
-                        modifier = Modifier.weight(1f),
-                        style = typography.h6
+                Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                    Text(
+                            text = "by ${news.writer}",
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.caption.merge(TextStyle( fontSize = 10.sp))
 
-                )
-                Text(
-                        text = "| ${news.category}",
-                        modifier = Modifier.weight(1f),
-                        style = typography.h6.merge(TextStyle(color = Color.Red))
-                )
+                    )
+                    Text(
+                            text = "| ${news.category}",
+                            modifier = Modifier.weight(1f),
+                            style = MaterialTheme.typography.caption.merge(TextStyle(color = MaterialTheme.colors.primary , fontSize = 10.sp))
+                    )
+                }
             }
         }
         Spacer(modifier = Modifier.width(10.dp))
@@ -262,7 +271,7 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                 Text(
                         text = "❤ ${news.likes}",
                         textAlign = TextAlign.Start,
-                        style = typography.h6.merge(TextStyle(color = Color.Red)),
+                        style = MaterialTheme.typography.caption.merge(TextStyle(color = MaterialTheme.colors.primary , fontSize = 10.sp)),
                         modifier = Modifier.weight(1f)
                                 .fillMaxHeight()
                 )
@@ -270,7 +279,7 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                         text = DateUtil.getMonthAndDate(news.publishTime),
                         modifier = Modifier.weight(1f),
                         textAlign = TextAlign.End,
-                        style = typography.h6
+                        style = MaterialTheme.typography.caption.merge(TextStyle(fontSize = 10.sp))
                 )
             }
         }

@@ -3,12 +3,8 @@ package com.fdev.technogram.ui.screen.main.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.viewinterop.viewModel
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
 import com.fdev.technogram.util.LazyListState
@@ -25,7 +21,7 @@ import kotlinx.coroutines.launch
  */
 class HomeViewModel @ViewModelInject constructor(
         private val newsInteractors: NewsInteractors,
-        @Assisted private val  savedStateHandle: SavedStateHandle
+//        @Assisted private val  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     //Define default fetch perpage for recent news
@@ -41,20 +37,32 @@ class HomeViewModel @ViewModelInject constructor(
 
     private var isFetching = false
 
-     var scrollState = LazyListState(index = 0, offset = 0)
+
+
+     var scrollState : LazyListState by mutableStateOf(LazyListState(index = 0, offset = 0))
     private  set
 
     init {
+        init()
+    }
+
+    private fun init(){
         addHomeViewType(index = 0 , HomeViewType.Skeleton)
         viewModelScope.launch(Main){
-            async{
-                fetchMostLikedNews()
-            }
-            async {
-                fetchCurrentNews()
-            }
+            async{ fetchMostLikedNews() }
+            async { fetchCurrentNews() }
         }
     }
+
+//    fun refresh(){
+//        println("ON REFRESHH")
+//        homeViewTypes = listOf()
+//        addHomeViewType(index = 0 , HomeViewType.Skeleton)
+//        viewModelScope.launch(Main){
+//            async{ fetchMostLikedNews() }
+//            async{fetchCurrentNews(perpage = currentPage * DEFAULT_PERPAGE , page = 1)}
+//        }
+//    }
 
 
     private suspend fun fetchMostLikedNews() {

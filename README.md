@@ -13,3 +13,5 @@ Android Version of <a href="https://technogram.tech">Technogram.tech</a>
 </ul>  
 
 This app build with MVVM architecture
+
+Mad Scored for fun 😀 <a href="https://madscorecard.withgoogle.com/scorecards/162835206/#summary">here</a>

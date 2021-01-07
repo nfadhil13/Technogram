@@ -1,6 +1,5 @@
 # Technogram
-Android Version of Technogram.tech
-
+Android Version of <a href="https://technogram.tech">Technogram.tech</a>
 
 <h3>Build With</h3>
 <ul>

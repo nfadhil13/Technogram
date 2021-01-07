@@ -43,15 +43,6 @@ class HomeFragment : Fragment(){
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        homeViewModel.isOnRefresh.observe(viewLifecycleOwner , {isOnRefresh ->
-            if(!isOnRefresh){
-                swipeRefresh?.onRefreshDone()
-            }
-
-        })
-    }
 
     private fun navigateToNewsDetail(news: News) {
         findNavController().navigate(
@@ -62,10 +53,5 @@ class HomeFragment : Fragment(){
         )
     }
 
-    fun refresh(swipeRefresh : SwipeRefreshInterface){
-        println("REFRESHH")
-        this.swipeRefresh = swipeRefresh
-        homeViewModel.refresh()
-    }
 
 }

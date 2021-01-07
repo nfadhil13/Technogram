@@ -3,8 +3,6 @@ package com.fdev.technogram.ui.screen.main.home
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.viewinterop.viewModel
-import androidx.hilt.Assisted
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.*
 import com.fdev.technogram.repository.DataState
@@ -23,7 +21,7 @@ import kotlinx.coroutines.launch
  */
 class HomeViewModel @ViewModelInject constructor(
         private val newsInteractors: NewsInteractors,
-        @Assisted private val  savedStateHandle: SavedStateHandle
+//        @Assisted private val  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
 
     //Define default fetch perpage for recent news
@@ -39,14 +37,9 @@ class HomeViewModel @ViewModelInject constructor(
 
     private var isFetching = false
 
-    private val _isOnRefresh = MutableLiveData<Boolean>(false)
-
-    val isOnRefresh: LiveData<Boolean>
-        get() = _isOnRefresh
 
 
-
-     var scrollState = LazyListState(index = 0, offset = 0)
+     var scrollState : LazyListState by mutableStateOf(LazyListState(index = 0, offset = 0))
     private  set
 
     init {
@@ -56,28 +49,20 @@ class HomeViewModel @ViewModelInject constructor(
     private fun init(){
         addHomeViewType(index = 0 , HomeViewType.Skeleton)
         viewModelScope.launch(Main){
-            async{
-                fetchMostLikedNews()
-            }
-            async {
-                fetchCurrentNews()
-            }
+            async{ fetchMostLikedNews() }
+            async { fetchCurrentNews() }
         }
     }
 
-    fun refresh(){
-        println("ON REFRESHH")
-        homeViewTypes = listOf()
-        _isOnRefresh.value = true
-        addHomeViewType(index = 0 , HomeViewType.Skeleton)
-        viewModelScope.launch(Main){
-            val mostLikedNews =  async{ fetchMostLikedNews() }
-            val recentNews = async{fetchCurrentNews()}
-            mostLikedNews.await()
-            recentNews.await()
-            _isOnRefresh.value = false
-        }
-    }
+//    fun refresh(){
+//        println("ON REFRESHH")
+//        homeViewTypes = listOf()
+//        addHomeViewType(index = 0 , HomeViewType.Skeleton)
+//        viewModelScope.launch(Main){
+//            async{ fetchMostLikedNews() }
+//            async{fetchCurrentNews(perpage = currentPage * DEFAULT_PERPAGE , page = 1)}
+//        }
+//    }
 
 
     private suspend fun fetchMostLikedNews() {

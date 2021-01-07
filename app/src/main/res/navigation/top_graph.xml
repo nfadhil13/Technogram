@@ -2,10 +2,18 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/top_graph"
-    app:startDestination="@id/mainFragment">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.fdev.technogram.ui.screen.main.MainFragment"
         android:label="MainFragment" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.fdev.technogram.ui.screen.splash.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_mainFragment"
+            app:destination="@id/mainFragment" />
+    </fragment>
 </navigation>

@@ -16,6 +16,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.fdev.technogram.R
 
+//Define all apps ui things like top app bar , drawer , bottom navigation etc
 
 @Composable
 fun TechnogramTopAppBar(
@@ -76,4 +77,11 @@ fun Burger(modifier: Modifier = Modifier , burgerHeight : Dp = 1.dp) {
         Spacer(modifier = Modifier.weight(1f))
         Box(modifier = burgerModifier.weight(1f))
     }
+}
+
+@Composable
+fun TechnogramDrawer(
+    modifier: Modifier = Modifier
+){
+    
 }

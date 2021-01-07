@@ -9,6 +9,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onActive
 import androidx.compose.runtime.onDispose
@@ -34,21 +35,24 @@ fun Home(
 
 
     val scrollState = rememberLazyListState(
-        initialFirstVisibleItemIndex = homeViewModel.scrollState.index ,
+        initialFirstVisibleItemIndex = homeViewModel.scrollState.index,
         initialFirstVisibleItemScrollOffset = homeViewModel.scrollState.offset
     )
 
 
     onDispose(callback = {
-        homeViewModel.setScollState(index = scrollState.firstVisibleItemIndex , offset = scrollState.firstVisibleItemScrollOffset)
+        homeViewModel.setScollState(
+            index = scrollState.firstVisibleItemIndex,
+            offset = scrollState.firstVisibleItemScrollOffset
+        )
     })
-
     LazyColumn(
         state = scrollState,
         modifier = Modifier
             .padding(10.dp)
             .fillMaxHeight()
-            .fillMaxWidth(),
+            .fillMaxWidth()
+        ,
         content = {
             itemsIndexed(
                 items = homeViewModel.homeViewTypes,
@@ -74,7 +78,8 @@ fun Home(
                     }
                     is HomeViewType.NoMoreItem -> {
                         Text(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier
+                                .fillMaxWidth()
                                 .wrapContentHeight(),
                             text = "No More Item",
                             textAlign = TextAlign.Center,
@@ -87,13 +92,17 @@ fun Home(
                     }
                     is HomeViewType.LoadingItem -> {
                         CircularLoading(
-                            modifier = Modifier.fillMaxWidth().wrapContentHeight(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(10.dp),
                             alignment = Alignment.Center
                         )
                     }
                 }
             }
         })
+
 
 }
 
@@ -143,7 +152,12 @@ fun TopOfHome(
             style = MaterialTheme.typography.h5.merge(TextStyle(fontWeight = FontWeight.SemiBold)),
             textAlign = TextAlign.Start
         )
-        Spacer(modifier = Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
+        Spacer(
+            modifier = Modifier
+                .height(height = 1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
+        )
     }
 
 }
@@ -162,7 +176,12 @@ fun RecentNews(
             news = news,
             modifier = Modifier.clickable(onClick = { onNewsClicked(news) })
         )
-        Spacer(modifier = Modifier.height(height = 1.dp).fillMaxWidth().background(Color.Gray))
+        Spacer(
+            modifier = Modifier
+                .height(height = 1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
+        )
     }
 
 }
@@ -184,7 +203,10 @@ fun HomeSkeleton(
 
     Column {
         Box(
-            modifier = Modifier.fillMaxWidth(0.45f).height(24.dp).background(pulseColor)
+            modifier = Modifier
+                .fillMaxWidth(0.45f)
+                .height(24.dp)
+                .background(pulseColor)
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         HeaderNewsSkeleton(

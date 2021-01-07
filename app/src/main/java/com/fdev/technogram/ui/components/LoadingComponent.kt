@@ -15,7 +15,7 @@ fun CircularLoading(
         modifier = modifier
     ) {
         CircularProgressIndicator(
-            modifier = Modifier.align(Alignment.Center)
+            modifier = Modifier.align(alignment)
         )
     }
 }

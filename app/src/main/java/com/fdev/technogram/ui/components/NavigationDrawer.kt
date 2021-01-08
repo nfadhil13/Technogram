@@ -83,7 +83,7 @@ fun DrawerNavigationButtons(
                             )
                         }
                         is MainNavigation.Search -> {
-                            DrawerNavigationItem(icon = Icons.Outlined.Search, text = "Search")
+                            DrawerNavigationItem(icon = Icons.Outlined.Search, text = "Search" , isActive = index == activeIndex)
                         }
                         is MainNavigation.SearchWithQuery -> {
                             DrawerNavigationItem(icon = navigation.icon, text = navigation.query , isActive = index == activeIndex)

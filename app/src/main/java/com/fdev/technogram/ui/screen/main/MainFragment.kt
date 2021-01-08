@@ -111,10 +111,10 @@ class MainFragment : Fragment() {
                 childNavController.navigate(R.id.homeFragment)
             }
             is MainNavigation.SearchWithQuery -> {
-                childNavController.navigate(R.id.newsDetailFragment , bundleOf(MainBundleConst.HOME_TO_NEWSDETAIL_NEWS_BUNDLE to produceFakeNewsData()))
+                childNavController.navigate(R.id.searchFragment , bundleOf(MainBundleConst.SEARCH_QUERY_BUNDLE to navigation.query))
             }
             is MainNavigation.More -> {
-                println("go to more")
+                childNavController.navigate(R.id.categoriesFragment)
             }
             is MainNavigation.Search -> {
                 childNavController.navigate(R.id.searchFragment)

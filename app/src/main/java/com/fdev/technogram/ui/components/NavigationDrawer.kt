@@ -4,23 +4,17 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Login
-import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.loadVectorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.fdev.technogram.R
 import com.fdev.technogram.ui.screen.main.MainNavigation
@@ -89,11 +83,15 @@ fun DrawerNavigationButtons(
                             )
                         }
                         is MainNavigation.Search -> {
+                            DrawerNavigationItem(icon = Icons.Outlined.Search, text = "Search")
+                        }
+                        is MainNavigation.SearchWithQuery -> {
                             DrawerNavigationItem(icon = navigation.icon, text = navigation.query , isActive = index == activeIndex)
                         }
                         is MainNavigation.More -> {
                             DrawerNavigationItem(icon = R.drawable.ic_more, text = "More" , isActive = index == activeIndex)
                         }
+     
                     }
                 }
                 Spacer(modifier = Modifier.height(28.dp))
@@ -119,6 +117,33 @@ fun DrawerNavigationItem(
     ) {
         Icon(
                 imageVector = vectorResource(id = icon),
+                modifier = Modifier.size(24.dp),
+                tint = if (isActive) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
+        )
+        Spacer(modifier = Modifier.width(10.dp))
+        Text(
+                text = text,
+                style = if (isActive) MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold, color = MaterialTheme.colors.primary)
+                else MaterialTheme.typography.caption,
+                modifier = Modifier.align(Alignment.CenterVertically)
+        )
+    }
+}
+
+@Composable
+fun DrawerNavigationItem(
+        icon: ImageVector,
+        text: String,
+        modifier: Modifier = Modifier,
+        isActive: Boolean = false
+
+) {
+    Row(
+            modifier = modifier
+                    .fillMaxWidth()
+    ) {
+        Icon(
+                imageVector = icon,
                 modifier = Modifier.size(24.dp),
                 tint = if (isActive) MaterialTheme.colors.primary else MaterialTheme.colors.onBackground
         )

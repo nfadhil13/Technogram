@@ -12,9 +12,7 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
-import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.navOptions
 import com.fdev.technogram.R
 import com.fdev.technogram.databinding.FragmentMainBinding
 import com.fdev.technogram.ui.TechnogramTheme
@@ -40,13 +38,13 @@ class MainFragment : Fragment() {
 
     lateinit var childNavController : NavController
 
-    lateinit var childFragment : Fragment
 
     private val navigations = listOf(
             MainNavigation.Home,
-            MainNavigation.Search("App", R.drawable.ic_app),
-            MainNavigation.Search("Software", R.drawable.ic_software),
-            MainNavigation.Search("Hardware", R.drawable.ic_hardware),
+            MainNavigation.Search,
+            MainNavigation.SearchWithQuery("App", R.drawable.ic_app),
+            MainNavigation.SearchWithQuery("Software", R.drawable.ic_software),
+            MainNavigation.SearchWithQuery("Hardware", R.drawable.ic_hardware),
             MainNavigation.More
     )
 
@@ -70,7 +68,10 @@ class MainFragment : Fragment() {
                 TechnogramTheme{
                     TechnogramTopAppBar(
                             onBurgerClicked = { binding.root.open() },
-                            onSearchClicked = { binding.root.open() }
+                            onSearchClicked = {
+                                mainViewModel.currentSelected = 1
+                                onDrawerNavigate(MainNavigation.Search)
+                            }
                     )
                 }
             }
@@ -82,9 +83,6 @@ class MainFragment : Fragment() {
                                     .padding(10.dp),
                             isLoggedIn = false,
                             onSignInClicked = { /*TODO*/ },
-                            onSearch = { /*TODO*/ },
-                            searchKey = "",
-                            onValueChange = { /*TODO*/ },
                             navigations = navigations,
                             onNavigationItemClicked = { selectedMenu ->
                                 mainViewModel.currentSelected = selectedMenu
@@ -103,7 +101,6 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         childFragmentManager.findFragmentById(R.id.main_nav_host_fragment)?.let{ childFragment ->
             childNavController = childFragment.findNavController()
-            this.childFragment = childFragment
         }?:throw Error("No child fragment found")
     }
 
@@ -113,11 +110,14 @@ class MainFragment : Fragment() {
             is MainNavigation.Home -> {
                 childNavController.navigate(R.id.homeFragment)
             }
-            is MainNavigation.Search -> {
+            is MainNavigation.SearchWithQuery -> {
                 childNavController.navigate(R.id.newsDetailFragment , bundleOf(MainBundleConst.HOME_TO_NEWSDETAIL_NEWS_BUNDLE to produceFakeNewsData()))
             }
             is MainNavigation.More -> {
                 println("go to more")
+            }
+            is MainNavigation.Search -> {
+                childNavController.navigate(R.id.searchFragment)
             }
         }
         binding.root.closeDrawers()

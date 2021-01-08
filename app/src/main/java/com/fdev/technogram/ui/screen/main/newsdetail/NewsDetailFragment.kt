@@ -17,13 +17,13 @@ class NewsDetailFragment : Fragment(){
 
 
     private val newsDetailViewModel : NewsDetailViewModel by viewModels()
-    private lateinit var currentNews : News
+//    private lateinit var currentNews : News
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.get(MainBundleConst.HOME_TO_NEWSDETAIL_NEWS_BUNDLE)?.let { newsBundle ->
             if(newsBundle is News){
-                currentNews = newsBundle
+                newsDetailViewModel.setCurrentNews(newsBundle)
             }else{
                 throw Exception("This bundle has to be com.fdev.technogram.model.News ")
             }
@@ -38,15 +38,14 @@ class NewsDetailFragment : Fragment(){
         return ComposeView(requireContext()).apply {
             setContent {
                 TechnogramTheme() {
-                    NewsDetail(currentNews , newsDetailViewModel = newsDetailViewModel)
+                    newsDetailViewModel.news?.let {
+                        NewsDetail(it, newsDetailViewModel = newsDetailViewModel)
+                    }
                 }
 
             }
         }
     }
 
-    fun refresh() {
-        println("refresh ${currentNews.title}")
-    }
 
 }

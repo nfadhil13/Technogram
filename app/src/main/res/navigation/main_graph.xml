@@ -2,10 +2,46 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/homeFragment2">
+    app:startDestination="@id/homeFragment">
 
     <fragment
-        android:id="@+id/homeFragment2"
+        android:id="@+id/homeFragment"
         android:name="com.fdev.technogram.ui.screen.main.home.HomeFragment"
-        android:label="HomeFragment" />
+        android:label="HomeFragment"
+        >
+        <action
+            android:id="@+id/action_homeFragment_to_newsDetailFragment"
+            app:destination="@id/newsDetailFragment"
+            />
+        <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_categoriesFragment"
+            app:destination="@id/categoriesFragment" />
+    </fragment>
+    <action
+            android:id="@+id/action_to_homeFragment"
+        >
+    </action>
+    <fragment
+        android:id="@+id/newsDetailFragment"
+        android:name="com.fdev.technogram.ui.screen.main.newsdetail.NewsDetailFragment"
+        android:label="NewsDetailFragment" >
+        <action
+            android:id="@+id/action_newsDetailFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.fdev.technogram.ui.screen.main.searchresult.SearchFragment"
+        android:label="SearchFragment" />
+    <fragment
+        android:id="@+id/categoriesFragment"
+        android:name="com.fdev.technogram.ui.screen.main.categories.CategoriesFragment"
+        android:label="CategoriesFragment" >
+        <action
+            android:id="@+id/action_categoriesFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+    </fragment>
 </navigation>

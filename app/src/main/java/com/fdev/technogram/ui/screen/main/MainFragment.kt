@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
@@ -20,14 +21,22 @@ import com.fdev.technogram.ui.TechnogramTheme
 import com.fdev.technogram.ui.components.TechnogramDrawer
 import com.fdev.technogram.ui.components.TechnogramTopAppBar
 import com.fdev.technogram.util.produceFakeNewsData
+import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Error
 
+
+
+@AndroidEntryPoint
 class MainFragment : Fragment() {
 
 
     private var _binding: FragmentMainBinding? = null
 
-    private val binding get() = _binding!!
+    private val binding
+        get() = _binding!!
+
+
+    private val mainViewModel : MainViewModel by viewModels()
 
     lateinit var childNavController : NavController
 
@@ -40,6 +49,7 @@ class MainFragment : Fragment() {
             MainNavigation.Search("Hardware", R.drawable.ic_hardware),
             MainNavigation.More
     )
+
 
 
     override fun onCreateView(
@@ -76,7 +86,12 @@ class MainFragment : Fragment() {
                             searchKey = "",
                             onValueChange = { /*TODO*/ },
                             navigations = navigations,
-                            onNavigationItemClicked = { onDrawerNavigate(it) }
+                            onNavigationItemClicked = { selectedMenu ->
+                                mainViewModel.currentSelected = selectedMenu
+                                onDrawerNavigate(navigations[selectedMenu])
+                            },
+                            selectedItem = mainViewModel.currentSelected
+
                     )
                 }
             }
@@ -94,14 +109,9 @@ class MainFragment : Fragment() {
 
 
     private fun onDrawerNavigate(navigation: MainNavigation) {
-//        println("Fragments list : ")
-//        childNavController.backStack.
-//        childFragment.childFragmentManager.fragments.forEach { fragment ->
-//            println(fragment::class.java.name)
-//        }
         when(navigation) {
             is MainNavigation.Home -> {
-                childNavController.navigate(R.id.action_to_homeFragment)
+                childNavController.navigate(R.id.homeFragment)
             }
             is MainNavigation.Search -> {
                 childNavController.navigate(R.id.newsDetailFragment , bundleOf(MainBundleConst.HOME_TO_NEWSDETAIL_NEWS_BUNDLE to produceFakeNewsData()))

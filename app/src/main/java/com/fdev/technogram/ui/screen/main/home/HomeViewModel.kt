@@ -54,15 +54,6 @@ class HomeViewModel @ViewModelInject constructor(
         }
     }
 
-//    fun refresh(){
-//        println("ON REFRESHH")
-//        homeViewTypes = listOf()
-//        addHomeViewType(index = 0 , HomeViewType.Skeleton)
-//        viewModelScope.launch(Main){
-//            async{ fetchMostLikedNews() }
-//            async{fetchCurrentNews(perpage = currentPage * DEFAULT_PERPAGE , page = 1)}
-//        }
-//    }
 
 
     private suspend fun fetchMostLikedNews() {

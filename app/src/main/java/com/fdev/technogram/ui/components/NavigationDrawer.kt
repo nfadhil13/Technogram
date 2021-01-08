@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Login
@@ -13,10 +14,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.loadVectorResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.fdev.technogram.R
 import com.fdev.technogram.ui.screen.main.MainNavigation
@@ -26,24 +30,15 @@ fun TechnogramDrawer(
         modifier: Modifier = Modifier,
         isLoggedIn: Boolean,
         onSignInClicked: () -> Unit,
-        onSearch: () -> Unit,
-        searchKey: String,
         navigations: List<MainNavigation>,
-        onNavigationItemClicked : (MainNavigation) -> Unit,
-        onValueChange: (newValue: String) -> Unit,
+        onNavigationItemClicked : (Int) -> Unit,
+        selectedItem : Int
 ) {
 
 
     Column(
             modifier = modifier.padding(10.dp)
     ) {
-        Spacer(modifier = Modifier.height(24.dp))
-        DrawerSearch(
-                modifier = Modifier.fillMaxWidth(),
-                onSearch = onSearch,
-                searchKey = searchKey,
-                onValueChange = onValueChange
-        )
         Providers(AmbientContentAlpha provides ContentAlpha.medium) {
             Spacer(modifier = Modifier.height(42.dp))
             DrawerUserLayout(
@@ -53,7 +48,8 @@ fun TechnogramDrawer(
             Spacer(modifier = Modifier.height(28.dp))
             DrawerNavigationButtons(
                     navigations = navigations,
-                    onItemClicked = onNavigationItemClicked
+                    onItemClicked = onNavigationItemClicked,
+                    activeIndex = selectedItem
             )
         }
 
@@ -65,7 +61,8 @@ fun TechnogramDrawer(
 @Composable
 fun DrawerNavigationButtons(
         navigations: List<MainNavigation>,
-        onItemClicked: (clickedItem: MainNavigation) -> Unit
+        onItemClicked: (clickedItem: Int) -> Unit,
+        activeIndex : Int
 ) {
     Column() {
         Box(
@@ -78,22 +75,24 @@ fun DrawerNavigationButtons(
         Column(
                 modifier = Modifier.fillMaxWidth()
         ) {
-            navigations.forEach { navigation ->
+            navigations.forEachIndexed { index , navigation ->
+                println(index == activeIndex)
                 Surface(
-                        modifier = Modifier.clickable(onClick = { onItemClicked(navigation) })
+                        modifier = Modifier.clickable(onClick = { onItemClicked(index) })
+
                 ) {
                     when (navigation) {
                         is MainNavigation.Home -> {
                             DrawerNavigationItem(
                                     icon = R.drawable.ic_home,
-                                    text = "Home", isActive = true
+                                    text = "Home", isActive = index == activeIndex
                             )
                         }
                         is MainNavigation.Search -> {
-                            DrawerNavigationItem(icon = navigation.icon, text = navigation.query)
+                            DrawerNavigationItem(icon = navigation.icon, text = navigation.query , isActive = index == activeIndex)
                         }
                         is MainNavigation.More -> {
-                            DrawerNavigationItem(icon = R.drawable.ic_more, text = "More")
+                            DrawerNavigationItem(icon = R.drawable.ic_more, text = "More" , isActive = index == activeIndex)
                         }
                     }
                 }
@@ -134,35 +133,10 @@ fun DrawerNavigationItem(
 }
 
 @Composable
-fun DrawerSearch(
-        modifier: Modifier = Modifier,
-        onSearch: () -> Unit = {},
-        searchKey: String,
-        onValueChange: (newValue: String) -> Unit
-) {
-    TextField(
-            modifier = modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 0.dp),
-            value = searchKey,
-            onValueChange = { newValue ->
-                onValueChange(newValue)
-            },
-            leadingIcon = {
-                Icon(Icons.Outlined.Search, tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f))
-            },
-            singleLine = true,
-            backgroundColor = MaterialTheme.colors.background,
-            activeColor = MaterialTheme.colors.onBackground,
-            inactiveColor = MaterialTheme.colors.onBackground
-    )
-}
-
-
-@Composable
-fun DrawerUserLayout(isLoggedIn: Boolean, onSignInClicked: () -> Unit) {
+fun DrawerUserLayout(isLoggedIn: Boolean, onSignInClicked: () -> Unit , modifier: Modifier = Modifier) {
     if (!isLoggedIn) {
         Row(
+                modifier = modifier
         ) {
             Icon(imageVector = Icons.Filled.Login)
             Spacer(modifier = Modifier.width(10.dp))

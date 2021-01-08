@@ -2,18 +2,10 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/main_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/homeFragment2">
 
     <fragment
-        android:id="@+id/homeFragment"
+        android:id="@+id/homeFragment2"
         android:name="com.fdev.technogram.ui.screen.main.home.HomeFragment"
-        android:label="HomeFragment" >
-        <action
-            android:id="@+id/action_homeFragment_to_newsDetailFragment"
-            app:destination="@id/newsDetailFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/newsDetailFragment"
-        android:name="com.fdev.technogram.ui.screen.main.newsdetail.NewsDetailFragment"
-        android:label="NewsDetailFragment" />
+        android:label="HomeFragment" />
 </navigation>

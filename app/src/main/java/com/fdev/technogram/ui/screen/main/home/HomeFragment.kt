@@ -27,8 +27,6 @@ class HomeFragment : Fragment(){
 
     private val homeViewModel : HomeViewModel by viewModels()
 
-    private var swipeRefresh : SwipeRefreshInterface? = null
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -46,7 +44,7 @@ class HomeFragment : Fragment(){
 
     private fun navigateToNewsDetail(news: News) {
         findNavController().navigate(
-                R.id.action_homeFragment_to_newsDetailFragment,
+                R.id.newsDetailFragment,
                  bundleOf(
                         MainBundleConst.HOME_TO_NEWSDETAIL_NEWS_BUNDLE to news
                 )

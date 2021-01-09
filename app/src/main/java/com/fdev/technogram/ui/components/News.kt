@@ -13,6 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.AmbientConfiguration
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -20,6 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.fdev.technogram.R
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.typography
 import com.fdev.technogram.util.DateUtil
@@ -107,11 +109,15 @@ fun HeaderNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = Mat
                         .fillMaxWidth()
         ) {
             Box(
-                    modifier = basicModifier.weight(0.75f).fillMaxHeight()
+                    modifier = basicModifier
+                            .weight(0.75f)
+                            .fillMaxHeight()
             )
             Spacer(modifier = Modifier.weight(0.75f))
             Box(
-                    modifier = basicModifier.weight(0.5f).fillMaxHeight()
+                    modifier = basicModifier
+                            .weight(0.5f)
+                            .fillMaxHeight()
             )
         }
     }
@@ -171,7 +177,9 @@ fun LeftImageNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = 
     ) {
 
 
-        val basicModifier = Modifier.background(color = skeletonColor).clip(RoundedCornerShape(5.dp))
+        val basicModifier = Modifier
+                .background(color = skeletonColor)
+                .clip(RoundedCornerShape(5.dp))
 
         Card(
                 modifier = Modifier
@@ -189,11 +197,15 @@ fun LeftImageNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = 
                         .weight(3f)
         ) {
             Spacer(
-                    modifier = basicModifier.fillMaxWidth().fillMaxHeight(0.4f),
+                    modifier = basicModifier
+                            .fillMaxWidth()
+                            .fillMaxHeight(0.4f),
             )
             Spacer(modifier = Modifier.height(5.dp))
             Spacer(
-                    modifier = basicModifier.fillMaxWidth(0.6f).fillMaxHeight(0.2f),
+                    modifier = basicModifier
+                            .fillMaxWidth(0.6f)
+                            .fillMaxHeight(0.2f),
             )
         }
 
@@ -203,10 +215,14 @@ fun LeftImageNewsSkeleton(modifier: Modifier = Modifier, skeletonColor: Color = 
 @Composable
 fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
     Row(
-            modifier = modifier.fillMaxWidth().height(180.dp).padding(10.dp)
+            modifier = modifier
+                    .fillMaxWidth()
+                    .height(180.dp)
+                    .padding(10.dp)
     ) {
         Column(
-                modifier = Modifier.weight(3.5f)
+                modifier = Modifier
+                        .weight(3.5f)
                         .fillMaxHeight()
         ) {
             Text(
@@ -214,10 +230,14 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                     style = MaterialTheme.typography.subtitle2.merge(TextStyle(fontWeight = FontWeight.SemiBold)),
                     overflow = TextOverflow.Clip,
                     maxLines = 3,
-                    modifier = Modifier.weight(1.5f).fillMaxWidth()
+                    modifier = Modifier
+                            .weight(1.5f)
+                            .fillMaxWidth()
             )
             Row(
-                    modifier = Modifier.weight(1.5f).fillMaxWidth()
+                    modifier = Modifier
+                            .weight(1.5f)
+                            .fillMaxWidth()
             ) {
                 Providers(AmbientContentAlpha provides ContentAlpha.disabled) {
                     Text(
@@ -225,7 +245,9 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis,
                             style = MaterialTheme.typography.caption,
-                            modifier = Modifier.weight(1.5f).fillMaxWidth()
+                            modifier = Modifier
+                                    .weight(1.5f)
+                                    .fillMaxWidth()
                                     .align(Alignment.CenterVertically)
                     )
                 }
@@ -252,7 +274,8 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
         }
         Spacer(modifier = Modifier.width(10.dp))
         Column(
-                modifier = Modifier.weight(1.25f , fill = false)
+                modifier = Modifier
+                        .weight(1.25f, fill = false)
                         .fillMaxHeight()
                         .align(Alignment.CenterVertically)
         ) {
@@ -272,7 +295,8 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                         text = "❤ ${news.likes}",
                         textAlign = TextAlign.Start,
                         style = MaterialTheme.typography.caption.merge(TextStyle(color = MaterialTheme.colors.primary , fontSize = 10.sp)),
-                        modifier = Modifier.weight(1f)
+                        modifier = Modifier
+                                .weight(1f)
                                 .fillMaxHeight()
                 )
                 Text(
@@ -283,5 +307,117 @@ fun RightImagePreviewNews(news: News, modifier: Modifier = Modifier) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun RightImagePreviewNewsSkeleton(modifier: Modifier = Modifier , skeletonColor: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.6f)) {
+    Providers(AmbientContentAlpha provides ContentAlpha.disabled) {
+        Row(
+                modifier = modifier
+                        .fillMaxWidth()
+                        .height(180.dp)
+                        .padding(10.dp)
+        ) {
+            Column(
+                    modifier = Modifier
+                            .weight(3.5f)
+                            .align(Alignment.CenterVertically)
+            ) {
+                Box(
+                        modifier = Modifier
+                                .fillMaxHeight(0.075f)
+                                .fillMaxWidth()
+                                .background(skeletonColor)
+                )
+                Box(
+                        modifier = Modifier
+                                .fillMaxHeight(0.075f)
+                                .fillMaxWidth(0.85f)
+                                .background(skeletonColor)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Box(
+                        modifier = Modifier
+                                .fillMaxHeight(0.4f)
+                                .fillMaxWidth()
+                                .background(skeletonColor)
+                )
+                Spacer(modifier = Modifier.height(10.dp))
+                Row(
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(0.05f)
+                ) {
+                        Box(
+                                modifier = Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth(0.25F)
+                                        .background(skeletonColor)
+
+                        )
+                    Spacer(modifier = Modifier.fillMaxWidth(0.25f))
+                        Box(
+                                modifier = Modifier
+                                        .fillMaxHeight()
+                                        .fillMaxWidth(0.3f)
+                                        .background(skeletonColor)
+                        )
+
+                }
+            }
+            Spacer(modifier = Modifier.width(10.dp))
+            Column(
+                    modifier = Modifier
+                            .weight(1.25f, fill = false)
+                            .fillMaxHeight()
+                            .align(Alignment.CenterVertically)
+            ) {
+                Box(
+                        modifier = Modifier
+                                .weight(3f)
+                                .align(Alignment.CenterHorizontally)
+                                .aspectRatio(1f)
+                                .background(skeletonColor)
+                )
+                Row(
+                        modifier = Modifier
+                                .weight(1f)
+                                .fillMaxWidth()
+                ) {
+                    Box(
+                            modifier = Modifier
+                                    .fillMaxWidth(0.35f)
+                                    .fillMaxHeight(0.3f)
+                                    .align(Alignment.Top)
+                                    .background(skeletonColor)
+                    )
+                    Box(modifier = Modifier.fillMaxWidth(0.7f))
+                    Box(
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight(0.3f)
+                                    .align(Alignment.Top)
+                                    .background(skeletonColor)
+                    )
+                }
+            }
+        }
+    }
+
+}
+
+@Composable
+fun NoMoreNews(modifier: Modifier = Modifier , text : String = "Tidak ada lagi berita"){
+    Column(
+            modifier = modifier
+    ){
+        Icon(
+                imageVector = vectorResource(id = R.drawable.ic_newspaper),
+                modifier = Modifier.align(Alignment.CenterHorizontally).size(32.dp)
+        )
+        Spacer(modifier = Modifier.height(10.dp))
+        Text(text = text , style = MaterialTheme.typography.caption,
+                modifier = Modifier.fillMaxWidth() , textAlign = TextAlign.Center)
     }
 }

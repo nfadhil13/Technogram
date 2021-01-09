@@ -7,6 +7,12 @@ import java.util.Date
 
 object DateUtil {
 
+    fun getFullDateString(date : Date) : String {
+        val format = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
+        return format.format(date).toString()
+    }
+
+
     // This will return a date with this form : Thu 12/24/2020 14:58
     fun getFullDateFromLong(dateInLong : Long) : String{
         val date = Date(dateInLong)

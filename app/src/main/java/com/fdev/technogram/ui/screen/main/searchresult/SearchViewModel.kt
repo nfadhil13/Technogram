@@ -26,6 +26,10 @@ constructor(
 ) : ViewModel() {
 
 
+    companion object {
+        private const val SEARCH_FETCH_PERPAGE = 10
+    }
+
     var searchQuery: String by mutableStateOf("")
         private set
 
@@ -44,6 +48,7 @@ constructor(
     private var fetchJob: Job = Job()
 
     private val loadingItem = SearchViewType.Loading
+
 
 
     fun search() {
@@ -67,9 +72,9 @@ constructor(
 
     private fun fetchNews() {
         val fetch = if (searchMethod == MOST_LIKED)
-            newsInteractors.fetchMostLikedNews.fetch(10, searchQuery, currentPage, IO)
+            newsInteractors.fetchMostLikedNews.fetch(SEARCH_FETCH_PERPAGE, searchQuery, currentPage, IO)
         else
-            newsInteractors.fetchRecentNews.fetch(10, searchQuery, currentPage, IO)
+            newsInteractors.fetchRecentNews.fetch(SEARCH_FETCH_PERPAGE, searchQuery, currentPage, IO)
 
         fetchJob = viewModelScope.launch(IO) {
             fetch.collect { result ->
@@ -80,7 +85,12 @@ constructor(
                             result.data.forEach {
                                 addItem(SearchViewType.NewsItem(it))
                             }
-                            currentPage++
+                            if(result.data.size < SEARCH_FETCH_PERPAGE){
+                                currentPage = -1
+                                addItem(SearchViewType.NoMoreItem)
+                            }else{
+                                currentPage++
+                            }
                         } else {
                             if (currentPage == 1) {
                                 addItem(SearchViewType.NoItemFound)
@@ -133,6 +143,8 @@ constructor(
     private fun cancleJobIfActive() {
         if (fetchJob.isActive) fetchJob.cancel()
     }
+
+
 
 
 }

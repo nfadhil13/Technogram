@@ -1,13 +1,12 @@
 package com.fdev.technogram.ui.screen.main.searchresult
 
+import androidx.compose.animation.transition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
@@ -15,9 +14,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.fdev.technogram.model.News
+import com.fdev.technogram.ui.animations.ColorPulse
+import com.fdev.technogram.ui.components.NoMoreNews
 import com.fdev.technogram.ui.components.RightImagePreviewNews
+import com.fdev.technogram.ui.components.RightImagePreviewNewsSkeleton
 import com.fdev.technogram.ui.screen.main.newsdetail.SearchViewType
-import java.time.format.TextStyle
 
 
 @Composable
@@ -67,7 +68,7 @@ fun Search(
                                 SearchNoMoreItem()
                             }
                             is SearchViewType.Loading -> {
-                                Text("Loading .. ")
+                                SearchLoading()
                             }
                         }
                     }
@@ -75,6 +76,7 @@ fun Search(
         )
     }
 }
+
 
 
 @Composable
@@ -111,7 +113,10 @@ fun SearchNoItemFound() {
 
 @Composable
 fun SearchNoMoreItem() {
-    Text("Tidak ada lagi berita dengan kata kunci terkait")
+    NoMoreNews(
+            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            text = "Tidak ada lagi berita dengan kata kunci terkait"
+    )
 }
 
 @Composable
@@ -136,4 +141,44 @@ fun SearchResultItem(
         )
     }
 
+}
+
+
+@Composable
+fun SearchLoading(
+        modifier: Modifier = Modifier
+){
+    Column {
+        for(i in 1..3){
+            SearchLoadingPreview()
+        }
+    }
+}
+
+@Composable
+fun SearchLoadingPreview(
+        modifier: Modifier = Modifier
+){
+
+
+    val colorPulse = transition(
+            definition = ColorPulse.shimmerDefinition,
+            initState = ColorPulse.ShimmerState.INITIAL,
+            toState = ColorPulse.ShimmerState.FINAL
+    )
+
+    val pulseColor = colorPulse[ColorPulse.shimmerKey]
+
+    Column(
+            modifier = modifier
+    ) {
+        Spacer(modifier = Modifier.height(10.dp))
+        RightImagePreviewNewsSkeleton(skeletonColor = pulseColor)
+        Spacer(
+                modifier = Modifier
+                        .height(height = 1.dp)
+                        .fillMaxWidth()
+                        .background(Color.Gray)
+        )
+    }
 }

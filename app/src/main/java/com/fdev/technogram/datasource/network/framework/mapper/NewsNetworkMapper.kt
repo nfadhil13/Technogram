@@ -2,7 +2,7 @@ package com.fdev.technogram.datasource.network.framework.mapper
 
 import com.fdev.technogram.datasource.DomainMapper
 import com.fdev.technogram.datasource.network.NetworkConst
-import com.fdev.technogram.datasource.network.framework.model.news.NewsDto
+import com.fdev.technogram.datasource.network.framework.model.NewsDto
 import com.fdev.technogram.model.News
 import com.fdev.technogram.util.DateUtil
 import com.fdev.technogram.util.htmlToText
@@ -12,7 +12,7 @@ class NewsNetworkMapper
 @Inject
 constructor(
 
-) : DomainMapper<NewsDto , News>{
+) : DomainMapper<NewsDto, News>{
 
 
     override fun mapFromDomain(domain: News): NewsDto {

@@ -1,5 +1,6 @@
 package com.fdev.technogram.di
 
+import com.fdev.technogram.datasource.network.framework.service.CategoryApiService
 import com.fdev.technogram.datasource.network.framework.service.NewsApiService
 import dagger.Module
 import dagger.Provides
@@ -10,7 +11,7 @@ import retrofit2.Retrofit
 
 @Module
 @InstallIn(ActivityComponent::class)
-object FragmentModule {
+object ActivityModule {
 
 
     @Provides
@@ -20,5 +21,14 @@ object FragmentModule {
         return  retrofitBuilder
             .build()
             .create(NewsApiService::class.java)
+    }
+
+    @Provides
+    fun provideCategoryApi(
+            retrofitBuilder : Retrofit.Builder
+    ) : CategoryApiService {
+        return  retrofitBuilder
+                .build()
+                .create(CategoryApiService::class.java)
     }
 }

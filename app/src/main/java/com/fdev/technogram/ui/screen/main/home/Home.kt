@@ -47,61 +47,51 @@ fun Home(
         )
     })
     LazyColumn(
-        state = scrollState,
-        modifier = Modifier
-            .padding(10.dp)
-            .fillMaxHeight()
-            .fillMaxWidth()
-        ,
-        content = {
-            itemsIndexed(
-                items = homeViewModel.homeViewTypes,
-            ) { index, item ->
-                if (homeViewModel.shouldFetchMore(index)) {
-                    onActive(callback = {
-                        homeViewModel.fetchCurrentNewsNextPage()
-                    })
-                }
-                when (item) {
-                    is HomeViewType.Skeleton -> {
-                        HomeSkeleton()
+            state = scrollState,
+            modifier = Modifier
+                    .padding(10.dp)
+                    .fillMaxHeight()
+                    .fillMaxWidth(),
+            content = {
+                itemsIndexed(
+                        items = homeViewModel.homeViewTypes,
+                ) { index, item ->
+                    if (homeViewModel.shouldFetchMore(index)) {
+                        onActive(callback = {
+                            homeViewModel.fetchCurrentNewsNextPage()
+                        })
                     }
-                    is HomeViewType.RecentNews -> {
-                        RecentNews(news = item.news, onNewsClicked = onNewsClicked)
-                    }
-                    is HomeViewType.TopOfHome -> {
-                        TopOfHome(
-                            onNewsClicked = onNewsClicked,
-                            popularNewsList = item.mostLikedNews,
-                            headerNews = item.headerNews
-                        )
-                    }
-                    is HomeViewType.NoMoreItem -> {
-                        Text(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight(),
-                            text = "No More Item",
-                            textAlign = TextAlign.Center,
-                            style = typography.h5.merge(
-                                TextStyle(
-                                    fontWeight = FontWeight.Normal
-                                )
+                    when (item) {
+                        is HomeViewType.Skeleton -> {
+                            HomeSkeleton()
+                        }
+                        is HomeViewType.RecentNews -> {
+                            RecentNews(news = item.news, onNewsClicked = onNewsClicked)
+                        }
+                        is HomeViewType.TopOfHome -> {
+                            TopOfHome(
+                                    onNewsClicked = onNewsClicked,
+                                    popularNewsList = item.mostLikedNews,
+                                    headerNews = item.headerNews
                             )
-                        )
-                    }
-                    is HomeViewType.LoadingItem -> {
-                        CircularLoading(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .wrapContentHeight()
-                                .padding(10.dp),
-                            alignment = Alignment.Center
-                        )
+                        }
+                        is HomeViewType.NoMoreItem -> {
+                            NoMoreNews(
+                                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                            )
+                        }
+                        is HomeViewType.LoadingItem -> {
+                            CircularLoading(
+                                    modifier = Modifier
+                                            .fillMaxWidth()
+                                            .wrapContentHeight()
+                                            .padding(10.dp),
+                                    alignment = Alignment.Center
+                            )
+                        }
                     }
                 }
-            }
-        })
+            })
 
 
 }
@@ -125,22 +115,22 @@ fun TopOfHome(
         HeaderNews(
             news = headerNews,
             modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 200.dp, max = 300.dp)
-                .clickable(onClick = ({
-                    onNewsClicked(headerNews)
-                }))
+                    .fillMaxWidth()
+                    .heightIn(min = 200.dp, max = 300.dp)
+                    .clickable(onClick = ({
+                        onNewsClicked(headerNews)
+                    }))
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         for (news in popularNewsList) {
             LeftImageNews(
                 news = news,
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 96.dp, max = 220.dp)
-                    .clickable(onClick = {
-                        onNewsClicked(news)
-                    })
+                        .fillMaxWidth()
+                        .heightIn(min = 96.dp, max = 220.dp)
+                        .clickable(onClick = {
+                            onNewsClicked(news)
+                        })
             )
 
             Spacer(modifier = Modifier.height(height = 12.dp))
@@ -154,9 +144,9 @@ fun TopOfHome(
         )
         Spacer(
             modifier = Modifier
-                .height(height = 1.dp)
-                .fillMaxWidth()
-                .background(Color.Gray)
+                    .height(height = 1.dp)
+                    .fillMaxWidth()
+                    .background(Color.Gray)
         )
     }
 
@@ -178,9 +168,9 @@ fun RecentNews(
         )
         Spacer(
             modifier = Modifier
-                .height(height = 1.dp)
-                .fillMaxWidth()
-                .background(Color.Gray)
+                    .height(height = 1.dp)
+                    .fillMaxWidth()
+                    .background(Color.Gray)
         )
     }
 
@@ -204,15 +194,15 @@ fun HomeSkeleton(
     Column {
         Box(
             modifier = Modifier
-                .fillMaxWidth(0.45f)
-                .height(24.dp)
-                .background(pulseColor)
+                    .fillMaxWidth(0.45f)
+                    .height(24.dp)
+                    .background(pulseColor)
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         HeaderNewsSkeleton(
             modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
+                    .fillMaxWidth()
+                    .height(300.dp),
             skeletonColor = pulseColor
 
         )
@@ -220,8 +210,8 @@ fun HomeSkeleton(
         for (i in 1..3) {
             LeftImageNewsSkeleton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 96.dp, max = 128.dp),
+                        .fillMaxWidth()
+                        .heightIn(min = 96.dp, max = 128.dp),
 
                 skeletonColor = pulseColor
 

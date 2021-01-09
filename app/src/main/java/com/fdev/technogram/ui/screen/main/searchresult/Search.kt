@@ -4,19 +4,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TextField
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.components.RightImagePreviewNews
 import com.fdev.technogram.ui.screen.main.newsdetail.SearchViewType
+import java.time.format.TextStyle
 
 
 @Composable
@@ -87,14 +88,19 @@ fun SearchSearchBar(
             modifier = modifier,
             value = searchQuery,
             onValueChange = onSearchQueryChange,
-            trailingIcon = {
-                Icon(
-                        Icons.Outlined.Search,
-                        tint = MaterialTheme.colors.onBackground,
-                        modifier = Modifier.clickable(onClick = onSearch)
-                )
+            textStyle  = MaterialTheme.typography.caption,
+            placeholder = {
+                Providers(AmbientContentAlpha provides ContentAlpha.disabled) {
+                    Text("Masukan kata kunci disini" , style = MaterialTheme.typography.caption)
+                }
             },
-            backgroundColor = MaterialTheme.colors.background
+            backgroundColor = MaterialTheme.colors.background,
+            keyboardOptions = KeyboardOptions(autoCorrect = false, imeAction = ImeAction.Search),
+            onImeActionPerformed = { _, softwareKeyboardController ->
+                onSearch()
+                softwareKeyboardController?.hideSoftwareKeyboard()
+            }
+
     )
 }
 

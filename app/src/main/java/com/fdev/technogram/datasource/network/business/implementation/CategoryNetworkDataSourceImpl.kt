@@ -1,5 +1,6 @@
 package com.fdev.technogram.datasource.network.business.implementation
 
+import com.fdev.technogram.datasource.network.NetworkErrorConst
 import com.fdev.technogram.datasource.network.business.abstraction.CategoryNetworkDataSource
 import com.fdev.technogram.datasource.network.framework.mapper.CategoryNetworkMapper
 import com.fdev.technogram.datasource.network.framework.service.CategoryApiService
@@ -14,9 +15,14 @@ constructor(
 ) : CategoryNetworkDataSource {
 
     override suspend fun getAllCategories(): List<Category> {
-        return categoryApiService.getRecentNews().map{ it ->
-            categoryNetworkMapper.mapToDomain(it)
-        }
+        val result = categoryApiService.getRecentNews()
+        result.data?.let{ data ->
+            val newList = ArrayList<Category>()
+            data.forEach { category ->
+                newList.add(categoryNetworkMapper.mapToDomain(category))
+            }
+            return newList
+        } ?: throw Exception(NetworkErrorConst.DATA_NULL)
     }
 
 }

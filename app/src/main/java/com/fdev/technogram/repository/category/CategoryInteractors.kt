@@ -5,5 +5,5 @@ import javax.inject.Inject
 class CategoryInteractors
 @Inject
 constructor(
-        private val fetchAllCategory: FetchAllCategory
+        val fetchAllCategory: FetchAllCategory
 )

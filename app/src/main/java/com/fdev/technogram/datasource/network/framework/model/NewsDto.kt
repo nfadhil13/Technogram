@@ -1,4 +1,4 @@
-package com.fdev.technogram.datasource.network.framework.model.news
+package com.fdev.technogram.datasource.network.framework.model
 
 data class NewsDto(
     val artikel: String = "",

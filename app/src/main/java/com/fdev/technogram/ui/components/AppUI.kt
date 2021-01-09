@@ -5,8 +5,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -20,56 +23,67 @@ import com.fdev.technogram.R
 
 @Composable
 fun TechnogramTopAppBar(
-        onBurgerClicked : (() -> Unit)
+    onBurgerClicked: () -> Unit,
+    onSearchClicked: () -> Unit
 ) {
     TopAppBar(
-            backgroundColor = Color.White,
-            elevation = 5.dp
+        backgroundColor = Color.White,
+        elevation = 5.dp
     ) {
         Surface(
-                modifier = Modifier.padding(horizontal = 10.dp)
+            modifier = Modifier.padding(horizontal = 10.dp)
         )
         {
-            Row{
+            Row {
                 Box(
-                        modifier = Modifier
-                            .weight(1f)
-                            .fillMaxHeight()
-                ){
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
+                ) {
                     Burger(
-                            modifier = Modifier
-                                .width(22.dp)
-                                .align(Alignment.CenterStart)
-                                .fillMaxHeight(0.3f)
-                                .clickable(onClick = onBurgerClicked)
+                        modifier = Modifier
+                            .width(22.dp)
+                            .align(Alignment.CenterStart)
+                            .fillMaxHeight(0.3f)
+                            .clickable(onClick = onBurgerClicked)
                     )
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Image(
-                        imageResource(id = R.drawable.technogram_logo),
-                        modifier = Modifier
-                                .weight(1f)
-                                .fillMaxHeight()
+                    imageResource(id = R.drawable.technogram_logo),
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight()
                 )
-                Spacer(
+                Box(
+                    modifier = Modifier
+                        .weight(2f)
+                        .fillMaxHeight()
+                ){
+                    Icon(
+                        imageVector = Icons.Outlined.Search,
+                        tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
                         modifier = Modifier
-                                .weight(2f)
-                                .fillMaxHeight()
-                )
+                            .fillMaxHeight()
+                            .align(Alignment.CenterEnd)
+                            .clickable(onClick = onSearchClicked)
+                    )
+                }
+
             }
         }
     }
 }
 
 @Composable
-fun Burger(modifier: Modifier = Modifier , burgerHeight : Dp = 1.dp) {
+fun Burger(modifier: Modifier = Modifier, burgerHeight: Dp = 1.dp) {
 
     val burgerModifier = Modifier
-            .fillMaxWidth()
-            .height(burgerHeight)
-            .background(Color.Gray)
+        .fillMaxWidth()
+        .height(burgerHeight)
+        .background(MaterialTheme.colors.onBackground.copy(alpha = 0.6f))
     Column(
-            modifier = modifier
+        modifier = modifier
     ) {
         Box(modifier = burgerModifier.weight(1f))
         Spacer(modifier = Modifier.weight(1f))

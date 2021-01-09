@@ -1,56 +1,53 @@
-package com.fdev.technogram.ui.screen.main.home
+package com.fdev.technogram.ui.screen.main.searchresult
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.material.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.fdev.technogram.R
-import com.fdev.technogram.datasource.network.business.abstraction.NewsNetworkDataSource
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.TechnogramTheme
 import com.fdev.technogram.ui.screen.main.MainBundleConst
-import com.fdev.technogram.ui.screen.main.SwipeRefreshInterface
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(){
+class SearchFragment : Fragment(){
 
-    @Inject
-    lateinit var networkDataSource: NewsNetworkDataSource
 
-    private val homeViewModel : HomeViewModel by activityViewModels()
+    private val searchViewModel : SearchViewModel by viewModels()
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        arguments?.getString(MainBundleConst.SEARCH_QUERY_BUNDLE)?.let{
+            searchViewModel.changeSearchQuery(it)
+            searchViewModel.search()
+        }
+    }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         return ComposeView(requireContext()).apply {
             setContent {
                 TechnogramTheme() {
-                    Home(homeViewModel = homeViewModel , onNewsClicked = { news -> navigateToNewsDetail(news)})
+                    Search(onNewsClicked = { news -> navToDetailNews(news) }, viewModel = searchViewModel)
                 }
             }
         }
     }
 
-
-    private fun navigateToNewsDetail(news: News) {
+    private fun navToDetailNews(news: News) {
         findNavController().navigate(
                 R.id.newsDetailFragment,
-                 bundleOf(
+                bundleOf(
                         MainBundleConst.HOME_TO_NEWSDETAIL_NEWS_BUNDLE to news
                 )
         )
     }
-
 
 }

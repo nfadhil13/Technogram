@@ -13,7 +13,7 @@ import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
-
+import kotlinx.coroutines.withContext
 
 
 /*
@@ -54,18 +54,10 @@ class HomeViewModel @ViewModelInject constructor(
         }
     }
 
-//    fun refresh(){
-//        println("ON REFRESHH")
-//        homeViewTypes = listOf()
-//        addHomeViewType(index = 0 , HomeViewType.Skeleton)
-//        viewModelScope.launch(Main){
-//            async{ fetchMostLikedNews() }
-//            async{fetchCurrentNews(perpage = currentPage * DEFAULT_PERPAGE , page = 1)}
-//        }
-//    }
 
 
     private suspend fun fetchMostLikedNews() {
+
             newsInteractors.fetchMostLikedNews.fetch(perpage = 6, dispatcher = IO)
                     .collect { result ->
                         when (result) {
@@ -91,76 +83,93 @@ class HomeViewModel @ViewModelInject constructor(
     private suspend fun fetchCurrentNews(page: Int = currentPage , perpage : Int = DEFAULT_PERPAGE) {
             isFetching = true
             if (page != 1) toogleLoading()
-            newsInteractors.fetchRecentNews.fetch(perpage = perpage, dispatcher = IO, page = page)
-                    .collect { result ->
-                        if (page != 1) toogleLoading()
-                        when (result) {
-                            is DataState.OnSuccess -> {
-                                if (result.data.isEmpty()) {
-                                    currentPage = -1
-                                    addHomeViewType(homeViewType = HomeViewType.NoMoreItem)
-                                } else {
-                                    addHomeViewTypes(
-                                            homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
-                                    )
-                                    currentPage++
+            withContext(IO){
+                newsInteractors.fetchRecentNews.fetch(perpage = perpage, dispatcher = IO, page = page)
+                        .collect { result ->
+                            if (page != 1) toogleLoading()
+                            when (result) {
+                                is DataState.OnSuccess -> {
+                                    if (result.data.isEmpty()) {
+                                        currentPage = -1
+                                        addHomeViewType(homeViewType = HomeViewType.NoMoreItem)
+                                    } else {
+                                        addHomeViewTypes(
+                                                homeViewType = result.data.map { HomeViewType.RecentNews(news = it) }
+                                        )
+                                        currentPage++
+                                    }
+                                }
+
+                                is DataState.OnFailure -> {
+                                    handleError(result.message)
                                 }
                             }
-
-                            is DataState.OnFailure -> {
-                                handleError(result.message)
-                            }
+                            isFetching = false
                         }
-                        isFetching = false
-                    }
+            }
+
     }
 
     private fun toogleLoading() {
-        if (homeViewTypes.contains(loading)) {
-            deleteHomeViewType(loading)
-        } else {
-            addHomeViewType(
-                    index = homeViewTypes.size,
-                    homeViewType = loading
-            )
+        viewModelScope.launch(Main){
+            if (homeViewTypes.contains(loading)) {
+                deleteHomeViewType(loading)
+            } else {
+                addHomeViewType(
+                        index = homeViewTypes.size,
+                        homeViewType = loading
+                )
+            }
         }
     }
 
 
     private fun deleteHomeViewType(homeViewType: HomeViewType) {
-        homeViewTypes = homeViewTypes.toMutableList().also {
-            it.remove(homeViewType)
+        viewModelScope.launch(Main){
+            homeViewTypes = homeViewTypes.toMutableList().also {
+                it.remove(homeViewType)
+            }
         }
+
     }
 
     private fun deleteHomeViewType(index: Int) {
-        homeViewTypes = homeViewTypes.toMutableList().also {
-            it.removeAt(index)
+        viewModelScope.launch(Main){
+            homeViewTypes = homeViewTypes.toMutableList().also {
+                it.removeAt(index)
+            }
         }
+
     }
 
 
     private fun addHomeViewType(index: Int = -1, homeViewType: HomeViewType) {
-        homeViewTypes = homeViewTypes.toMutableList().also {
-            if (index == -1) {
-                it.add(homeViewType)
-            } else {
-                it.add(index, homeViewType)
-            }
+        viewModelScope.launch(Main){
+            homeViewTypes = homeViewTypes.toMutableList().also {
+                if (index == -1) {
+                    it.add(homeViewType)
+                } else {
+                    it.add(index, homeViewType)
+                }
 
+            }
         }
+
     }
 
     private fun addHomeViewTypes(index: Int = -1, homeViewType: List<HomeViewType>) {
-        homeViewTypes = homeViewTypes.toMutableList().also {
-            if (index == -1) {
-                it.addAll(homeViewType)
-            } else {
-                it.addAll(index, homeViewType)
+        viewModelScope.launch(Main){
+            homeViewTypes = homeViewTypes.toMutableList().also {
+                if (index == -1) {
+                    it.addAll(homeViewType)
+                } else {
+                    it.addAll(index, homeViewType)
+
+                }
 
             }
-
         }
+
     }
 
     fun setScollState(index: Int = 0 , offset : Int = 0){

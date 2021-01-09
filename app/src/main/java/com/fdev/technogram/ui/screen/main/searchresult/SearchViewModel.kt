@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.fdev.technogram.model.News
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
+import com.fdev.technogram.ui.screen.main.newsdetail.SearchViewType
 import com.fdev.technogram.ui.screen.main.searchresult.SearchMethod.MOST_LIKED
 import com.fdev.technogram.ui.screen.main.searchresult.SearchMethod.RECENT_NEWS
 import kotlinx.coroutines.Dispatchers.IO
@@ -22,58 +23,69 @@ class SearchViewModel
 @ViewModelInject
 constructor(
         private val newsInteractors: NewsInteractors
-) : ViewModel(){
+) : ViewModel() {
 
 
-    var searchQuery : String by mutableStateOf("")
+    var searchQuery: String by mutableStateOf("")
         private set
 
 
-    var searchMethod : SearchMethod by mutableStateOf(RECENT_NEWS)
+    var searchMethod: SearchMethod by mutableStateOf(RECENT_NEWS)
         private set
 
 
-    var news : List<News> by mutableStateOf(listOf())
+    var searchViews: List<SearchViewType> by mutableStateOf(listOf())
+        private set
 
-    private var lastSearchQuery : String? = null
+    private var lastSearchQuery: String? = null
 
     private var currentPage = -1
 
-    private var searchJob : Job = Job()
+    private var fetchJob: Job = Job()
+
+    private val loadingItem = SearchViewType.Loading
 
 
-
-    fun search(){
-        if(currentPage == -1 ) return ;
-        if(searchJob.isActive) searchJob.cancel()
-        if(isNewSearch()){
-            lastSearchQuery = searchQuery
+    fun search() {
+        viewModelScope.launch(Main) {
+            cancleJobIfActive()
+            clearNews()
+            addItem(loadingItem)
             currentPage = 1
+            fetchNews()
         }
-        val fetchMethod = if(searchMethod ==  MOST_LIKED)
-            newsInteractors.fetchMostLikedNews.fetch(10 , searchQuery ,currentPage ,IO)
-        else
-            newsInteractors.fetchRecentNews.fetch(10 , searchQuery ,currentPage ,IO)
-        fetchNews(fetch = fetchMethod)
     }
 
-    private fun fetchNews(fetch: Flow<DataState<List<News>>>) {
-        searchJob = viewModelScope.launch(Main){
+    fun fetchMore() {
+        viewModelScope.launch(IO) {
+            if (!fetchJob.isActive && currentPage != -1) {
+                addItem(loadingItem)
+                fetchNews()
+            }
+        }
+    }
+
+    private fun fetchNews() {
+        val fetch = if (searchMethod == MOST_LIKED)
+            newsInteractors.fetchMostLikedNews.fetch(10, searchQuery, currentPage, IO)
+        else
+            newsInteractors.fetchRecentNews.fetch(10, searchQuery, currentPage, IO)
+
+        fetchJob = viewModelScope.launch(IO) {
             fetch.collect { result ->
-                when(result){
+                deleteItem(loadingItem)
+                when (result) {
                     is DataState.OnSuccess -> {
-                        if(result.data.isNotEmpty()){
-                            if(currentPage == 1){
-                                changeNews(result.data)
-                            }else{
-                                addNews(result.data)
+                        if (result.data.isNotEmpty()) {
+                            result.data.forEach {
+                                addItem(SearchViewType.NewsItem(it))
                             }
-                            currentPage ++
-                        }else{
-                            if(currentPage == 1){
-                                // Tell that if its empty and no news with such query
-                            }else{
-                               // Tell that there is no more item to fetch
+                            currentPage++
+                        } else {
+                            if (currentPage == 1) {
+                                addItem(SearchViewType.NoItemFound)
+                            } else {
+                                addItem(SearchViewType.NoMoreItem)
                             }
                             currentPage = -1
                         }
@@ -88,23 +100,39 @@ constructor(
 /*        searchJob.start()*/
     }
 
-    private fun changeNews(data: List<News>) {
-        news = data
+    private fun clearNews() {
+        viewModelScope.launch(Main) {
+            searchViews = listOf()
+        }
+
     }
 
-    private fun addNews(data : List<News>){
-        news = news.toMutableList().also{
-            it.addAll(data)
+    private fun addItem(searchView: SearchViewType) {
+        viewModelScope.launch(Main) {
+            searchViews = searchViews.toMutableList().also {
+                it.add(searchView)
+
+            }
+        }
+    }
+
+    private fun deleteItem(searchView: SearchViewType){
+        viewModelScope.launch(Main) {
+            searchViews = searchViews.toMutableList().also {
+                it.remove(searchView)
+
+            }
         }
     }
 
 
-    fun changeSearchQuery(newSearchQuery : String){
+    fun changeSearchQuery(newSearchQuery: String) {
         searchQuery = newSearchQuery
     }
 
-    private fun isNewSearch() : Boolean{
-        return searchQuery == lastSearchQuery
+    private fun cancleJobIfActive() {
+        if (fetchJob.isActive) fetchJob.cancel()
     }
+
 
 }

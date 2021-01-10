@@ -43,13 +43,6 @@ class CategoriesFragment  : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        CoroutineScope(IO).launch{
-            categoryInteractors.fetchAllCategory.fetch(IO).collect { item ->
-                if(item is DataState.OnSuccess){
-                    categories = item.data
-                }
-            }
-        }
     }
 
 }

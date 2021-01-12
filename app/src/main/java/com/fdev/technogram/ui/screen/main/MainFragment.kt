@@ -73,7 +73,7 @@ class MainFragment : Fragment() {
                     TechnogramTopAppBar(
                             onBurgerClicked = { binding.root.open() },
                             onSearchClicked = {
-                                mainViewModel.currentSelected = 1
+                                mainViewModel.changeCurrentSelected(1)
                                 onDrawerNavigate(MainNavigation.Search)
                             },
                             darkTheme = activityViewModel.darkTheme
@@ -92,7 +92,7 @@ class MainFragment : Fragment() {
                             onSignInClicked = { /*TODO*/ },
                             navigations = navigations,
                             onNavigationItemClicked = { selectedMenu ->
-                                mainViewModel.currentSelected = selectedMenu
+                                mainViewModel.changeCurrentSelected(selectedMenu)
                                 onDrawerNavigate(navigations[selectedMenu])
                             },
                             selectedItem = mainViewModel.currentSelected,

@@ -6,7 +6,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.fdev.technogram.model.News
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
 import com.fdev.technogram.ui.screen.main.newsdetail.SearchViewType
@@ -15,7 +14,6 @@ import com.fdev.technogram.ui.screen.main.searchresult.SearchMethod.RECENT_NEWS
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
@@ -34,14 +32,12 @@ constructor(
         private set
 
 
-    var searchMethod: SearchMethod by mutableStateOf(RECENT_NEWS)
-        private set
+    private var searchMethod: SearchMethod by mutableStateOf(RECENT_NEWS)
 
 
     var searchViews: List<SearchViewType> by mutableStateOf(listOf())
         private set
 
-    private var lastSearchQuery: String? = null
 
     private var currentPage = -1
 

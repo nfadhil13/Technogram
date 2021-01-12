@@ -15,6 +15,12 @@ constructor(
 
 
     var currentSelected : Int by mutableStateOf(0)
+        private set
+
+
+    fun changeCurrentSelected(newSelectedItem : Int){
+        currentSelected = newSelectedItem
+    }
 
 
 }

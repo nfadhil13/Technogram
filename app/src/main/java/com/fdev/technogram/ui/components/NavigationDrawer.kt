@@ -35,8 +35,8 @@ fun TechnogramDrawer(
 
     Surface(
             modifier = Modifier
-                    .fillMaxSize()
-                    .background(MaterialTheme.colors.background)
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
     ) {
         Column(
                 modifier = modifier.padding(10.dp)
@@ -72,9 +72,9 @@ fun DrawerNavigationButtons(
     ScrollableColumn {
         Box(
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(MaterialTheme.colors.onBackground.copy(alpha = 0.6f))
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(MaterialTheme.colors.onBackground.copy(alpha = 0.6f))
         )
         Spacer(modifier = Modifier.height(28.dp))
         Column(
@@ -228,11 +228,11 @@ fun DrawerUserLayout(isLoggedIn: Boolean, onSignInClicked: () -> Unit, modifier:
                 Icon(imageVector = Icons.Filled.Login)
                 Spacer(modifier = Modifier.width(10.dp))
                 Text(
-                        text = "SIGN IN",
-                        style = MaterialTheme.typography.caption,
-                        modifier = Modifier.align(
-                                Alignment.CenterVertically
-                        )
+                    text = "SIGN IN",
+                    style = MaterialTheme.typography.caption,
+                    modifier = Modifier.align(
+                        Alignment.CenterVertically
+                    ).clickable(onClick = onSignInClicked)
                 )
             }
         } else {

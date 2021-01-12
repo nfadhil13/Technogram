@@ -27,26 +27,26 @@ fun Search(
         viewModel: SearchViewModel
 ) {
 
-
-    Column(
+    Surface() {
+        Column(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(12.dp)
-    ) {
+                .fillMaxWidth()
+                .padding(12.dp)
+        ) {
 
 
-        SearchSearchBar(
+            SearchSearchBar(
                 searchQuery = viewModel.searchQuery,
                 onSearchQueryChange = viewModel::changeSearchQuery,
                 modifier = Modifier.fillMaxWidth(),
                 onSearch = viewModel::search
-        )
+            )
 
-        Spacer(
+            Spacer(
                 modifier = Modifier.height(20.dp)
-        )
+            )
 
-        LazyColumn(
+            LazyColumn(
                 modifier = Modifier.fillMaxWidth(),
                 content = {
                     itemsIndexed(items = viewModel.searchViews) { index, item ->
@@ -73,8 +73,10 @@ fun Search(
                         }
                     }
                 }
-        )
+            )
+        }
     }
+
 }
 
 
@@ -114,7 +116,9 @@ fun SearchNoItemFound() {
 @Composable
 fun SearchNoMoreItem() {
     NoMoreNews(
-            modifier = Modifier.fillMaxWidth().padding(12.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(12.dp),
             text = "Tidak ada lagi berita dengan kata kunci terkait"
     )
 }
@@ -135,9 +139,9 @@ fun SearchResultItem(
         )
         Spacer(
                 modifier = Modifier
-                        .height(height = 1.dp)
-                        .fillMaxWidth()
-                        .background(Color.Gray)
+                    .height(height = 1.dp)
+                    .fillMaxWidth()
+                    .background(Color.Gray)
         )
     }
 
@@ -176,9 +180,9 @@ fun SearchLoadingPreview(
         RightImagePreviewNewsSkeleton(skeletonColor = pulseColor)
         Spacer(
                 modifier = Modifier
-                        .height(height = 1.dp)
-                        .fillMaxWidth()
-                        .background(Color.Gray)
+                    .height(height = 1.dp)
+                    .fillMaxWidth()
+                    .background(Color.Gray)
         )
     }
 }

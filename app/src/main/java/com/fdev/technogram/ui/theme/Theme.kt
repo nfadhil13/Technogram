@@ -1,4 +1,4 @@
-package com.fdev.technogram.ui
+package com.fdev.technogram.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme
@@ -6,16 +6,21 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
-
+import com.fdev.technogram.ui.shapes
+import com.fdev.technogram.ui.technogramRed400
+import com.fdev.technogram.ui.technogramRed600
 
 
 val DarkColorPalette = darkColors(
-
+        primary = technogramRed600,
+        primaryVariant = technogramRed400,
+        secondary = technogramRed600,
+        onPrimary = Color.White
 )
 
 val LightColorPalette = lightColors(
-        primary = TECHNOGRAM_RED,
-        primaryVariant = Color(255, 102, 99),
+        primary = technogramRed600,
+        primaryVariant = technogramRed400,
         surface = Color.White,
         background = Color.White,
         error = Color(176, 0, 32),

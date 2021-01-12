@@ -1,6 +1,7 @@
 package com.fdev.technogram.ui.components
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.ScrollableColumn
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
@@ -25,28 +26,38 @@ fun TechnogramDrawer(
         isLoggedIn: Boolean,
         onSignInClicked: () -> Unit,
         navigations: List<MainNavigation>,
-        onNavigationItemClicked : (Int) -> Unit,
-        selectedItem : Int
+        onNavigationItemClicked: (Int) -> Unit,
+        selectedItem: Int,
+        darkTheme: Boolean,
+        onToogle: () -> Unit,
 ) {
 
 
-    Column(
-            modifier = modifier.padding(10.dp)
+    Surface(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
     ) {
-        Providers(AmbientContentAlpha provides ContentAlpha.medium) {
-            Spacer(modifier = Modifier.height(42.dp))
-            DrawerUserLayout(
-                    isLoggedIn = isLoggedIn,
-                    onSignInClicked = onSignInClicked
-            )
-            Spacer(modifier = Modifier.height(28.dp))
-            DrawerNavigationButtons(
-                    navigations = navigations,
-                    onItemClicked = onNavigationItemClicked,
-                    activeIndex = selectedItem
-            )
-        }
+        Column(
+                modifier = modifier.padding(10.dp)
+        ) {
+            Providers(AmbientContentAlpha provides ContentAlpha.medium) {
+                Spacer(modifier = Modifier.height(42.dp))
+                DrawerUserLayout(
+                        isLoggedIn = isLoggedIn,
+                        onSignInClicked = onSignInClicked
+                )
+                Spacer(modifier = Modifier.height(28.dp))
+                DrawerNavigationButtons(
+                        navigations = navigations,
+                        onItemClicked = onNavigationItemClicked,
+                        activeIndex = selectedItem
+                )
+                Spacer(modifier = Modifier.height(28.dp))
+                DarkThemeToogle(darkTheme = darkTheme, onToogle = onToogle, modifier = Modifier.fillMaxWidth())
+            }
 
+        }
     }
 
 }
@@ -56,20 +67,20 @@ fun TechnogramDrawer(
 fun DrawerNavigationButtons(
         navigations: List<MainNavigation>,
         onItemClicked: (clickedItem: Int) -> Unit,
-        activeIndex : Int
+        activeIndex: Int
 ) {
-    Column() {
+    ScrollableColumn {
         Box(
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .height(1.dp)
-                        .background(MaterialTheme.colors.onBackground.copy(alpha = 0.6f))
+                    .fillMaxWidth()
+                    .height(1.dp)
+                    .background(MaterialTheme.colors.onBackground.copy(alpha = 0.6f))
         )
         Spacer(modifier = Modifier.height(28.dp))
         Column(
                 modifier = Modifier.fillMaxWidth()
         ) {
-            navigations.forEachIndexed { index , navigation ->
+            navigations.forEachIndexed { index, navigation ->
                 println(index == activeIndex)
                 Surface(
                         modifier = Modifier.clickable(onClick = { onItemClicked(index) })
@@ -83,15 +94,15 @@ fun DrawerNavigationButtons(
                             )
                         }
                         is MainNavigation.Search -> {
-                            DrawerNavigationItem(icon = Icons.Outlined.Search, text = "Search" , isActive = index == activeIndex)
+                            DrawerNavigationItem(icon = Icons.Outlined.Search, text = "Search", isActive = index == activeIndex)
                         }
                         is MainNavigation.SearchWithQuery -> {
-                            DrawerNavigationItem(icon = navigation.icon, text = navigation.query , isActive = index == activeIndex)
+                            DrawerNavigationItem(icon = navigation.icon, text = navigation.query, isActive = index == activeIndex)
                         }
                         is MainNavigation.More -> {
-                            DrawerNavigationItem(icon = R.drawable.ic_more, text = "More" , isActive = index == activeIndex)
+                            DrawerNavigationItem(icon = R.drawable.ic_more, text = "More", isActive = index == activeIndex)
                         }
-     
+
                     }
                 }
                 Spacer(modifier = Modifier.height(28.dp))
@@ -102,6 +113,58 @@ fun DrawerNavigationButtons(
     }
 }
 
+
+@Composable
+fun DarkThemeToogle(
+        darkTheme: Boolean,
+        onToogle: () -> Unit,
+        modifier: Modifier = Modifier
+) {
+
+    Box(
+            modifier = modifier
+    ) {
+        Column {
+
+            Box(
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .height(1.dp)
+                            .background(MaterialTheme.colors.onBackground.copy(alpha = 0.6f))
+            )
+            Spacer(modifier = Modifier.height(28.dp))
+            ConstraintLayout(
+                    modifier = Modifier.fillMaxWidth()
+            ) {
+                val (text, toogle) = createRefs()
+
+                Text(
+                        text = "Dark Theme",
+                        style = MaterialTheme.typography.caption,
+                        modifier = Modifier.constrainAs(text) {
+                            start.linkTo(parent.start)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        }
+                )
+                Switch(
+                        onCheckedChange = { onToogle() },
+                        checked = darkTheme,
+                        modifier = Modifier.constrainAs(toogle) {
+                            end.linkTo(parent.end)
+                            top.linkTo(parent.top)
+                            bottom.linkTo(parent.bottom)
+                        },
+
+                )
+            }
+
+        }
+
+
+    }
+
+}
 
 @Composable
 fun DrawerNavigationItem(
@@ -158,22 +221,22 @@ fun DrawerNavigationItem(
 }
 
 @Composable
-fun DrawerUserLayout(isLoggedIn: Boolean, onSignInClicked: () -> Unit , modifier: Modifier = Modifier) {
-    if (!isLoggedIn) {
-        Row(
-                modifier = modifier
-        ) {
-            Icon(imageVector = Icons.Filled.Login)
-            Spacer(modifier = Modifier.width(10.dp))
-            Text(
+fun DrawerUserLayout(isLoggedIn: Boolean, onSignInClicked: () -> Unit, modifier: Modifier = Modifier) {
+    Surface(modifier = modifier) {
+        if (!isLoggedIn) {
+            Row{
+                Icon(imageVector = Icons.Filled.Login)
+                Spacer(modifier = Modifier.width(10.dp))
+                Text(
                     text = "SIGN IN",
                     style = MaterialTheme.typography.caption,
                     modifier = Modifier.align(
-                            Alignment.CenterVertically
-                    )
-            )
+                        Alignment.CenterVertically
+                    ).clickable(onClick = onSignInClicked)
+                )
+            }
+        } else {
+            Text("Logged In")
         }
-    } else {
-        Text("Logged In")
     }
 }

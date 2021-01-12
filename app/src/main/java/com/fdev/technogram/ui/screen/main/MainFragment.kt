@@ -10,15 +10,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.fdev.technogram.R
 import com.fdev.technogram.databinding.FragmentMainBinding
-import com.fdev.technogram.ui.TechnogramTheme
+import com.fdev.technogram.ui.ActivityViewModel
+import com.fdev.technogram.ui.theme.TechnogramTheme
 import com.fdev.technogram.ui.components.TechnogramDrawer
 import com.fdev.technogram.ui.components.TechnogramTopAppBar
-import com.fdev.technogram.util.produceFakeNewsData
 import dagger.hilt.android.AndroidEntryPoint
 import java.lang.Error
 
@@ -35,6 +36,7 @@ class MainFragment : Fragment() {
 
 
     private val mainViewModel : MainViewModel by viewModels()
+    private val activityViewModel : ActivityViewModel by activityViewModels()
 
     lateinit var childNavController : NavController
 
@@ -65,18 +67,23 @@ class MainFragment : Fragment() {
     private fun settinUpComposeView() {
         binding.apply {
             this.mainToolbarContent.setContent {
-                TechnogramTheme{
+                TechnogramTheme(
+                        darkTheme = activityViewModel.darkTheme
+                ){
                     TechnogramTopAppBar(
                             onBurgerClicked = { binding.root.open() },
                             onSearchClicked = {
-                                mainViewModel.currentSelected = 1
+                                mainViewModel.changeCurrentSelected(1)
                                 onDrawerNavigate(MainNavigation.Search)
-                            }
+                            },
+                            darkTheme = activityViewModel.darkTheme
                     )
                 }
             }
             this.navigationDrawerContent.setContent {
-                TechnogramTheme{
+                TechnogramTheme(
+                        darkTheme = activityViewModel.darkTheme
+                ){
                     TechnogramDrawer(
                             modifier = Modifier
                                     .fillMaxSize()
@@ -85,10 +92,12 @@ class MainFragment : Fragment() {
                             onSignInClicked = { /*TODO*/ },
                             navigations = navigations,
                             onNavigationItemClicked = { selectedMenu ->
-                                mainViewModel.currentSelected = selectedMenu
+                                mainViewModel.changeCurrentSelected(selectedMenu)
                                 onDrawerNavigate(navigations[selectedMenu])
                             },
-                            selectedItem = mainViewModel.currentSelected
+                            selectedItem = mainViewModel.currentSelected,
+                            darkTheme = activityViewModel.darkTheme,
+                            onToogle = { activityViewModel.toogleTheme()}
 
                     )
                 }

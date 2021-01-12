@@ -30,6 +30,7 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     var homeViewTypes: List<HomeViewType> by mutableStateOf(listOf())
+        private set
 
     private val loading = HomeViewType.LoadingItem
 

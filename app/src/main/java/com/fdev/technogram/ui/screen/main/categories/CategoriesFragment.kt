@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.fdev.technogram.R
 import com.fdev.technogram.model.Category
 import com.fdev.technogram.ui.ActivityViewModel
-import com.fdev.technogram.ui.TechnogramTheme
+import com.fdev.technogram.ui.theme.TechnogramTheme
 import com.fdev.technogram.ui.screen.main.MainBundleConst
 import dagger.hilt.android.AndroidEntryPoint
 

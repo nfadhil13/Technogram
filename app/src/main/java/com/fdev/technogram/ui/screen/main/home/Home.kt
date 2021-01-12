@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.swipeable
 import androidx.compose.runtime.Composable
@@ -46,15 +47,16 @@ fun Home(
             offset = scrollState.firstVisibleItemScrollOffset
         )
     })
-    LazyColumn(
+    Surface() {
+        LazyColumn(
             state = scrollState,
             modifier = Modifier
-                    .padding(10.dp)
-                    .fillMaxHeight()
-                    .fillMaxWidth(),
+                .padding(10.dp)
+                .fillMaxHeight()
+                .fillMaxWidth(),
             content = {
                 itemsIndexed(
-                        items = homeViewModel.homeViewTypes,
+                    items = homeViewModel.homeViewTypes,
                 ) { index, item ->
                     if (homeViewModel.shouldFetchMore(index)) {
                         onActive(callback = {
@@ -70,28 +72,32 @@ fun Home(
                         }
                         is HomeViewType.TopOfHome -> {
                             TopOfHome(
-                                    onNewsClicked = onNewsClicked,
-                                    popularNewsList = item.mostLikedNews,
-                                    headerNews = item.headerNews
+                                onNewsClicked = onNewsClicked,
+                                popularNewsList = item.mostLikedNews,
+                                headerNews = item.headerNews
                             )
                         }
                         is HomeViewType.NoMoreItem -> {
                             NoMoreNews(
-                                    modifier = Modifier.fillMaxWidth().padding(16.dp)
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(16.dp)
                             )
                         }
                         is HomeViewType.LoadingItem -> {
                             CircularLoading(
-                                    modifier = Modifier
-                                            .fillMaxWidth()
-                                            .wrapContentHeight()
-                                            .padding(10.dp),
-                                    alignment = Alignment.Center
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .wrapContentHeight()
+                                    .padding(10.dp),
+                                alignment = Alignment.Center
                             )
                         }
                     }
                 }
             })
+    }
+
 
 
 }
@@ -115,22 +121,22 @@ fun TopOfHome(
         HeaderNews(
             news = headerNews,
             modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 200.dp, max = 300.dp)
-                    .clickable(onClick = ({
-                        onNewsClicked(headerNews)
-                    }))
+                .fillMaxWidth()
+                .heightIn(min = 200.dp, max = 300.dp)
+                .clickable(onClick = ({
+                    onNewsClicked(headerNews)
+                }))
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         for (news in popularNewsList) {
             LeftImageNews(
                 news = news,
                 modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 96.dp, max = 220.dp)
-                        .clickable(onClick = {
-                            onNewsClicked(news)
-                        })
+                    .fillMaxWidth()
+                    .heightIn(min = 96.dp, max = 220.dp)
+                    .clickable(onClick = {
+                        onNewsClicked(news)
+                    })
             )
 
             Spacer(modifier = Modifier.height(height = 12.dp))
@@ -144,9 +150,9 @@ fun TopOfHome(
         )
         Spacer(
             modifier = Modifier
-                    .height(height = 1.dp)
-                    .fillMaxWidth()
-                    .background(Color.Gray)
+                .height(height = 1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
         )
     }
 
@@ -168,9 +174,9 @@ fun RecentNews(
         )
         Spacer(
             modifier = Modifier
-                    .height(height = 1.dp)
-                    .fillMaxWidth()
-                    .background(Color.Gray)
+                .height(height = 1.dp)
+                .fillMaxWidth()
+                .background(Color.Gray)
         )
     }
 
@@ -194,15 +200,15 @@ fun HomeSkeleton(
     Column {
         Box(
             modifier = Modifier
-                    .fillMaxWidth(0.45f)
-                    .height(24.dp)
-                    .background(pulseColor)
+                .fillMaxWidth(0.45f)
+                .height(24.dp)
+                .background(pulseColor)
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         HeaderNewsSkeleton(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .height(300.dp),
+                .fillMaxWidth()
+                .height(300.dp),
             skeletonColor = pulseColor
 
         )

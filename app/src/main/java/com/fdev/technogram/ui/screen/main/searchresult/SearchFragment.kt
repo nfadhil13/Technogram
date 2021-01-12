@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.material.Text
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -14,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.fdev.technogram.R
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.ActivityViewModel
-import com.fdev.technogram.ui.TechnogramTheme
+import com.fdev.technogram.ui.theme.TechnogramTheme
 import com.fdev.technogram.ui.screen.main.MainBundleConst
 import dagger.hilt.android.AndroidEntryPoint
 

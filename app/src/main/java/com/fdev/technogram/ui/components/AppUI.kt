@@ -26,50 +26,52 @@ fun TechnogramTopAppBar(
     onBurgerClicked: () -> Unit,
     onSearchClicked: () -> Unit
 ) {
-    TopAppBar(
-        backgroundColor = Color.White,
-        elevation = 5.dp
-    ) {
-        Surface(
-            modifier = Modifier.padding(horizontal = 10.dp)
-        )
-        {
-            Row {
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                ) {
-                    Burger(
+    Surface{
+        TopAppBar(
+            backgroundColor = MaterialTheme.colors.surface,
+            elevation = 5.dp
+        ) {
+            Surface(
+                modifier = Modifier.padding(horizontal = 10.dp)
+            )
+            {
+                Row {
+                    Box(
                         modifier = Modifier
-                            .width(22.dp)
-                            .align(Alignment.CenterStart)
-                            .fillMaxHeight(0.3f)
-                            .clickable(onClick = onBurgerClicked)
-                    )
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Image(
-                    imageResource(id = R.drawable.technogram_logo),
-                    modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight()
-                )
-                Box(
-                    modifier = Modifier
-                        .weight(2f)
-                        .fillMaxHeight()
-                ){
-                    Icon(
-                        imageVector = Icons.Outlined.Search,
-                        tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
-                        modifier = Modifier
+                            .weight(1f)
                             .fillMaxHeight()
-                            .align(Alignment.CenterEnd)
-                            .clickable(onClick = onSearchClicked)
+                    ) {
+                        Burger(
+                            modifier = Modifier
+                                .width(22.dp)
+                                .align(Alignment.CenterStart)
+                                .fillMaxHeight(0.3f)
+                                .clickable(onClick = onBurgerClicked)
+                        )
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Image(
+                        imageResource(id = R.drawable.technogram_logo),
+                        modifier = Modifier
+                            .weight(1f)
+                            .fillMaxHeight()
                     )
-                }
+                    Box(
+                        modifier = Modifier
+                            .weight(2f)
+                            .fillMaxHeight()
+                    ){
+                        Icon(
+                            imageVector = Icons.Outlined.Search,
+                            tint = MaterialTheme.colors.onBackground.copy(alpha = 0.6f),
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .align(Alignment.CenterEnd)
+                                .clickable(onClick = onSearchClicked)
+                        )
+                    }
 
+                }
             }
         }
     }

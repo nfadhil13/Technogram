@@ -17,7 +17,7 @@ import androidx.navigation.fragment.findNavController
 import com.fdev.technogram.R
 import com.fdev.technogram.databinding.FragmentMainBinding
 import com.fdev.technogram.ui.ActivityViewModel
-import com.fdev.technogram.ui.TechnogramTheme
+import com.fdev.technogram.ui.theme.TechnogramTheme
 import com.fdev.technogram.ui.components.TechnogramDrawer
 import com.fdev.technogram.ui.components.TechnogramTopAppBar
 import dagger.hilt.android.AndroidEntryPoint

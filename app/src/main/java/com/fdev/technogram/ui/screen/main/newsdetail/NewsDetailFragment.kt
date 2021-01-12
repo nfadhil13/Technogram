@@ -10,7 +10,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.ActivityViewModel
-import com.fdev.technogram.ui.TechnogramTheme
+import com.fdev.technogram.ui.theme.TechnogramTheme
 import com.fdev.technogram.ui.screen.main.MainBundleConst
 import dagger.hilt.android.AndroidEntryPoint
 

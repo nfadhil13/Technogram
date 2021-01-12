@@ -44,7 +44,7 @@ class NewsDetailFragment : Fragment(){
                         darkTheme = activityViewModel.darkTheme
                 ) {
                     newsDetailViewModel.news?.let {
-                        NewsDetail(it, newsDetailViewModel = newsDetailViewModel)
+                        NewsDetail(it, newsDetailViewModel = newsDetailViewModel , darkTheme = activityViewModel.darkTheme)
                     }
                 }
 

@@ -22,7 +22,7 @@ constructor(
 
 
     var categories : List<Category> by mutableStateOf(listOf())
-    private set
+        private set
 
 
     var isLoading : Boolean by mutableStateOf(false)

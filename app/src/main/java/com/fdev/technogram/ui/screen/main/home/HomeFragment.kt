@@ -13,6 +13,7 @@ import androidx.navigation.fragment.findNavController
 import com.fdev.technogram.R
 import com.fdev.technogram.datasource.network.business.abstraction.NewsNetworkDataSource
 import com.fdev.technogram.model.News
+import com.fdev.technogram.ui.ActivityViewModel
 import com.fdev.technogram.ui.TechnogramTheme
 import com.fdev.technogram.ui.screen.main.MainBundleConst
 import com.fdev.technogram.ui.screen.main.SwipeRefreshInterface
@@ -27,6 +28,9 @@ class HomeFragment : Fragment(){
     lateinit var networkDataSource: NewsNetworkDataSource
 
     private val homeViewModel : HomeViewModel by activityViewModels()
+    private val activityViewModel : ActivityViewModel by activityViewModels()
+
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,7 +39,9 @@ class HomeFragment : Fragment(){
     ): View {
         return ComposeView(requireContext()).apply {
             setContent {
-                TechnogramTheme() {
+                TechnogramTheme(
+                        darkTheme = activityViewModel.darkTheme
+                ) {
                     Home(homeViewModel = homeViewModel , onNewsClicked = { news -> navigateToNewsDetail(news)})
                 }
             }

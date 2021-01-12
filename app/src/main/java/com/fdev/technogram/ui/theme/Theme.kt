@@ -14,8 +14,8 @@ val DarkColorPalette = darkColors(
 )
 
 val LightColorPalette = lightColors(
-        primary = TECHNOGRAM_RED,
-        primaryVariant = Color(255, 102, 99),
+        primary = technogramRed600,
+        primaryVariant = technogramRed400,
         surface = Color.White,
         background = Color.White,
         error = Color(176, 0, 32),

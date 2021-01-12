@@ -8,5 +8,6 @@ sealed class MainNavigation {
     object Search : MainNavigation()
     data class SearchWithQuery(val query : String, @DrawableRes val icon : Int ) : MainNavigation()
     object More : MainNavigation()
+    data class ChangeTheme(val darkTheme : Boolean): MainNavigation()
 
 }

@@ -4,45 +4,45 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.compose.foundation.layout.Column
-import androidx.compose.material.Text
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.setValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.platform.ComposeView
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
+import com.fdev.technogram.R
 import com.fdev.technogram.model.Category
-import com.fdev.technogram.repository.DataState
-import com.fdev.technogram.repository.category.CategoryInteractors
+import com.fdev.technogram.ui.ActivityViewModel
+import com.fdev.technogram.ui.TechnogramTheme
+import com.fdev.technogram.ui.screen.main.MainBundleConst
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 @AndroidEntryPoint
 class CategoriesFragment  : Fragment() {
 
-    @Inject lateinit var categoryInteractors: CategoryInteractors
+    private val categoriesViewModel : CategoriesViewModel by viewModels()
+    private val activityViewModel : ActivityViewModel by activityViewModels()
 
-    private var categories : List<Category> by mutableStateOf(listOf())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return ComposeView(requireContext()).apply {
             setContent {
-                Column() {
-                    categories.forEach {
-                        Text(it.categoryName)
-                    }
+                TechnogramTheme(
+                        darkTheme = activityViewModel.darkTheme
+                ){
+                    Categories(categoriesViewModel = categoriesViewModel, onCategoryClicked = { selectedCategories -> navToSearch(selectedCategories) })
                 }
+
             }
         }
     }
 
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    private fun navToSearch(selectedCategories: Category) {
+        findNavController()
+                .navigate(R.id.action_categoriesFragment_to_searchFragment ,
+                        bundleOf(MainBundleConst.SEARCH_QUERY_BUNDLE to selectedCategories.categoryName)
+                )
     }
+
 
 }

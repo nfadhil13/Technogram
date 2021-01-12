@@ -25,13 +25,18 @@ constructor(
     private set
 
 
+    var isLoading : Boolean by mutableStateOf(false)
+        private set
+
     init {
+        isLoading = true
         getAllCategories()
     }
 
     private fun getAllCategories(){
         viewModelScope.launch(IO){
-            categoryInteractors.fetchAllCategory.fetch(Dispatchers.IO).collect { item ->
+            categoryInteractors.fetchAllCategory.fetch(IO).collect { item ->
+                isLoading = false
                 if(item is DataState.OnSuccess){
                     categories = item.data
                 }

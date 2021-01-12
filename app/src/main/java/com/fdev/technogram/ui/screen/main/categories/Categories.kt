@@ -61,8 +61,8 @@ fun Categorylist(
         ){
             FlowRow(
                     mainAxisAlignment = FlowMainAxisAlignment.Center,
-                    mainAxisSpacing = 5.dp,
-                    crossAxisSpacing = 5.dp
+                    mainAxisSpacing = 12.dp,
+                    crossAxisSpacing = 14.dp
             ) {
                 categories.forEach {  category ->
                     Text(

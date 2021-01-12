@@ -97,7 +97,7 @@ class MainFragment : Fragment() {
                             },
                             selectedItem = mainViewModel.currentSelected,
                             darkTheme = activityViewModel.darkTheme,
-                            onToogle = { activityViewModel.darkTheme = !activityViewModel.darkTheme}
+                            onToogle = { activityViewModel.toogleTheme()}
 
                     )
                 }

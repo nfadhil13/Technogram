@@ -15,6 +15,7 @@ val DarkColorPalette = darkColors(
         primary = technogramRed600,
         primaryVariant = technogramRed400,
         secondary = technogramRed600,
+        onPrimary = Color.White
 )
 
 val LightColorPalette = lightColors(

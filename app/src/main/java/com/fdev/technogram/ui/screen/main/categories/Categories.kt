@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -25,16 +26,18 @@ fun Categories(
         categoriesViewModel: CategoriesViewModel,
         onCategoryClicked : (category : Category) -> Unit
 ){
-  if(categoriesViewModel.isLoading){
-      CategoryListSkeleton()
-  }else{
-      Categorylist(categories = categoriesViewModel.categories, onCategoryClicked = onCategoryClicked)
-  }
+    Surface() {
+        if(categoriesViewModel.isLoading){
+            CategoryListSkeleton()
+        }else{
+            Categorylist(categories = categoriesViewModel.categories, onCategoryClicked = onCategoryClicked)
+        }
+    }
 }
 
 
 fun randomColor() : Color {
-    val staticColors = listOf(technogramRed300 , technogramRed500 , complementary200 , complementary400 , triadic200 , triadic400 , triadic600 , technogramRed700 , complementary300)
+    val staticColors = listOf(technogramRed300 , technogramRed500 , complementary200 , complementary400  , triadic600 , technogramRed700 , complementary300)
     val randomNumber = Random.nextInt(0 , staticColors.size)
     println(randomNumber)
     return staticColors[randomNumber]
@@ -49,9 +52,9 @@ fun Categorylist(
 
     ScrollableColumn(
             modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(10.dp)
-                    .padding(top = 24.dp)
+                .fillMaxWidth()
+                .padding(10.dp)
+                .padding(top = 24.dp)
     ) {
         Box(
                 modifier = Modifier.align(Alignment.CenterHorizontally)
@@ -68,12 +71,12 @@ fun Categorylist(
                             text = "#${category.categoryName}",
                             style = MaterialTheme.typography.subtitle1.copy(MaterialTheme.colors.onPrimary),
                             modifier = Modifier
-                                    .background(
-                                            color = randomColor(),
-                                            shape = RoundedCornerShape(4.dp)
-                                    )
-                                    .padding(8.dp)
-                                    .clickable(onClick = { onCategoryClicked(category) })
+                                .background(
+                                    color = randomColor(),
+                                    shape = RoundedCornerShape(4.dp)
+                                )
+                                .padding(8.dp)
+                                .clickable(onClick = { onCategoryClicked(category) })
                     )
                 }
             }

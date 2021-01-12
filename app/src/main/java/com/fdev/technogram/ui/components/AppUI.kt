@@ -24,7 +24,8 @@ import com.fdev.technogram.R
 @Composable
 fun TechnogramTopAppBar(
     onBurgerClicked: () -> Unit,
-    onSearchClicked: () -> Unit
+    onSearchClicked: () -> Unit,
+    darkTheme : Boolean
 ) {
     Surface{
         TopAppBar(
@@ -51,7 +52,7 @@ fun TechnogramTopAppBar(
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Image(
-                        imageResource(id = R.drawable.technogram_logo),
+                        imageResource(id = if(darkTheme) R.drawable.technogram_logo_dark else R.drawable.technogram_logo),
                         modifier = Modifier
                             .weight(1f)
                             .fillMaxHeight()

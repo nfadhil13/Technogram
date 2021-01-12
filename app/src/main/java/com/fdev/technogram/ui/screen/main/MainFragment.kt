@@ -75,7 +75,8 @@ class MainFragment : Fragment() {
                             onSearchClicked = {
                                 mainViewModel.currentSelected = 1
                                 onDrawerNavigate(MainNavigation.Search)
-                            }
+                            },
+                            darkTheme = activityViewModel.darkTheme
                     )
                 }
             }

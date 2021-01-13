@@ -50,8 +50,7 @@ fun Home(
     })
     SwipeRefreshCompose(
             isEnable = scrollState.firstVisibleItemIndex == 0,
-            onRefresh = homeViewModel::refresh,
-            isRefreshing = homeViewModel.isRefresihg()
+            onRefresh = homeViewModel::refresh
     ) {
         TechnogramTheme(
                 darkTheme = darkTheme

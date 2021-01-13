@@ -12,7 +12,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 @Composable
 fun SwipeRefreshCompose(
     modifier : Modifier = Modifier,
-    isRefreshing : Boolean = false,
     onRefresh : () -> Unit = {},
     isEnable : Boolean = false,
     content : @Composable () -> Unit
@@ -25,8 +24,10 @@ fun SwipeRefreshCompose(
     AndroidView({swipeRefreshLayout} , modifier = modifier){
         it.setProgressBackgroundColorSchemeColor(backgroundColor)
         it.setContent(content = content)
-        it.isRefreshing = isRefreshing
         it.isEnabled = isEnable
-        it.setOnRefreshListener(onRefresh)
+        it.setOnRefreshListener{
+            it.isRefreshing = false
+            onRefresh()
+        }
     }
 }

@@ -33,6 +33,9 @@ class HomeViewModel @ViewModelInject constructor(
     var homeViewTypes: List<HomeViewType> by mutableStateOf(listOf())
         private set
 
+
+    var isRefreshing : Boolean by mutableStateOf(false)
+
     private val loading = HomeViewType.LoadingItem
 
 
@@ -57,7 +60,9 @@ class HomeViewModel @ViewModelInject constructor(
         fetchJob = viewModelScope.launch(Main) {
             addHomeViewType(index = 1, skeleton)
             async {
+                isRefreshing = true
                 fetchMostLikedNews()
+                isRefreshing = false
                 deleteHomeViewType(skeleton)
             }
             async {
@@ -206,6 +211,6 @@ class HomeViewModel @ViewModelInject constructor(
     private fun shouldFetchMore(listVieItemIndex: Int): Boolean =
             (!fetchJob.isActive && listVieItemIndex > 0 && listVieItemIndex == homeViewTypes.lastIndex && currentPage != -1)
 
-    fun isRefresihg(): Boolean = homeViewTypes.contains(skeleton)
+
 
 }

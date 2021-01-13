@@ -94,3 +94,4 @@ desktop.ini
 
 # OSX files
 .DS_Store
+app/release/app-release.aab

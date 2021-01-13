@@ -1,7 +1,10 @@
 package com.fdev.technogram.ui.components
 
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.toArgb
+import androidx.compose.ui.platform.AmbientContext
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -15,21 +18,15 @@ fun SwipeRefreshCompose(
     content : @Composable () -> Unit
 
 ){
-    AndroidView(
-        modifier = modifier,
-        viewBlock = { context ->
-        SwipeRefreshLayout(context).apply {
-            setContent(
-                content = content
-            )
+    val context = AmbientContext.current
+    val swipeRefreshLayout =  SwipeRefreshLayout(context)
+    val backgroundColor = MaterialTheme.colors.background.toArgb()
 
-            this.isRefreshing = isRefreshing
-
-            this.isEnabled = isEnable
-
-            setOnRefreshListener {
-                onRefresh()
-            }
-        }
-    })
+    AndroidView({swipeRefreshLayout} , modifier = modifier){
+        it.setProgressBackgroundColorSchemeColor(backgroundColor)
+        it.setContent(content = content)
+        it.isRefreshing = isRefreshing
+        it.isEnabled = isEnable
+        it.setOnRefreshListener(onRefresh)
+    }
 }

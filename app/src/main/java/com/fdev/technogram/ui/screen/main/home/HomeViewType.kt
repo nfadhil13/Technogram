@@ -15,4 +15,8 @@ sealed class HomeViewType{
     object NoMoreItem : HomeViewType()
 
     object LoadingItem : HomeViewType()
+
+
+    //Will be placed in the top of listview to enable swiperefreshlayout
+    object EmptypSpace : HomeViewType()
 }

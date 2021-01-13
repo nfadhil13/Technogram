@@ -25,79 +25,88 @@ import androidx.compose.ui.viewinterop.viewModel
 import com.fdev.technogram.model.News
 import com.fdev.technogram.ui.animations.ColorPulse
 import com.fdev.technogram.ui.components.*
+import com.fdev.technogram.ui.theme.TechnogramTheme
 import com.fdev.technogram.ui.typography
 
 
 @Composable
 fun Home(
-    onNewsClicked: (news: News) -> Unit,
-    homeViewModel: HomeViewModel
+        onNewsClicked: (news: News) -> Unit,
+        homeViewModel: HomeViewModel,
+        darkTheme : Boolean
 ) {
 
-
     val scrollState = rememberLazyListState(
-        initialFirstVisibleItemIndex = homeViewModel.scrollState.index,
-        initialFirstVisibleItemScrollOffset = homeViewModel.scrollState.offset
+            initialFirstVisibleItemIndex = homeViewModel.scrollState.index,
+            initialFirstVisibleItemScrollOffset = homeViewModel.scrollState.offset
     )
 
 
     onDispose(callback = {
         homeViewModel.setScollState(
-            index = scrollState.firstVisibleItemIndex,
-            offset = scrollState.firstVisibleItemScrollOffset
+                index = scrollState.firstVisibleItemIndex,
+                offset = scrollState.firstVisibleItemScrollOffset
         )
     })
-    Surface() {
-        LazyColumn(
-            state = scrollState,
-            modifier = Modifier
-                .padding(10.dp)
-                .fillMaxHeight()
-                .fillMaxWidth(),
-            content = {
-                itemsIndexed(
-                    items = homeViewModel.homeViewTypes,
-                ) { index, item ->
-                    if (homeViewModel.shouldFetchMore(index)) {
-                        onActive(callback = {
-                            homeViewModel.fetchCurrentNewsNextPage()
+    SwipeRefreshCompose(
+            isEnable = scrollState.firstVisibleItemIndex == 0,
+            onRefresh = homeViewModel::refresh,
+            isRefreshing = homeViewModel.isRefresihg()
+    ) {
+        TechnogramTheme(
+                darkTheme = darkTheme
+        ) {
+            Surface() {
+                LazyColumn(
+                        state = scrollState,
+                        modifier = Modifier
+                                .padding(10.dp)
+                                .fillMaxHeight()
+                                .fillMaxWidth(),
+                        content = {
+                            itemsIndexed(
+                                    items = homeViewModel.homeViewTypes,
+                            ) { index, item ->
+                                homeViewModel.fetchCurrentNewsNextPage(index)
+                                when (item) {
+                                    is HomeViewType.EmptypSpace -> {
+                                        Spacer(modifier = Modifier.height(2.dp))
+                                    }
+                                    is HomeViewType.Skeleton -> {
+                                        HomeSkeleton()
+                                    }
+                                    is HomeViewType.RecentNews -> {
+                                        RecentNews(news = item.news, onNewsClicked = onNewsClicked)
+                                    }
+                                    is HomeViewType.TopOfHome -> {
+                                        TopOfHome(
+                                                onNewsClicked = onNewsClicked,
+                                                popularNewsList = item.mostLikedNews,
+                                                headerNews = item.headerNews
+                                        )
+                                    }
+                                    is HomeViewType.NoMoreItem -> {
+                                        NoMoreNews(
+                                                modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .padding(16.dp)
+                                        )
+                                    }
+                                    is HomeViewType.LoadingItem -> {
+                                        CircularLoading(
+                                                modifier = Modifier
+                                                        .fillMaxWidth()
+                                                        .wrapContentHeight()
+                                                        .padding(10.dp),
+                                                alignment = Alignment.Center
+                                        )
+                                    }
+                                }
+                            }
                         })
-                    }
-                    when (item) {
-                        is HomeViewType.Skeleton -> {
-                            HomeSkeleton()
-                        }
-                        is HomeViewType.RecentNews -> {
-                            RecentNews(news = item.news, onNewsClicked = onNewsClicked)
-                        }
-                        is HomeViewType.TopOfHome -> {
-                            TopOfHome(
-                                onNewsClicked = onNewsClicked,
-                                popularNewsList = item.mostLikedNews,
-                                headerNews = item.headerNews
-                            )
-                        }
-                        is HomeViewType.NoMoreItem -> {
-                            NoMoreNews(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            )
-                        }
-                        is HomeViewType.LoadingItem -> {
-                            CircularLoading(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .wrapContentHeight()
-                                    .padding(10.dp),
-                                alignment = Alignment.Center
-                            )
-                        }
-                    }
-                }
-            })
+            }
+        }
     }
-
 
 
 }
@@ -106,53 +115,53 @@ fun Home(
 //Views where we put Header News and static 6 popular news
 @Composable
 fun TopOfHome(
-    onNewsClicked: (news: News) -> Unit,
-    popularNewsList: List<News>,
-    headerNews: News
+        onNewsClicked: (news: News) -> Unit,
+        popularNewsList: List<News>,
+        headerNews: News
 ) {
 
     Column {
 
         Text(
-            text = "Popular News",
-            style = MaterialTheme.typography.h4.merge(TextStyle(fontWeight = FontWeight.SemiBold))
+                text = "Popular News",
+                style = MaterialTheme.typography.h4.merge(TextStyle(fontWeight = FontWeight.SemiBold))
         )
         Spacer(modifier = Modifier.height(height = 18.dp))
         HeaderNews(
-            news = headerNews,
-            modifier = Modifier
-                .fillMaxWidth()
-                .heightIn(min = 200.dp, max = 300.dp)
-                .clickable(onClick = ({
-                    onNewsClicked(headerNews)
-                }))
+                news = headerNews,
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .heightIn(min = 200.dp, max = 300.dp)
+                        .clickable(onClick = ({
+                            onNewsClicked(headerNews)
+                        }))
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         for (news in popularNewsList) {
             LeftImageNews(
-                news = news,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .heightIn(min = 96.dp, max = 220.dp)
-                    .clickable(onClick = {
-                        onNewsClicked(news)
-                    })
+                    news = news,
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 96.dp, max = 220.dp)
+                            .clickable(onClick = {
+                                onNewsClicked(news)
+                            })
             )
 
             Spacer(modifier = Modifier.height(height = 12.dp))
         }
         Spacer(modifier = Modifier.height(height = 12.dp))
         Text(
-            modifier = Modifier.fillMaxWidth(),
-            text = "Recent News",
-            style = MaterialTheme.typography.h5.merge(TextStyle(fontWeight = FontWeight.SemiBold)),
-            textAlign = TextAlign.Start
+                modifier = Modifier.fillMaxWidth(),
+                text = "Recent News",
+                style = MaterialTheme.typography.h5.merge(TextStyle(fontWeight = FontWeight.SemiBold)),
+                textAlign = TextAlign.Start
         )
         Spacer(
-            modifier = Modifier
-                .height(height = 1.dp)
-                .fillMaxWidth()
-                .background(Color.Gray)
+                modifier = Modifier
+                        .height(height = 1.dp)
+                        .fillMaxWidth()
+                        .background(Color.Gray)
         )
     }
 
@@ -160,23 +169,23 @@ fun TopOfHome(
 
 @Composable
 fun RecentNews(
-    news: News,
-    modifier: Modifier = Modifier,
-    onNewsClicked: (news: News) -> Unit
+        news: News,
+        modifier: Modifier = Modifier,
+        onNewsClicked: (news: News) -> Unit
 ) {
     Column(
-        modifier = modifier
+            modifier = modifier
     ) {
         Spacer(modifier = Modifier.height(10.dp))
         RightImagePreviewNews(
-            news = news,
-            modifier = Modifier.clickable(onClick = { onNewsClicked(news) })
+                news = news,
+                modifier = Modifier.clickable(onClick = { onNewsClicked(news) })
         )
         Spacer(
-            modifier = Modifier
-                .height(height = 1.dp)
-                .fillMaxWidth()
-                .background(Color.Gray)
+                modifier = Modifier
+                        .height(height = 1.dp)
+                        .fillMaxWidth()
+                        .background(Color.Gray)
         )
     }
 
@@ -189,9 +198,9 @@ fun HomeSkeleton(
 ) {
 
     val colorPulse = transition(
-        definition = ColorPulse.shimmerDefinition,
-        initState = ColorPulse.ShimmerState.INITIAL,
-        toState = ColorPulse.ShimmerState.FINAL
+            definition = ColorPulse.shimmerDefinition,
+            initState = ColorPulse.ShimmerState.INITIAL,
+            toState = ColorPulse.ShimmerState.FINAL
     )
 
     val pulseColor = colorPulse[ColorPulse.shimmerKey]
@@ -199,27 +208,27 @@ fun HomeSkeleton(
 
     Column {
         Box(
-            modifier = Modifier
-                .fillMaxWidth(0.45f)
-                .height(24.dp)
-                .background(pulseColor)
+                modifier = Modifier
+                        .fillMaxWidth(0.45f)
+                        .height(24.dp)
+                        .background(pulseColor)
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         HeaderNewsSkeleton(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(300.dp),
-            skeletonColor = pulseColor
+                modifier = Modifier
+                        .fillMaxWidth()
+                        .height(300.dp),
+                skeletonColor = pulseColor
 
         )
         Spacer(modifier = Modifier.height(height = 12.dp))
         for (i in 1..3) {
             LeftImageNewsSkeleton(
-                modifier = Modifier
-                        .fillMaxWidth()
-                        .heightIn(min = 96.dp, max = 128.dp),
+                    modifier = Modifier
+                            .fillMaxWidth()
+                            .heightIn(min = 96.dp, max = 128.dp),
 
-                skeletonColor = pulseColor
+                    skeletonColor = pulseColor
 
             )
 

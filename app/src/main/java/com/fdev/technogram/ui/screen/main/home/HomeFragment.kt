@@ -40,7 +40,7 @@ class HomeFragment : Fragment(){
                 TechnogramTheme(
                         darkTheme = activityViewModel.darkTheme
                 ) {
-                    Home(homeViewModel = homeViewModel , onNewsClicked = { news -> navigateToNewsDetail(news)})
+                    Home(homeViewModel = homeViewModel , onNewsClicked = { news -> navigateToNewsDetail(news)} , darkTheme = activityViewModel.darkTheme)
                 }
             }
         }

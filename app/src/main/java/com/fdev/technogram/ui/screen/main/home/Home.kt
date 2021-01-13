@@ -7,10 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
-import androidx.compose.material.Text
-import androidx.compose.material.swipeable
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.onActive
 import androidx.compose.runtime.onDispose
@@ -33,7 +30,8 @@ import com.fdev.technogram.ui.typography
 fun Home(
         onNewsClicked: (news: News) -> Unit,
         homeViewModel: HomeViewModel,
-        darkTheme : Boolean
+        darkTheme : Boolean,
+        onError : (message : String) -> Unit
 ) {
 
     val scrollState = rememberLazyListState(
@@ -100,6 +98,9 @@ fun Home(
                                                 alignment = Alignment.Center
                                         )
                                     }
+                                    is HomeViewType.Error -> {
+                                        onError(item.errorMessage)
+                                    }
                                 }
                             }
                         })
@@ -110,6 +111,13 @@ fun Home(
 
 }
 
+
+//@Composable
+//fun HomeError(
+//
+//){
+//
+//}
 
 //Views where we put Header News and static 6 popular news
 @Composable

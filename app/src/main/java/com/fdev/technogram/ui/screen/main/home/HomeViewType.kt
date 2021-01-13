@@ -19,4 +19,7 @@ sealed class HomeViewType{
 
     //Will be placed in the top of listview to enable swiperefreshlayout
     object EmptypSpace : HomeViewType()
+
+
+    data class Error(val errorMessage : String) : HomeViewType()
 }

@@ -20,9 +20,11 @@ fun SwipeRefreshCompose(
     val context = AmbientContext.current
     val swipeRefreshLayout =  SwipeRefreshLayout(context)
     val backgroundColor = MaterialTheme.colors.background.toArgb()
+    val mainColor = MaterialTheme.colors.primary.toArgb()
 
     AndroidView({swipeRefreshLayout} , modifier = modifier){
         it.setProgressBackgroundColorSchemeColor(backgroundColor)
+        it.setColorSchemeColors(mainColor)
         it.setContent(content = content)
         it.isEnabled = isEnable
         it.setOnRefreshListener{

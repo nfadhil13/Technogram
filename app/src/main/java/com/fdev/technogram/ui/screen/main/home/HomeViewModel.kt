@@ -41,6 +41,8 @@ class HomeViewModel @ViewModelInject constructor(
 
     private val skeleton = HomeViewType.Skeleton
 
+    private var isError = false;
+
 
     private var currentPage: Int = 1
 
@@ -75,6 +77,7 @@ class HomeViewModel @ViewModelInject constructor(
 
     fun refresh() {
         if (!fetchJob.isActive) {
+            isError = false
             println("refresh")
             currentPage = 1
             clearAllExceptFirstIndex()
@@ -105,7 +108,8 @@ class HomeViewModel @ViewModelInject constructor(
                         }
 
                         is DataState.OnFailure -> {
-                            handleError(result.message)
+                            isError = true
+                            addHomeViewType(homeViewType = HomeViewType.Error(result.message))
                         }
                     }
                 }
@@ -130,7 +134,8 @@ class HomeViewModel @ViewModelInject constructor(
                             }
 
                             is DataState.OnFailure -> {
-                                handleError(result.message)
+                                isError = true
+                                addHomeViewType(homeViewType = HomeViewType.Error(result.message))
                             }
                         }
                     }
@@ -209,7 +214,7 @@ class HomeViewModel @ViewModelInject constructor(
     }
 
     private fun shouldFetchMore(listVieItemIndex: Int): Boolean =
-            (!fetchJob.isActive && listVieItemIndex > 0 && listVieItemIndex == homeViewTypes.lastIndex && currentPage != -1)
+            (!fetchJob.isActive && listVieItemIndex > 0 && listVieItemIndex == homeViewTypes.lastIndex && currentPage != -1 && !isError)
 
 
 

@@ -27,13 +27,15 @@ import com.fdev.technogram.ui.components.NetworkImage
 import com.fdev.technogram.util.DateUtil
 
 @Composable
-fun NewsDetail(news: News, modifier: Modifier = Modifier, newsDetailViewModel: NewsDetailViewModel , darkTheme : Boolean) {
+fun NewsDetail(news: News, modifier: Modifier = Modifier, newsDetailViewModel: NewsDetailViewModel, darkTheme: Boolean) {
 
     val scrollState = rememberScrollState()
 
     Surface(
-        modifier = Modifier.fillMaxHeight().fillMaxWidth()
-    ){
+            modifier = Modifier
+                    .fillMaxHeight()
+                    .fillMaxWidth()
+    ) {
         ConstraintLayout(
 
         ) {
@@ -56,13 +58,15 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier, newsDetailViewModel: N
 //            }
 
             ScrollableColumn(
-                scrollState = scrollState,
-                modifier = modifier.fillMaxWidth().constrainAs(newsItem){
-                    end.linkTo(parent.end)
-                    start.linkTo(parent.start)
-                    bottom.linkTo(parent.bottom)
-                    top.linkTo(parent.top)
-                }
+                    scrollState = scrollState,
+                    modifier = modifier
+                            .fillMaxWidth()
+                            .constrainAs(newsItem) {
+                                end.linkTo(parent.end)
+                                start.linkTo(parent.start)
+                                bottom.linkTo(parent.bottom)
+                                top.linkTo(parent.top)
+                            }
             ) {
                 newsDetailViewModel.news?.let { oldNews ->
                     if (oldNews != news) {
@@ -80,93 +84,110 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier, newsDetailViewModel: N
 
                 if (news.headerImg != "") {
                     NetworkImage(
-                        modifier = Modifier.fillMaxWidth().height(250.dp),
-                        imageUrl = news.headerImg
+                            modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(250.dp),
+                            imageUrl = news.headerImg
                     )
                 }
 
-                Spacer(modifier = Modifier.height(15.dp).fillMaxWidth())
+                Spacer(modifier = Modifier
+                        .height(15.dp)
+                        .fillMaxWidth())
 
                 ConstraintLayout(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(24.dp)
-                        .padding(horizontal = 12.dp)
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                                .padding(horizontal = 12.dp)
                 ) {
 
                     val (category, time) = createRefs()
 
                     Card(
-                        modifier = Modifier.constrainAs(category) {
-                            top.linkTo(parent.top)
-                            start.linkTo(parent.start)
-                            bottom.linkTo(parent.bottom)
-                        },
-                        backgroundColor = MaterialTheme.colors.primary,
-                        elevation = 0.dp,
-                        shape = RoundedCornerShape(2.dp)
+                            modifier = Modifier.constrainAs(category) {
+                                top.linkTo(parent.top)
+                                start.linkTo(parent.start)
+                                bottom.linkTo(parent.bottom)
+                            },
+                            backgroundColor = MaterialTheme.colors.primary,
+                            elevation = 0.dp,
+                            shape = RoundedCornerShape(2.dp)
                     ) {
                         Text(
-                            modifier = Modifier.padding(5.dp),
-                            text = news.category,
-                            style = MaterialTheme.typography.caption
+                                modifier = Modifier.padding(5.dp),
+                                text = news.category,
+                                style = MaterialTheme.typography.caption
                         )
 
                     }
 
                     TimeComponent(
-                        time = news.publishTime,
-                        modifier = Modifier.constrainAs(time) {
-                            top.linkTo(parent.top)
-                            end.linkTo(parent.end)
-                            bottom.linkTo(parent.bottom)
-                        }
+                            time = news.publishTime,
+                            modifier = Modifier.constrainAs(time) {
+                                top.linkTo(parent.top)
+                                end.linkTo(parent.end)
+                                bottom.linkTo(parent.bottom)
+                            }
                     )
 
 
                 }
 
-                Spacer(modifier = Modifier.height(15.dp).fillMaxWidth())
+                Spacer(modifier = Modifier
+                        .height(15.dp)
+                        .fillMaxWidth())
 
                 Text(
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = 12.dp),
-                    text = news.title,
-                    style = MaterialTheme.typography.h6.merge(TextStyle(fontWeight = FontWeight.W400))
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp),
+                        text = news.title,
+                        style = MaterialTheme.typography.h6.merge(TextStyle(fontWeight = FontWeight.W400))
                 )
 
-                Spacer(modifier = Modifier.height(15.dp).fillMaxWidth())
+                Spacer(modifier = Modifier
+                        .height(15.dp)
+                        .fillMaxWidth())
 
                 Card(
-                    elevation = 3.dp,
-                    modifier = Modifier.height(28.dp).fillMaxWidth().padding(horizontal = 12.dp),
-                    shape = RoundedCornerShape(2.dp)
+                        elevation = 3.dp,
+                        modifier = Modifier
+                                .height(28.dp)
+                                .fillMaxWidth()
+                                .padding(horizontal = 12.dp),
+                        shape = RoundedCornerShape(2.dp)
                 ) {
                     Row(
-                        modifier = Modifier.padding(5.dp)
+                            modifier = Modifier.padding(5.dp)
                     ) {
                         Icon(
-                            Icons.Outlined.Create,
-                            tint = Color.Gray,
-                            modifier = Modifier.fillMaxHeight(0.85f).aspectRatio(1f)
+                                Icons.Outlined.Create,
+                                tint = Color.Gray,
+                                modifier = Modifier
+                                        .fillMaxHeight(0.85f)
+                                        .aspectRatio(1f)
                         )
                         Spacer(modifier = Modifier.width(3.dp))
                         Providers(AmbientContentAlpha provides ContentAlpha.medium) {
                             Text(
-                                text = news.writer,
-                                style = MaterialTheme.typography.caption
+                                    text = news.writer,
+                                    style = MaterialTheme.typography.caption
                             )
                         }
 
                     }
                 }
-                Spacer(modifier = Modifier.height(15.dp).fillMaxWidth())
+                Spacer(modifier = Modifier
+                        .height(15.dp)
+                        .fillMaxWidth())
                 ArticleWebView(
-                    htmlString = news.article,
-                    darkTheme = darkTheme,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 6.dp)
-                        .background(Color.Red)
+                        htmlString = news.article,
+                        darkTheme = darkTheme,
+                        modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = 6.dp)
+                                .background(Color.Red)
                 )
 
             }
@@ -174,17 +195,14 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier, newsDetailViewModel: N
     }
 
 
-
-
-
 }
 
 @Composable
 fun TimeComponent(time: Long, modifier: Modifier = Modifier) {
     Text(
-        modifier = modifier,
-        text = DateUtil.getMonthAndDate(time),
-        style = MaterialTheme.typography.caption.merge(TextStyle(color = Color.Gray))
+            modifier = modifier,
+            text = DateUtil.getMonthAndDate(time),
+            style = MaterialTheme.typography.caption.merge(TextStyle(color = Color.Gray))
     )
 }
 

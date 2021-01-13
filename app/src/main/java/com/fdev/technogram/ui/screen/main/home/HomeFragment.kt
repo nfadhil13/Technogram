@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
@@ -40,10 +41,20 @@ class HomeFragment : Fragment(){
                 TechnogramTheme(
                         darkTheme = activityViewModel.darkTheme
                 ) {
-                    Home(homeViewModel = homeViewModel , onNewsClicked = { news -> navigateToNewsDetail(news)} , darkTheme = activityViewModel.darkTheme)
+                    Home(homeViewModel = homeViewModel
+                            , onNewsClicked = { news -> navigateToNewsDetail(news)}
+                            , darkTheme = activityViewModel.darkTheme ,
+                            onError = { message ->
+                                handleError(message = message)
+                            }
+                    )
                 }
             }
         }
+    }
+
+    private fun handleError(message : String) {
+        Toast.makeText(requireContext()  , message , Toast.LENGTH_SHORT).show()
     }
 
 

@@ -1,17 +1,34 @@
 # Technogram
-Android Version of <a href="https://technogram.tech">Technogram.tech</a>
 
-<h3>Build With</h3>
-<ul>
-  <li>Jetpack Compose as UI toolkit</li>
-  <li>Using mutablestateof(t) rather than live data or stateflow for Viewmodel->UI communication because mutablestateof is composable friendly</li>
-  <li>Dagger Hilt for Dependency Injection</li>
-  <li>Kotlin Coroutine , Flow for Asychronous and stream</li>
-  <li>Jetpack Navigation Component</li>
-  <li><a href="https://github.com/chrisbanes/accompanist" target="_blank">Accompanist</a> for asycn image loading (using glide)</li>
-  <li>And Another Jetpack library (Viewmodel , mutablestateof)</li>
-</ul>  
+<h1 align="center">DisneyCompose</h1></br>
+<p align="center">  
+This is the android version of <a href="https://technogram.tech">Technogram.tech</a>.This app is using newest UI toolkit of Native Android Development Jetpack Compose , Dependecny Injection with Dagger Hilt , and MVVM Architecture
+</p>
 
-This app build with MVVM architecture
+## Screenshots
+
+
+## Tech stack & Open-source libraries
+- Minimum SDK level 21
+- [Kotlin](https://kotlinlang.org/) -  100% Kotlin 
+-[Coroutines](https://github.com/Kotlin/kotlinx.coroutines) - Coroutine 
+-[Flow](https://kotlin.github.io/kotlinx.coroutines/kotlinx-coroutines-core/kotlinx.coroutines.flow/) - for Asynchrnouse.
+- Dagger Hilt (alpha) - For dependency injection.
+- Jetpack Compose - New UI toolkit for Android Development
+- Jetpack ViewModel 
+- Jetpack Navigation Component - To Navigate between Fragment
+- MutableStateOf(t) - Using mutablestateof(t) rather than live data or stateflow for Viewmodel->UI communication because mutablestateof is composable friendly
+- Architecture
+  - MVVM Architecture
+  - Single Activity with Multiple Fragment ( Not using Full Composable for a reason)
+- Material Design & Animations
+- [Accompanist](https://github.com/chrisbanes/accompanist) - Composable for asynchronouse Image Loading with Glide behind the scene
+- [Retrofit2 & OkHttp3](https://github.com/square/retrofit) - A type-safe HTTP client
+
+
 
 Mad Scored for fun 😀 <a href="https://madscorecard.withgoogle.com/scorecards/162835206/#summary">here</a>
+
+
+
+

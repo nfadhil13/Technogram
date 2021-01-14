@@ -1,7 +1,7 @@
 
 <h1 align="center">Technogram</h1></br>
 <p align="center">  
-This is the android version of <a href="https://technogram.tech">Technogram.tech</a>.This app is using newest UI toolkit of Native Android Development Jetpack Compose , Dependecny Injection with Dagger Hilt , and MVVM Architecture
+This is the android version of <a href="https://technogram.tech">Technogram.tech</a>.This app is using  Jetpack Compose , Dagger Hilt , and MVVM Architecture
 </p>
 
 ## Screenshots

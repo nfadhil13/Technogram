@@ -1,15 +1,14 @@
-# Technogram
 
-<h1 align="center">DisneyCompose</h1></br>
+<h1 align="center">Technogram</h1></br>
 <p align="center">  
 This is the android version of <a href="https://technogram.tech">Technogram.tech</a>.This app is using newest UI toolkit of Native Android Development Jetpack Compose , Dependecny Injection with Dagger Hilt , and MVVM Architecture
 </p>
 
 ## Screenshots
 <p align="center">
-<img src="/Preview/ss1" width="32%"/>
-<img src="/Preview/ss1" width="32%"/>
-<img src="/Preview/ss1" width="32%"/>
+<img src="/Preview/ss1.png" width="32%"/>
+<img src="/Preview/ss2.png" width="32%"/>
+<img src="/Preview/ss1.png" width="32%"/>
 </p>
 
 ## Tech stack & Open-source libraries

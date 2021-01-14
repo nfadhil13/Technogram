@@ -6,7 +6,11 @@ This is the android version of <a href="https://technogram.tech">Technogram.tech
 </p>
 
 ## Screenshots
-
+<p align="center">
+<img src="/Preview/ss1" width="32%"/>
+<img src="/Preview/ss1" width="32%"/>
+<img src="/Preview/ss1" width="32%"/>
+</p>
 
 ## Tech stack & Open-source libraries
 - Minimum SDK level 21

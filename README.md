@@ -10,6 +10,12 @@ This is the android version of <a href="https://technogram.tech">Technogram.tech
 <img src="/Preview/ss2.png" width="32%"/>
 <img src="/Preview/ss3.png" width="32%"/>
 </p>
+<p align="center">
+<img src="/Preview/gif1.png" width="24%"/>
+<img src="/Preview/gif2.png" width="24%"/>
+<img src="/Preview/gif3.png" width="24%"/>
+<img src="/Preview/gif4.png" width="24%"/>
+</p>
 
 ## Tech stack & Open-source libraries
 - Minimum SDK level 21

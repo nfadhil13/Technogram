@@ -4,11 +4,13 @@ import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
+@HiltViewModel
 class ActivityViewModel
-@ViewModelInject
+@Inject
 constructor(
     private val sharedPreferences: SharedPreferences,
     private val prefEditor: SharedPreferences.Editor

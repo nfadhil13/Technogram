@@ -5,6 +5,8 @@ import com.fdev.technogram.datasource.network.business.abstraction.CategoryNetwo
 import com.fdev.technogram.datasource.network.framework.mapper.CategoryNetworkMapper
 import com.fdev.technogram.datasource.network.framework.service.CategoryApiService
 import com.fdev.technogram.model.Category
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 
 class CategoryNetworkDataSourceImpl

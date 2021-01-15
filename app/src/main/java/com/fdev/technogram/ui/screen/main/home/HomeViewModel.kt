@@ -8,6 +8,7 @@ import androidx.lifecycle.*
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.NewsInteractors
 import com.fdev.technogram.util.LazyListState
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
@@ -15,12 +16,14 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
 
 /*
     This is viewmodel for home screen
  */
-class HomeViewModel @ViewModelInject constructor(
+@HiltViewModel
+class HomeViewModel @Inject constructor(
         private val newsInteractors: NewsInteractors,
 //        @Assisted private val  savedStateHandle: SavedStateHandle
 ) : ViewModel() {
@@ -41,7 +44,7 @@ class HomeViewModel @ViewModelInject constructor(
 
     private val skeleton = HomeViewType.Skeleton
 
-    private var isError = false;
+    private var isError = false
 
 
     private var currentPage: Int = 1

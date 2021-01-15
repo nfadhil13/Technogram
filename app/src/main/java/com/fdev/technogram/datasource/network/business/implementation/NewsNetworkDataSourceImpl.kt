@@ -5,6 +5,8 @@ import com.fdev.technogram.datasource.network.business.abstraction.NewsNetworkDa
 import com.fdev.technogram.datasource.network.framework.mapper.NewsNetworkMapper
 import com.fdev.technogram.datasource.network.framework.service.NewsApiService
 import com.fdev.technogram.model.News
+import dagger.hilt.android.scopes.ActivityRetainedScoped
+import dagger.hilt.android.scopes.ActivityScoped
 import javax.inject.Inject
 import kotlin.Exception
 

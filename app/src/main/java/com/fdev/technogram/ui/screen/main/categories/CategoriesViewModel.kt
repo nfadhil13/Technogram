@@ -9,16 +9,20 @@ import androidx.lifecycle.viewModelScope
 import com.fdev.technogram.model.Category
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.category.CategoryInteractors
+import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.scopes.ActivityScoped
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+@HiltViewModel
 class CategoriesViewModel
-@ViewModelInject
+@Inject
 constructor(
         private val categoryInteractors: CategoryInteractors
-) : ViewModel(){
+) : ViewModel() {
 
 
     var categories : List<Category> by mutableStateOf(listOf())

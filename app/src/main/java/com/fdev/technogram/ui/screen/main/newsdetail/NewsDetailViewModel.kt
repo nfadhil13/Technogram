@@ -3,8 +3,11 @@ package com.fdev.technogram.ui.screen.main.newsdetail
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.fdev.technogram.model.News
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
-class NewsDetailViewModel @ViewModelInject constructor(
+@HiltViewModel
+class NewsDetailViewModel @Inject constructor(
 ) : ViewModel(){
 
 

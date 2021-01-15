@@ -11,14 +11,18 @@ import com.fdev.technogram.repository.news.NewsInteractors
 import com.fdev.technogram.ui.screen.main.newsdetail.SearchViewType
 import com.fdev.technogram.ui.screen.main.searchresult.SearchMethod.MOST_LIKED
 import com.fdev.technogram.ui.screen.main.searchresult.SearchMethod.RECENT_NEWS
+import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
+
+@HiltViewModel
 class SearchViewModel
-@ViewModelInject
+@Inject
 constructor(
         private val newsInteractors: NewsInteractors
 ) : ViewModel() {

@@ -6,9 +6,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import com.fdev.technogram.R
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
+
+@HiltViewModel
 class MainViewModel
-@ViewModelInject
+@Inject
 constructor(
 
 ): ViewModel(){

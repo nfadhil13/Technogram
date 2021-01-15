@@ -18,7 +18,6 @@ import androidx.fragment.app.FragmentContainerView
 fun ArticleWebView(
     htmlString: String,
     darkTheme: Boolean,
-    modifier: Modifier = Modifier
 ) {
 
     val backgroundColor = MaterialTheme.colors.surface.toArgb()

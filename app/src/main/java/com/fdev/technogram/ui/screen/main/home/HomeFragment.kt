@@ -23,8 +23,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class HomeFragment : Fragment(){
 
-    @Inject
-    lateinit var networkDataSource: NewsNetworkDataSource
 
     private val homeViewModel : HomeViewModel by activityViewModels()
     private val activityViewModel : ActivityViewModel by activityViewModels()

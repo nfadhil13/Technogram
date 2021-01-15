@@ -7,6 +7,7 @@ import com.fdev.technogram.model.News
 import com.fdev.technogram.repository.DataState
 import com.fdev.technogram.repository.news.FetchRecentNews
 import com.fdev.technogram.util.errorHandler
+import dagger.hilt.android.scopes.ViewModelScoped
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -15,6 +16,8 @@ import kotlinx.coroutines.withTimeout
 import java.lang.Exception
 import javax.inject.Inject
 
+
+@ViewModelScoped
 class FetchAllCategory
 @Inject
 constructor(

@@ -183,11 +183,7 @@ fun NewsDetail(news: News, modifier: Modifier = Modifier, newsDetailViewModel: N
                         .fillMaxWidth())
                 ArticleWebView(
                         htmlString = news.article,
-                        darkTheme = darkTheme,
-                        modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(horizontal = 6.dp)
-                                .background(Color.Red)
+                        darkTheme = darkTheme
                 )
 
             }

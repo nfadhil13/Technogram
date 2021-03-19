@@ -4,6 +4,9 @@
 This is the android version of <a href="https://technogram.tech">Technogram.tech</a>.This app is using  Jetpack Compose , Dagger Hilt , and MVVM Architecture
 </p>
 
+## ITS PUBLISHED 
+YOU CAN TRY AND DOWNLOAD HERE : <a href="https://play.google.com/store/apps/details?id=com.fdev.technogram"> Technogram </a> (Currently Can't work)
+
 ## Screenshots
 <p align="center">
 <img src="/Preview/ss1.png" width="32%"/>

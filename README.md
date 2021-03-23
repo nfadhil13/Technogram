@@ -5,7 +5,7 @@ This is the android version of <a href="https://technogram.tech">Technogram.tech
 </p>
 
 ## ITS PUBLISHED 
-YOU CAN TRY AND DOWNLOAD HERE : <a href="https://play.google.com/store/apps/details?id=com.fdev.technogram"> Technogram </a> (Currently Can't work)
+YOU CAN TRY AND DOWNLOAD HERE : <a href="https://play.google.com/store/apps/details?id=com.fdev.technogram"> Technogram </a> (Currently doesn't work)
 
 ## Screenshots
 <p align="center">
